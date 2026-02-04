@@ -11,11 +11,7 @@ async function upsertProfile() {
   const user = data.user;
   if (!user) throw new Error('No authenticated user');
 
-  const nickname =
-    user.user_metadata?.full_name ||
-    user.user_metadata?.name ||
-    user.email?.split('@')[0] ||
-    'user';
+  const nickname = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'user';
 
   const avatarUrl = user.user_metadata?.avatar_url ?? null;
 
