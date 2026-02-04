@@ -1,1 +1,130 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@theme {
+  /* 폰트 */
+  --font-pretendard: 'Pretendard', sans-serif;
+
+  /* Breakpoints */
+  --breakpoint-mobile: 360px; /* 360px ~ 767px */
+  --breakpoint-pc: 768px; /* 768px ~ */
+
+  /* Text */
+  --color-primary: #333333; /* primary 색상 */
+  --color-secondary: #555555; /* secondary 색상 */
+  --color-text-black: #000000; /* 검정 text */
+  --color-text-white: #ffffff; /* 흰 text */
+  --color-text-placeholder: #888888; /* Placeholder text */
+
+  /* Background */
+  --color-bg-base: #ffffff; /* 기본 배경 */
+  --color-bg-muted: #fbfbfb; /* 흐린 배경 */
+  --color-bg-info: #f2f2f2; /* Info 배경 */
+  --color-bg-keyword: #ebebeb; /* 키워드 단어 배경 */
+
+  /* Stroke */
+  --color-stroke-base: #eaeaea; /* 기본 Stroke */
+  --color-stroke-input: #d9d9d9; /* Input Stroke */
+
+  /* Button */
+  --color-button-disabled: #989898; /* Disabled 버튼 */
+  --color-button-active: #000000; /* Active 버튼 */
+  --color-button-hover: #222222; /* Active 버튼 Hover */
+}
+
+/* font 설정 */
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 900;
+  font-display: swap;
+  src:
+    local('Pretendard Black'),
+    url('/fonts/Pretendard-Black.woff2') format('woff2'),
+    url('/fonts/Pretendard-Black.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 800;
+  font-display: swap;
+  src:
+    local('Pretendard ExtraBold'),
+    url('/fonts/Pretendard-ExtraBold.woff2') format('woff2'),
+    url('/fonts/Pretendard-ExtraBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local('Pretendard Bold'),
+    url('/fonts/Pretendard-Bold.woff2') format('woff2'),
+    url('/fonts/Pretendard-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-display: swap;
+  src:
+    local('Pretendard SemiBold'),
+    url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
+    url('/fonts/Pretendard-SemiBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local('Pretendard Medium'),
+    url('/fonts/Pretendard-Medium.woff2') format('woff2'),
+    url('/fonts/Pretendard-Medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('Pretendard Regular'),
+    url('/fonts/Pretendard-Regular.woff2') format('woff2'),
+    url('/fonts/Pretendard-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-display: swap;
+  src:
+    local('Pretendard Light'),
+    url('/fonts/Pretendard-Light.woff2') format('woff2'),
+    url('/fonts/Pretendard-Light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 200;
+  font-display: swap;
+  src:
+    local('Pretendard ExtraLight'),
+    url('/fonts/Pretendard-ExtraLight.woff2') format('woff2'),
+    url('/fonts/Pretendard-ExtraLight.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 100;
+  font-display: swap;
+  src:
+    local('Pretendard Thin'),
+    url('/fonts/Pretendard-Thin.woff2') format('woff2'),
+    url('/fonts/Pretendard-Thin.woff') format('woff');
+}
+
+/* Base Styles */
+body {
+  font-family: 'Pretendard', sans-serif;
+  color: var(--color-primary);
+  background-color: var(--color-bg-base);
+}
