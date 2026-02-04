@@ -1,18 +1,10 @@
 'use server';
 
-import { createClient } from '@/lib/supabaseServer';
+import { getAuthenticatedUser } from '@/lib/auth';
 import { Post } from '@/types/post';
 
 export async function getPostById(postId: string) {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    throw new Error('로그인이 필요합니다.');
-  }
+  const { supabase, user } = await getAuthenticatedUser();
 
   const { data, error } = await supabase.from('posts').select('*').eq('author_id', user.id).eq('id', postId).single();
 
