@@ -14,10 +14,19 @@ export interface Post {
 }
 
 // Post 생성 요청 (authorId, id 제외)
-export interface CreatePostInput {
+export interface CreatePostData {
   topic: string;
   keywords: string[];
   type: PostType;
   title: string;
   content: string;
+}
+
+// Post 수정 요청 (authorId, id 제외, 옵셔널)
+export interface UpdatePostData {
+  topic?: string;
+  keywords?: string[];
+  type?: PostType;
+  title?: string;
+  content?: string;
 }

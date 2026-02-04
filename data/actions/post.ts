@@ -1,12 +1,12 @@
 'use server';
 
 import { getAuthenticatedUser } from '@/lib/auth';
-import { CreatePostInput } from '@/types/post';
+import { CreatePostData, UpdatePostData } from '@/types/post';
 
 /**
- * 블로그 글 저장
+ * [CREATE] 글 저장
  */
-export async function savePost(post: CreatePostInput) {
+export async function createPost(post: CreatePostData) {
   const { supabase, user } = await getAuthenticatedUser();
 
   const { data, error } = await supabase
@@ -29,6 +29,22 @@ export async function savePost(post: CreatePostInput) {
   return { success: true, post: data };
 }
 
+/**
+ * [UPDATE] 글 수정
+ */
+export async function updatePost(postId: string, post: UpdatePostData) {
+  const { supabase, user } = await getAuthenticatedUser();
+
+  const { data, error } = await supabase.from('posts').update(post).eq('author_id', user.id).eq('id', postId).select().single();
+
+  if (error) throw error;
+
+  return { success: true, post: data };
+}
+
+/**
+ * [DELETE] 글 삭제
+ */
 export async function deletePost(postId: string) {
   const { supabase, user } = await getAuthenticatedUser();
 

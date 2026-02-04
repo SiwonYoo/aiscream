@@ -3,6 +3,9 @@
 import { getAuthenticatedUser } from '@/lib/auth';
 import { Post } from '@/types/post';
 
+/**
+ * [READ] 글 조회
+ */
 export async function getPostById(postId: string) {
   const { supabase, user } = await getAuthenticatedUser();
 
