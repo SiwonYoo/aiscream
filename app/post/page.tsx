@@ -8,6 +8,9 @@ import { getPostById } from '@/data/functions/post';
  * 삭제하고 구현해 주세요.
  */
 export default function Post() {
+  // production 환경에서 실행되지 않도록 가드
+  if (process.env.NODE_ENV === 'production') return null;
+
   // 테스트 postId : DB posts 테이블에서 id 확인 후 넣어서 조회/수정/삭제 테스트하시면 됩니다.
   const postId = '5a38e2a7-705d-4045-8fef-336144cde5ad';
 
