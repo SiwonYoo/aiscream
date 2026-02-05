@@ -22,8 +22,8 @@
   --color-keyword: #ebebeb; /* 키워드 단어 배경 */
 
   /* Stroke */
-  --color-base: #eaeaea; /* 기본 Stroke */
-  --color-input: #d9d9d9; /* Input Stroke */
+  --color-base-stroke: #eaeaea; /* 기본 Stroke */
+  --color-input-stroke: #d9d9d9; /* Input Stroke */
 
   /* Button */
   --color-disabled: #989898; /* Disabled 버튼 */
