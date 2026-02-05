@@ -16,19 +16,19 @@ export default function Sidebar() {
       <header className={`hidden h-15.5 border-b border-base-stroke px-4 py-4.5 pc:flex ${isOpen ? 'justify-between' : 'justify-center'}`}>
         {/* (only-PC) 로고 */}
         <h1 className={`items-center gap-1.5 text-lg ${isOpen ? 'flex' : 'hidden'}`}>
-          <Image src="/assets/images/header/logo.png" width={26} height={26} alt="" aria-hidden />
+          <Image src="/assets/images/logo.png" width={26} height={26} alt="" aria-hidden />
           <span>AiScReam</span>
         </h1>
 
         {/* (only-PC) 토글 */}
         <button type="button" aria-label="사이드바 토글" onClick={() => setIsOpen(prev => !prev)} className={`p-2 ${isOpen ? 'cursor-w-resize' : 'cursor-e-resize'}`}>
-          <Image src={isOpen ? '/assets/images/sidebar/chevron-left.svg' : '/assets/images/sidebar/chevron-right.svg'} width={6} height={12} alt="" />
+          <Image src={isOpen ? '/assets/images/ico-chevron-left.svg' : '/assets/images/ico-chevron-right.svg'} width={6} height={12} alt="" />
         </button>
       </header>
 
       {/* (only-PC) 새 블로그 작성 버튼 */}
       <Link href="#" className={`mx-3 mt-5 hidden items-center justify-center gap-3 rounded-sm bg-black text-base text-white pc:flex ${isOpen ? 'h-10' : 'h-9.5'}`}>
-        <Image src="/assets/images/header/plus.svg" width={14} height={14} alt="" />
+        <Image src="/assets/images/ico-plus.svg" width={14} height={14} alt="" />
         <span className={isOpen ? '' : 'hidden'}>새 블로그 작성</span>
       </Link>
 
@@ -57,7 +57,7 @@ export default function Sidebar() {
         <span className={isOpen ? '' : 'hidden'}>email@gmail.com</span>
         {/* 로그아웃 버튼 */}
         <button type="button" aria-label="로그아웃" className="cursor-pointer">
-          <Image src="/assets/images/sidebar/logout.svg" width={12} height={12} alt="" />
+          <Image src="/assets/images/logout.svg" width={12} height={12} alt="" />
         </button>
       </footer>
     </aside>
