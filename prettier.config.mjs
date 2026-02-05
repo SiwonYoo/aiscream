@@ -16,6 +16,7 @@ const prettierConfig = {
   // windows에 뜨는 'Delete cr' 에러 해결
   endOfLine: 'auto',
   plugins: ['prettier-plugin-tailwindcss'],
+  tailwindStylesheet: './app/globals.css',
 };
 
 export default prettierConfig;
