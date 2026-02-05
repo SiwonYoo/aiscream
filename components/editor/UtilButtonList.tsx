@@ -19,7 +19,7 @@ export default function UtilButtonList() {
   };
 
   return (
-    <div className="util-button-list borter-t flex items-center justify-center gap-4 border-t border-base-stroke px-4 py-5 pc:gap-7.5">
+    <div className="util-button-list flex items-center justify-center gap-4 border-t border-base-stroke px-4 py-5 pc:gap-7.5">
       <UtilButton iconSrc="/assets/images/ico-save-black-2x.png" onClick={() => {}} disabled>
         수정완료
       </UtilButton>
@@ -41,13 +41,13 @@ export default function UtilButtonList() {
           </div>
         </UtilButton>
         <ul className={`absolute -bottom-[130%] left-0 w-full overflow-hidden rounded-xs border border-input-stroke bg-white text-[10px] transition duration-300 pc:-bottom-[250%] pc:text-base ${isDownOpen ? 'visible translate-y-1 opacity-100' : 'invisible translate-y-0 opacity-0'}`} role="menu">
-          <li className="border-b border-input-stroke" role="menuitem">
-            <button type="button" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={onClickDownOption} data-downtype="md">
+          <li className="border-b border-input-stroke">
+            <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={onClickDownOption} data-downtype="md">
               .md
             </button>
           </li>
           <li role="menuitem">
-            <button type="button" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={onClickDownOption} data-downtype="html">
+            <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={onClickDownOption} data-downtype="html">
               .html
             </button>
           </li>
