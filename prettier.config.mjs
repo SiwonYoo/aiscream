@@ -15,6 +15,7 @@ const prettierConfig = {
   arrowParens: 'avoid',
   // windows에 뜨는 'Delete cr' 에러 해결
   endOfLine: 'auto',
+  tailwindStylesheet: './app/globals.css', // 진입점
   plugins: ['prettier-plugin-tailwindcss'],
 };
 
