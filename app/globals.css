@@ -11,24 +11,24 @@
   /* Text */
   --color-primary: #333333; /* primary 색상 */
   --color-secondary: #555555; /* secondary 색상 */
-  --color-text-black: #000000; /* 검정 text */
-  --color-text-white: #ffffff; /* 흰 text */
-  --color-text-placeholder: #888888; /* Placeholder text */
+  --color-black: #000000; /* 검정 text */
+  --color-white: #ffffff; /* 흰 text */
+  --color-placeholder: #888888; /* Placeholder text */
 
   /* Background */
-  --color-bg-base: #ffffff; /* 기본 배경 */
-  --color-bg-muted: #fbfbfb; /* 흐린 배경 */
-  --color-bg-info: #f2f2f2; /* Info 배경 */
-  --color-bg-keyword: #ebebeb; /* 키워드 단어 배경 */
+  --color-base: #ffffff; /* 기본 배경 */
+  --color-muted: #fbfbfb; /* 흐린 배경 */
+  --color-info: #f2f2f2; /* Info 배경 */
+  --color-keyword: #ebebeb; /* 키워드 단어 배경 */
 
   /* Stroke */
-  --color-stroke-base: #eaeaea; /* 기본 Stroke */
-  --color-stroke-input: #d9d9d9; /* Input Stroke */
+  --color-base: #eaeaea; /* 기본 Stroke */
+  --color-input: #d9d9d9; /* Input Stroke */
 
   /* Button */
-  --color-button-disabled: #989898; /* Disabled 버튼 */
-  --color-button-active: #000000; /* Active 버튼 */
-  --color-button-hover: #222222; /* Active 버튼 Hover */
+  --color-disabled: #989898; /* Disabled 버튼 */
+  --color-active: #000000; /* Active 버튼 */
+  --color-hover: #222222; /* Active 버튼 Hover */
 }
 
 /* font 설정 */
@@ -122,9 +122,9 @@
     url('/fonts/Pretendard-Thin.woff') format('woff');
 }
 
-/* Base Styles */
+/* 기본 */
 body {
   font-family: 'Pretendard', sans-serif;
   color: var(--color-primary);
-  background-color: var(--color-bg-base);
+  background-color: var(--color-white);
 }
