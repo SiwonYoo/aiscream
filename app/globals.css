@@ -16,7 +16,7 @@
   --color-placeholder: #888888; /* Placeholder text */
 
   /* Background */
-  --color-base: #ffffff; /* 기본 배경 */
+  --color-bg-base: #ffffff; /* 기본 배경 */
   --color-muted: #fbfbfb; /* 흐린 배경 */
   --color-info: #f2f2f2; /* Info 배경 */
   --color-keyword: #ebebeb; /* 키워드 단어 배경 */
@@ -122,9 +122,24 @@
     url('/fonts/Pretendard-Thin.woff') format('woff');
 }
 
+/* logo 영역 사용 font */
+@font-face {
+  font-family: 'Itim';
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('Itim Regular'),
+    url('/fonts/Itim-Regular.woff2') format('woff2'),
+    url('/fonts/Itim-Regular.woff') format('woff');
+}
+
 /* 기본 */
 body {
   font-family: 'Pretendard', sans-serif;
   color: var(--color-primary);
   background-color: var(--color-white);
+}
+
+.itim {
+  font-family: 'Itim';
 }
