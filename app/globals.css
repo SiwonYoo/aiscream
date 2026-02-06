@@ -122,9 +122,24 @@
     url('/fonts/Pretendard-Thin.woff') format('woff');
 }
 
+/* logo 영역 사용 font */
+@font-face {
+  font-family: 'Itim';
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('Itim Regular'),
+    url('/fonts/Itim-Regular.woff2') format('woff2'),
+    url('/fonts/Itim-Regular.woff') format('woff');
+}
+
 /* 기본 */
 body {
   font-family: 'Pretendard', sans-serif;
   color: var(--color-primary);
   background-color: var(--color-white);
+}
+
+.itim {
+  font-family: 'Itim';
 }
