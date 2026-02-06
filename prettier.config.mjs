@@ -17,6 +17,7 @@ const prettierConfig = {
   endOfLine: 'auto',
   tailwindStylesheet: './app/globals.css', // 진입점
   plugins: ['prettier-plugin-tailwindcss'],
+  tailwindStylesheet: './app/globals.css',
 };
 
 export default prettierConfig;
