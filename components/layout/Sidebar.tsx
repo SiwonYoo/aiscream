@@ -57,7 +57,7 @@ export default function Sidebar() {
         <span className={isOpen ? '' : 'hidden'}>email@gmail.com</span>
         {/* 로그아웃 버튼 */}
         <button type="button" aria-label="로그아웃" className="cursor-pointer">
-          <Image src="/assets/images/logout.svg" width={12} height={12} alt="" />
+          <Image src="/assets/images/ico-logout.svg" width={12} height={12} alt="" />
         </button>
       </footer>
     </aside>
