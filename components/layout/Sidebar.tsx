@@ -16,7 +16,7 @@ export default function Sidebar() {
         {/* (only-PC) 로고 */}
         <h1 className={`items-center gap-1.5 text-lg ${isSidebarOpen ? 'flex' : 'hidden'}`}>
           <Image src="/assets/images/logo.png" width={26} height={26} alt="" aria-hidden />
-          <span>AiScReam</span>
+          <span className="itim">AiScReam</span>
         </h1>
 
         {/* (only-PC) 토글 */}
@@ -51,7 +51,7 @@ export default function Sidebar() {
       </nav>
 
       {/* 사이드바 푸터 */}
-      <footer className={`flex px-4 py-4.5 ${isSidebarOpen ? 'justify-between' : 'justify-cente max-pc:hidden'}`}>
+      <footer className={`flex px-4 py-4.5 ${isSidebarOpen ? 'justify-between' : 'justify-center max-pc:hidden'}`}>
         {/* 계정 정보 */}
         <span className={isSidebarOpen ? '' : 'hidden'}>email@gmail.com</span>
         {/* 로그아웃 버튼 */}

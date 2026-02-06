@@ -17,7 +17,7 @@ export default function Header() {
       {/* 로고 */}
       <h1 className="flex items-center gap-1.5 text-sm">
         <Image src="/assets/images/logo.png" width={22} height={22} alt="" aria-hidden />
-        <span>AiScReam</span>
+        <span className="itim">AiScReam</span>
       </h1>
 
       {/* 새 블로그 작성 버튼 */}
