@@ -4,7 +4,7 @@ export default function BrandHeader() {
   return (
     <header className="flex flex-col items-center gap-3 text-center">
       <div className="relative h-15 w-15">
-        <Image src="/Aiscream_logo.svg" alt="AiScReam 로고" fill className="object-contain" priority />
+        <Image src="/assets/images/Aiscream_logo.svg" alt="AiScReam 로고" fill className="object-contain" priority />
       </div>
 
       <h1 className="text-[28px] font-bold tracking-tight md:text-4xl">AiScReam</h1>

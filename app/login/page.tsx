@@ -1,6 +1,6 @@
-import BrandHeader from './BrandHeader';
-import DemoModeNotice from './DemoModeNotice';
-import LoginForm from './LoginForm';
+import BrandHeader from '@/components/login/BrandHeader';
+import DemoModeNotice from '@/components/login/DemoModeNotice';
+import LoginForm from '@/components/login/LoginForm';
 
 export default function LoginPage() {
   return (
