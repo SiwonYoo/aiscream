@@ -1,11 +1,16 @@
+'use client';
+
+import { useUIStore } from '@/stores/ui-store';
 import Image from 'next/image';
 
 export default function Header() {
+  const toggleSidebar = useUIStore(state => state.toggleSidebar);
+
   return (
     // (only-Mobile) 헤더
     <header className="flex items-center justify-between border-b border-base-stroke bg-muted p-4 pc:hidden">
       {/* 사이드바 토글 */}
-      <button type="button" aria-label="사이드바 토글" className="cursor-pointer">
+      <button type="button" aria-label="사이드바 토글" onClick={toggleSidebar} className="cursor-pointer">
         <Image src="/assets/images/ico-menu.svg" width={18} height={18} alt="" />
       </button>
 
