@@ -11,7 +11,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <aside className={`flex w-70 flex-col self-stretch border-r border-base-stroke bg-muted text-sm transition-all duration-200 ${isOpen ? 'pc:w-75' : 'max-pc:hidden pc:w-15.5'}`}>
+    <aside className={`flex w-70 flex-col self-stretch border-r border-base-stroke bg-muted text-sm transition-all duration-200 ${isOpen ? 'max-pc:absolute max-pc:inset-0 pc:w-75' : 'max-pc:hidden pc:w-15.5'}`}>
       {/* (only-PC) 사이드바 헤더 */}
       <header className={`hidden h-15.5 border-b border-base-stroke px-4 py-4.5 pc:flex ${isOpen ? 'justify-between' : 'justify-center'}`}>
         {/* (only-PC) 로고 */}
@@ -21,7 +21,7 @@ export default function Sidebar() {
         </h1>
 
         {/* (only-PC) 토글 */}
-        <button type="button" aria-label="사이드바 토글" onClick={() => setIsOpen(prev => !prev)} className={`p-2 ${isOpen ? 'cursor-w-resize' : 'cursor-e-resize'}`}>
+        <button type="button" aria-label="사이드바 토글" onClick={() => setIsOpen(prev => !prev)} className="cursor-pointer p-2">
           <Image src={isOpen ? '/assets/images/ico-chevron-left.svg' : '/assets/images/ico-chevron-right.svg'} width={6} height={12} alt="" />
         </button>
       </header>
