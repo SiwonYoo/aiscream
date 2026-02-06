@@ -7,7 +7,7 @@ export default function BrandHeader() {
         <Image src="/assets/images/Aiscream_logo.svg" alt="AiScReam 로고" fill className="object-contain" priority />
       </div>
 
-      <h1 className="text-[28px] font-bold tracking-tight md:text-4xl">AiScReam</h1>
+      <h1 className="itim text-[28px] font-bold tracking-tight md:text-4xl">AiScReam</h1>
       <p className="text-sm text-secondary md:text-base md:text-secondary">AI가 당신의 아이디어를 멋진 블로그 글로 만들어드립니다.</p>
     </header>
   );
