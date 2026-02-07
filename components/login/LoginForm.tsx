@@ -22,7 +22,7 @@ export default function LoginForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${getURL()}auth/callback`,
+        redirectTo: `${getURL()}auth/callback?next=/post`,
       },
     });
 
