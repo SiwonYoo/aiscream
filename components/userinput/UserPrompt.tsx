@@ -5,9 +5,10 @@ import Image from 'next/image';
 
 export default function UserPrompt() {
   return (
-    <div className="px-4 py-7">
+    <div className="flex flex-col gap-5 px-4 py-7">
       <BlogPrompt />
       <KeywordPrompt />
+      <TypeSelect />
     </div>
   );
 }
@@ -80,11 +81,11 @@ export function KeywordPrompt() {
   return (
     <div>
       {/* 키워드(제목) */}
-      <p className="mb-1.5 text-sm leading-3.5 font-semibold text-black">키워드</p>
+      <p className="mb-1.5 text-sm leading-3.5 font-semibold text-black pc:mb-3 pc:text-lg">키워드</p>
       {/* 키워드 프롬포트 */}
-      <div className="mb-1 flex items-center justify-between gap-3">
-        <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} className="h-8.5 flex-1 rounded-sm border border-input-stroke px-2.5 py-2.5 text-primary focus:ring-0 focus:outline-none" placeholder="키워드를 입력하고 Enter를 누르세요." />
-        <button type="button" onClick={addKeyword} className="flex items-center justify-center rounded-sm border border-input-stroke p-2.5">
+      <div className="mb-1 flex items-center justify-between gap-3 pc:mb-3">
+        <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} className="h-8.5 flex-1 rounded-sm border border-input-stroke px-2.5 py-2.5 text-sm text-primary focus:ring-0 focus:outline-none pc:h-9 pc:text-base" placeholder="키워드를 입력하고 Enter를 누르세요." />
+        <button type="button" onClick={addKeyword} className="flex h-8.5 w-8.5 items-center justify-center rounded-sm border border-input-stroke pc:h-9 pc:w-9">
           <Image src="/assets/images/ico-plus.svg" width={14} height={14} alt="생성하기 버튼 +" />
         </button>
       </div>
@@ -102,6 +103,29 @@ export function KeywordPrompt() {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+export function TypeSelect() {
+  return (
+    <div className="flex">
+      {/* 타입  선택창  */}
+      <div>
+        <button className="border">
+          <span>타입선택</span>
+          <Image src="/assets/images/down.svg" width={14} height={14} alt="" />
+        </button>
+        {/* 설명 */}
+        <button>
+          <Image src="/assets/images/explain.svg" width={14} height={14} alt="" />
+        </button>
+      </div>
+      {/* 블로그 글 생성하기 */}
+      <button className="bg-amber-800">
+        <Image src="/assets/images/creat.svg" width={14} height={14} alt="" />
+        <span>블로그 글 생성하기</span>
+      </button>
     </div>
   );
 }
