@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 export default function UserPrompt() {
@@ -107,24 +107,66 @@ export function KeywordPrompt() {
   );
 }
 
+const TYPE_OPTIONS = ['트러블 슈팅', 'TIL', '튜토리얼'];
+
 export function TypeSelect() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState('타입선택');
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  //  드롭다운이 열려있는 상태에서 클릭 시 닫기
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelect = (type: string) => {
+    setSelectedType(type);
+    setIsOpen(false);
+  };
+
   return (
-    <div className="flex">
-      {/* 타입  선택창  */}
-      <div>
-        <button className="border">
-          <span>타입선택</span>
-          <Image src="/assets/images/down.svg" width={14} height={14} alt="" />
+    <div className="flex items-center justify-between gap-3">
+      {/* 타입 선택창 + 설명 */}
+      <div className="relative flex items-center gap-2" ref={wrapperRef}>
+        {/* 타입  선택창  */}
+        <button type="button" onClick={() => setIsOpen(prev => !prev)} className="flex items-center justify-between gap-4 rounded-sm border border-input-stroke px-4 py-2 whitespace-nowrap">
+          <span className="text-center text-sm leading-3.5 font-normal text-primary pc:text-base pc:leading-4">{selectedType}</span>
+          <Image src="/assets/images/down.svg" width={10} height={5} alt="타입선택 버튼" className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
         {/* 설명 */}
-        <button>
-          <Image src="/assets/images/explain.svg" width={14} height={14} alt="" />
+        <button type="button">
+          <Image src="/assets/images/explain.svg" width={16} height={16} alt="타입선택 설명" />
+          <div className="rounded-sm bg-info p-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+            <p className="text-left text-[10px] leading-4 font-light text-primary">
+              튜토리얼 : 코드예시가 포함된 형식의 블로그를 생성합니다. <br />
+              TIL : Today I Learned 방식으로 블로그를 생성합니다.
+              <br /> 트러블슈팅 : 발생한 에러/문제를 중심으로 블로그를 생성합니다.
+            </p>
+          </div>
         </button>
+        {/* 드롭다운 */}
+        {isOpen && (
+          <ul className="absolute top-full left-0 z-10 mt-1 rounded-sm border border-input-stroke bg-white whitespace-nowrap shadow-sm">
+            {TYPE_OPTIONS.map(option => (
+              <li key={option}>
+                <button type="button" onClick={() => handleSelect(option)} className="w-full px-4 py-2 text-left text-sm text-primary hover:bg-gray-100">
+                  {option}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       {/* 블로그 글 생성하기 */}
-      <button className="bg-amber-800">
-        <Image src="/assets/images/creat.svg" width={14} height={14} alt="" />
-        <span>블로그 글 생성하기</span>
+      <button className="flex flex-1 items-center justify-center gap-3 rounded-sm bg-disabled px-2.5 py-2">
+        <Image src="/assets/images/creat.svg" width={16} height={16} alt="" />
+        <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
       </button>
     </div>
   );
