@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { text } from 'stream/consumers';
 
 export default function UserPrompt() {
   return (
@@ -42,6 +41,11 @@ export function KeywordPrompt() {
     const value = inputValue.trim();
     if (!value) return;
 
+    // 20글자 초과 방지
+    if (value.length > 20) {
+      alert('키워드는 20글자 이하로 입력해주세요.');
+      return;
+    }
     // 중복 키워드 방지
     if (keywords.includes(value)) {
       setInputValue('');
@@ -60,6 +64,14 @@ export function KeywordPrompt() {
     }
   };
 
+  // 20글자 제한 핸들러
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= 20) {
+      setInputValue(value);
+    }
+  };
+
   // 키워드 삭제 이벤트
   const removeKeyword = (index: number) => {
     setKeywords(prev => prev.filter((_, i) => i !== index));
@@ -71,7 +83,7 @@ export function KeywordPrompt() {
       <p className="mb-1.5 text-sm leading-3.5 font-semibold text-black">키워드</p>
       {/* 키워드 프롬포트 */}
       <div className="mb-1 flex items-center justify-between gap-3">
-        <input type="text" value={inputValue} onChange={e => setInputValue(e.target.value)} onKeyDown={handleKeyDown} className="h-8.5 flex-1 rounded-sm border border-input-stroke px-2.5 py-2.5 text-primary focus:ring-0 focus:outline-none" placeholder="키워드를 입력하고 Enter를 누르세요." />
+        <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} className="h-8.5 flex-1 rounded-sm border border-input-stroke px-2.5 py-2.5 text-primary focus:ring-0 focus:outline-none" placeholder="키워드를 입력하고 Enter를 누르세요." />
         <button type="button" onClick={addKeyword} className="flex items-center justify-center rounded-sm border border-input-stroke p-2.5">
           <Image src="/assets/images/ico-plus.svg" width={14} height={14} alt="생성하기 버튼 +" />
         </button>
