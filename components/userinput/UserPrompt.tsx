@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 export default function UserPrompt() {
+  // 모든 필드가 채워졌는지 확인
+
   return (
     <div className="flex flex-col gap-5 px-4 py-7">
       <BlogPrompt />
@@ -19,16 +21,7 @@ export function BlogPrompt() {
   return (
     <div className="w-full">
       <p className="mb-1.5 text-sm leading-3.5 font-semibold text-black pc:mb-3 pc:text-lg pc:leading-4.5">블로그 내용</p>
-      <textarea
-        className="min-h-15 w-full resize-none rounded-sm border border-input-stroke px-2.5 py-2.5 text-sm leading-3.5 font-normal text-primary focus:ring-0 focus:outline-none pc:min-h-20 pc:px-3.5 pc:py-3 pc:text-base pc:leading-4"
-        placeholder={`어떤 내용의 블로그 글을 작성하고 싶으신가요?\n예: 초보자를 위한 Next.js 시작하기 가이드`}
-        value={value}
-        onChange={e => setValue(e.target.value)}
-        onInput={e => {
-          e.currentTarget.style.height = 'auto';
-          e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-        }}
-      />
+      <textarea className="min-h-15 w-full resize-none rounded-sm border border-input-stroke px-2.5 py-2.5 text-sm leading-3.5 font-normal text-primary focus:ring-0 focus:outline-none pc:min-h-20 pc:px-3.5 pc:py-3 pc:text-base pc:leading-4" placeholder={`어떤 내용의 블로그 글을 작성하고 싶으신가요?\n예: 초보자를 위한 Next.js 시작하기 가이드`} value={value} onChange={e => setValue(e.target.value)} />
     </div>
   );
 }
@@ -94,7 +87,7 @@ export function KeywordPrompt() {
         <div className="flex flex-wrap gap-1.5">
           {keywords.map((keyword, index) => (
             <div key={`${keyword}-${index}`} className="inline-flex h-4.5 items-center gap-1.5 bg-keyword p-1">
-              <span className="text-[10px] text-primary">{keyword}</span>
+              <span className="text-xs text-primary">{keyword}</span>
               {/* 삭제버튼 */}
               <button type="button" onClick={() => removeKeyword(index)} className="flex items-center justify-center">
                 <Image src="/assets/images/vector.svg" width={5} height={5} alt="삭제하기 버튼" />
@@ -113,12 +106,17 @@ export function TypeSelect() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedType, setSelectedType] = useState('타입선택');
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
   //  드롭다운이 열려있는 상태에서 클릭 시 닫기
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
         setIsOpen(false);
+      }
+      if (tooltipRef.current && !tooltipRef.current.contains(e.target as Node)) {
+        setShowTooltip(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -140,16 +138,21 @@ export function TypeSelect() {
           <Image src="/assets/images/down.svg" width={10} height={5} alt="타입선택 버튼" className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
         {/* 설명 */}
-        <button type="button">
-          <Image src="/assets/images/explain.svg" width={16} height={16} alt="타입선택 설명" />
-          <div className="rounded-sm bg-info p-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-            <p className="text-left text-[10px] leading-4 font-light text-primary">
-              튜토리얼 : 코드예시가 포함된 형식의 블로그를 생성합니다. <br />
-              TIL : Today I Learned 방식으로 블로그를 생성합니다.
-              <br /> 트러블슈팅 : 발생한 에러/문제를 중심으로 블로그를 생성합니다.
-            </p>
-          </div>
-        </button>
+        <div className="relative" ref={tooltipRef}>
+          <button type="button" onClick={() => setShowTooltip(prev => !prev)}>
+            <Image src="/assets/images/explain.svg" width={16} height={16} alt="타입선택 설명" />
+          </button>
+          {showTooltip && (
+            <div className="absolute bottom-full left-0 z-20 mb-3 w-full min-w-70 rounded-sm bg-info p-2.5 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] pc:min-w-81 pc:p-3">
+              <p className="text-left text-[10px] leading-4 font-light text-primary pc:text-xs">
+                튜토리얼 : 코드예시가 포함된 형식의 블로그를 생성합니다.
+                <br /> TIL : Today I Learned 방식으로 블로그를 생성합니다.
+                <br /> 트러블슈팅 : 발생한 에러/문제를 중심으로 블로그를 생성합니다.
+              </p>
+            </div>
+          )}
+        </div>
+
         {/* 드롭다운 */}
         {isOpen && (
           <ul className="absolute top-full left-0 z-10 mt-1 rounded-sm border border-input-stroke bg-white whitespace-nowrap shadow-sm">
