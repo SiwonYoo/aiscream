@@ -26,8 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ModalInitializer />
       <body className={`flex min-h-screen flex-col ${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ModalInitializer />
         <div id="app-root">
           {children}
           <GlobalModal />

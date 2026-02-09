@@ -40,6 +40,7 @@ export default function UtilButtonList() {
             message: '복사가 완료되었습니다.',
             variant: 'info',
             cancelText: '확인',
+            contentLabel: '복사 완료 알림 모달',
           })
         }
       >
@@ -80,6 +81,7 @@ export default function UtilButtonList() {
             message: '발행이 완료되었습니다.',
             variant: 'info',
             cancelText: '확인',
+            contentLabel: '발행 완료 알림 모달',
           })
         }
       >
@@ -95,6 +97,7 @@ export default function UtilButtonList() {
             cancelText: '취소',
             confirmText: '삭제하기',
             onConfirm: testFunc,
+            contentLabel: '삭제 알림 및 선택 모달',
           })
         }
       >

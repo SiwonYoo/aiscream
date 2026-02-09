@@ -22,7 +22,7 @@ export default function GlobalModal() {
   }, [modal]);
 
   return (
-    <BasicModal isOpen={!!modal} onClose={closeModal}>
+    <BasicModal isOpen={!!modal} onClose={closeModal} contentLabel={modal?.contentLabel ?? 'modal'}>
       {!modal
         ? null
         : (() => {
@@ -31,9 +31,7 @@ export default function GlobalModal() {
             return (
               <>
                 <div className="flex flex-col items-center gap-5 pc:gap-6">
-                  <div className="relative aspect-square w-10 pc:w-14">
-                    <Image src="/assets/images/modal-check-2x.png" alt="모달 체크 이미지" fill />
-                  </div>
+                  <div className="relative aspect-square w-10 pc:w-14">{variant === 'info' ? <Image src="/assets/images/modal-check-2x.png" alt="" aria-hidden fill sizes="40px, (min-width: 768px) 56px" /> : <Image src="/assets/images/modal-warn-2x.png" alt="" aria-hidden fill sizes="40px, (min-width: 768px) 56px" />}</div>
                   <div className="flex flex-col gap-1.5 pc:gap-2">
                     <h2 className="font-semibold text-primary pc:text-lg">{title}</h2>
                     <p className="text-sm break-keep text-secondary pc:text-base">{message}</p>

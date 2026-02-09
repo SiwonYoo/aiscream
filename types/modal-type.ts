@@ -9,4 +9,5 @@ export interface ModalType {
   confirmText?: string; // 동작 버튼에 들어갈 텍스트
 
   onConfirm?: () => void; // 동작 버튼으로 동작할 함수
+  contentLabel: string; // 어떤 모달인지 명시 (접근성 - 스크린리더용)
 }
