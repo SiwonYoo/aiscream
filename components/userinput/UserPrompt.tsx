@@ -4,20 +4,23 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 export default function UserPrompt() {
+  const [blogContent, setBlogContent] = useState('');
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [selectedType, setSelectedType] = useState('타입선택');
+
   // 모든 필드가 채워졌는지 확인
+  const isFormComplete = blogContent.trim() !== '' && keywords.length > 0 && selectedType !== '타입선택';
 
   return (
     <div className="flex flex-col gap-5 px-4 py-7">
-      <BlogPrompt />
-      <KeywordPrompt />
-      <TypeSelect />
+      <BlogPrompt value={blogContent} setValue={setBlogContent} />
+      <KeywordPrompt keywords={keywords} setKeywords={setKeywords} />
+      <TypeSelect selectedType={selectedType} setSelectedType={setSelectedType} isFormComplete={isFormComplete} />
     </div>
   );
 }
 
-export function BlogPrompt() {
-  const [value, setValue] = useState('');
-
+export function BlogPrompt({ value, setValue }: { value: string; setValue: (value: string) => void }) {
   return (
     <div className="w-full">
       <p className="mb-1.5 text-sm leading-3.5 font-semibold text-black pc:mb-3 pc:text-lg pc:leading-4.5">블로그 내용</p>
@@ -26,9 +29,8 @@ export function BlogPrompt() {
   );
 }
 
-export function KeywordPrompt() {
+export function KeywordPrompt({ keywords, setKeywords }: { keywords: string[]; setKeywords: React.Dispatch<React.SetStateAction<string[]>> }) {
   const [inputValue, setInputValue] = useState('');
-  const [keywords, setKeywords] = useState<string[]>([]);
 
   // 키워드 추가
   const addKeyword = () => {
@@ -102,9 +104,8 @@ export function KeywordPrompt() {
 
 const TYPE_OPTIONS = ['트러블 슈팅', 'TIL', '튜토리얼'];
 
-export function TypeSelect() {
+export function TypeSelect({ selectedType, setSelectedType, isFormComplete }: { selectedType: string; setSelectedType: (type: string) => void; isFormComplete: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedType, setSelectedType] = useState('타입선택');
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -167,7 +168,7 @@ export function TypeSelect() {
         )}
       </div>
       {/* 블로그 글 생성하기 */}
-      <button className="flex flex-1 items-center justify-center gap-3 rounded-sm bg-disabled px-2.5 py-2">
+      <button disabled={!isFormComplete} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${isFormComplete ? 'cursor-pointer bg-[#000000]' : 'cursor-not-allowed bg-disabled'}`}>
         <Image src="/assets/images/creat.svg" width={16} height={16} alt="" />
         <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
       </button>
