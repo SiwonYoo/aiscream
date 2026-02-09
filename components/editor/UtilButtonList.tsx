@@ -1,8 +1,8 @@
 'use client';
 
 import UtilButton from '@/components/editor/UtilButton';
-import Image from 'next/image';
-import { ReactNode, useState } from 'react';
+import { useModalStore } from '@/stores/modal-store';
+import { useState } from 'react';
 
 export default function UtilButtonList() {
   const [isDownOpen, setIsDownOpen] = useState(false); // 다운받기 하위 옵션 열림/닫힘 상태
@@ -12,10 +12,19 @@ export default function UtilButtonList() {
     setIsDownOpen(!isDownOpen);
   };
 
-  // 다운로드 옵션 클릭 이벤트
+  // 다운로드 옵션 클릭 이벤트 (임시로 alert을 띄워서 확인했습니다. 해당 부분 작업 시 변경하거나 앲애주세요!)
   const onClickDownOption = (e: React.MouseEvent<HTMLButtonElement>) => {
     const downType = e.currentTarget.dataset.downtype;
+    setIsDownOpen(!isDownOpen);
     alert(`.${downType} 파일 다운로드`);
+  };
+
+  // 모달 열기
+  const openModal = useModalStore(state => state.openModal);
+
+  // 테스트 함수 (삭제 모달에 넣었습니다. 해당 부분 작업 시 없애주세요!)
+  const testFunc = () => {
+    alert('완료!');
   };
 
   return (
@@ -23,7 +32,18 @@ export default function UtilButtonList() {
       <UtilButton iconSrc="/assets/images/ico-save-black-2x.png" onClick={() => {}} disabled>
         수정완료
       </UtilButton>
-      <UtilButton iconSrc="/assets/images/ico-copy-black-2x.png" onClick={() => {}}>
+      <UtilButton
+        iconSrc="/assets/images/ico-copy-black-2x.png"
+        onClick={() =>
+          openModal({
+            title: '복사 완료',
+            message: '복사가 완료되었습니다.',
+            variant: 'info',
+            cancelText: '확인',
+            contentLabel: '복사 완료 알림 모달',
+          })
+        }
+      >
         복사하기
       </UtilButton>
       <div className="relative">
@@ -53,10 +73,34 @@ export default function UtilButtonList() {
           </li>
         </ul>
       </div>
-      <UtilButton iconSrc="/assets/images/ico-publish-black-2x.png" onClick={() => {}}>
+      <UtilButton
+        iconSrc="/assets/images/ico-publish-black-2x.png"
+        onClick={() =>
+          openModal({
+            title: '발행 완료',
+            message: '발행이 완료되었습니다.',
+            variant: 'info',
+            cancelText: '확인',
+            contentLabel: '발행 완료 알림 모달',
+          })
+        }
+      >
         발행하기
       </UtilButton>
-      <UtilButton iconSrc="/assets/images/ico-delete-black-2x.png" onClick={() => {}}>
+      <UtilButton
+        iconSrc="/assets/images/ico-delete-black-2x.png"
+        onClick={() =>
+          openModal({
+            title: '삭제 하시겠습니까?',
+            message: '작성된 블로그 글을 정말로 삭제 하시겠습니까? 데이터는 복원되지 않습니다.',
+            variant: 'confirm',
+            cancelText: '취소',
+            confirmText: '삭제하기',
+            onConfirm: testFunc,
+            contentLabel: '삭제 알림 및 선택 모달',
+          })
+        }
+      >
         삭제하기
       </UtilButton>
     </div>
