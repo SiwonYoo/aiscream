@@ -12,7 +12,7 @@ export default function UserPrompt() {
   const isFormComplete = blogContent.trim() !== '' && keywords.length > 0 && selectedType !== '타입선택';
 
   return (
-    <div className="flex flex-col gap-5 px-4 py-7">
+    <div className="flex flex-col gap-5 border-t border-base-stroke px-4 py-7 pc:px-5 pc:py-8">
       <BlogPrompt value={blogContent} setValue={setBlogContent} />
       <KeywordPrompt keywords={keywords} setKeywords={setKeywords} />
       <TypeSelect selectedType={selectedType} setSelectedType={setSelectedType} isFormComplete={isFormComplete} />
@@ -134,7 +134,7 @@ export function TypeSelect({ selectedType, setSelectedType, isFormComplete }: { 
       {/* 타입 선택창 + 설명 */}
       <div className="relative flex items-center gap-2" ref={wrapperRef}>
         {/* 타입  선택창  */}
-        <button type="button" onClick={() => setIsOpen(prev => !prev)} className="flex items-center justify-between gap-4 rounded-sm border border-input-stroke px-4 py-2 whitespace-nowrap">
+        <button type="button" onClick={() => setIsOpen(prev => !prev)} className="flex w-30 items-center justify-between gap-4 rounded-sm border border-input-stroke px-4 py-2 whitespace-nowrap pc:w-35">
           <span className="text-center text-sm leading-3.5 font-normal text-primary pc:text-base pc:leading-4">{selectedType}</span>
           <Image src="/assets/images/down.svg" width={10} height={5} alt="타입선택 버튼" className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
@@ -168,7 +168,7 @@ export function TypeSelect({ selectedType, setSelectedType, isFormComplete }: { 
         )}
       </div>
       {/* 블로그 글 생성하기 */}
-      <button disabled={!isFormComplete} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${isFormComplete ? 'cursor-pointer bg-[#000000]' : 'cursor-not-allowed bg-disabled'}`}>
+      <button disabled={!isFormComplete} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${isFormComplete ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
         <Image src="/assets/images/creat.svg" width={16} height={16} alt="" />
         <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
       </button>
