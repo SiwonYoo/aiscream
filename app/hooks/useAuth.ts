@@ -35,12 +35,12 @@ export function useAuth() {
     });
 
     if (error) {
-      console.error('Google 로그인 실패:', error.message);
       setErrorMessage('구글 로그인에 실패했습니다.');
       setIsLoading(false);
       return { ok: false, message: '구글 로그인에 실패했습니다.' };
     }
 
+    setIsLoading(false);
     return { ok: true };
   };
 
@@ -48,17 +48,22 @@ export function useAuth() {
     setIsLoading(true);
     setErrorMessage('');
 
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage('이메일과 비밀번호를 입력해 주세요.');
+      setIsLoading(false);
+      return { ok: false, message: '이메일과 비밀번호를 입력해 주세요.' };
+    }
+
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      console.error('Email 로그인 실패:', error.message);
       setErrorMessage('이메일 또는 비밀번호가 올바르지 않습니다.');
       setIsLoading(false);
       return { ok: false, message: '이메일 또는 비밀번호가 올바르지 않습니다.' };
     }
 
-    router.replace(nextPath);
     setIsLoading(false);
+    router.replace(nextPath);
     return { ok: true };
   };
 
@@ -69,14 +74,13 @@ export function useAuth() {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-      console.error('로그아웃 실패:', error.message);
       setErrorMessage('로그아웃에 실패했습니다.');
       setIsLoading(false);
       return { ok: false, message: '로그아웃에 실패했습니다.' };
     }
 
-    router.replace(nextPath);
     setIsLoading(false);
+    router.replace(nextPath);
     return { ok: true };
   };
 
