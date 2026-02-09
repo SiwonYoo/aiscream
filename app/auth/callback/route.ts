@@ -4,16 +4,16 @@ import { createClient } from '@/lib/supabaseServer';
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
-  const next = url.searchParams.get('next') ?? '/';
 
-  // code 없으면 로그인 페이지로
+  const next = url.searchParams.get('next') ?? '/';
+  const nextPath = next.startsWith('/') && !next.startsWith('//') ? next : '/';
+
   if (!code) {
     return NextResponse.redirect(new URL('/login?error=missing_code', url.origin));
   }
 
   const supabase = await createClient();
 
-  // code -> session 교환 + Set-Cookie 저장
   const { error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
@@ -21,5 +21,5 @@ export async function GET(request: Request) {
     return NextResponse.redirect(new URL(`/login?error=oauth_exchange_failed&message=${encodeURIComponent(error.message)}`, url.origin));
   }
 
-  return NextResponse.redirect(new URL(next, url.origin));
+  return NextResponse.redirect(new URL(nextPath, url.origin));
 }
