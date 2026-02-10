@@ -12,7 +12,12 @@ export default function UserPrompt() {
   const isFormComplete = blogContent.trim() !== '' && keywords.length > 0 && selectedType !== '타입선택';
 
   return (
-    <div className="flex flex-col gap-5 border-t border-base-stroke px-4 py-7 pc:px-5 pc:py-8">
+    <div className="relative flex flex-col gap-5 border-t border-base-stroke px-4 py-7 pc:px-5 pc:py-8">
+      {/* 드롭다운 버튼 */}
+      <button className="absolute -top-1 right-7">
+        <Image src="/assets/images/drop.svg" width={48} height={16.8} alt="드롭다운 버튼" className="aspect-20/7 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] pc:h-7 pc:w-20" />
+      </button>
+
       <BlogPrompt value={blogContent} setValue={setBlogContent} />
       <KeywordPrompt keywords={keywords} setKeywords={setKeywords} />
       <TypeSelect selectedType={selectedType} setSelectedType={setSelectedType} isFormComplete={isFormComplete} />
