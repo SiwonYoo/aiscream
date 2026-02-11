@@ -11,7 +11,7 @@ export default function Sidebar() {
   const { toggleSidebar, isSidebarOpen } = useUIStore();
 
   return (
-    <aside id="sidebar" className={`flex w-70 flex-col self-stretch border-r border-base-stroke bg-muted text-sm transition-all duration-200 max-pc:absolute max-pc:inset-0 ${isSidebarOpen ? 'pc:w-75' : 'max-pc:w-0 pc:w-15.5'}`}>
+    <aside id="sidebar" className={`z-10 flex w-70 flex-col self-stretch border-r border-base-stroke bg-muted text-sm transition-all duration-200 max-pc:absolute max-pc:inset-0 ${isSidebarOpen ? 'pc:w-75' : 'max-pc:w-0 pc:w-15.5'}`}>
       {/* (only-PC) 사이드바 헤더 */}
       <header className={`hidden h-15.5 border-b border-base-stroke px-4 py-4.5 pc:flex ${isSidebarOpen ? 'justify-between' : 'justify-center'}`}>
         {/* (only-PC) 로고 */}
