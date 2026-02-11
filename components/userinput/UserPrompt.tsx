@@ -15,7 +15,7 @@ export default function UserPrompt() {
   return (
     <div className="relative">
       {/* 드롭다운 버튼 */}
-      <button onClick={() => setIsDrop(prev => !prev)} className={`absolute right-7 z-30 transition-all pc:right-6 ${isDrop ? '-top-1' : '-top-6'}`}>
+      <button type="button" onClick={() => setIsDrop(prev => !prev)} className={`absolute right-7 z-30 transition-all pc:right-6 ${isDrop ? '-top-1' : '-top-6'}`}>
         <Image src="/assets/images/drop.svg" width={48} height={16.8} alt="드롭다운 버튼" className={`aspect-20/7 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] transition-transform pc:h-7 pc:w-20 ${isDrop ? '' : 'rotate-180'}`} />
       </button>
       <div className={`flex flex-col gap-5 border-t border-base-stroke px-4 py-7 transition-all duration-300 pc:px-5 pc:py-8 ${isDrop ? 'max-h-[1000px] opacity-100' : 'max-h-0 overflow-hidden py-0 opacity-0'}`}>
@@ -175,7 +175,7 @@ export function TypeSelect({ selectedType, setSelectedType, isFormComplete }: { 
         )}
       </div>
       {/* 블로그 글 생성하기 */}
-      <button disabled={!isFormComplete} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${isFormComplete ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
+      <button type="button" disabled={!isFormComplete} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${isFormComplete ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
         <Image src="/assets/images/creat.svg" width={16} height={16} alt="" />
         <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
       </button>
