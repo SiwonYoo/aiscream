@@ -69,11 +69,10 @@ export default function MarkdownEditor({ initialContent = mockContent, onContent
 
     // 4. onUpdate: 내용 변경 감지
     onUpdate: ({ editor }) => {
+      // TODO html, markdown 다운로드에 활용
       const html = editor.getHTML();
-      onContentChange?.(html);
-
+      // onContentChange?.(html);
       const markdown = editor.storage.markdown?.getMarkdown();
-      console.log(markdown);
     },
   });
 
