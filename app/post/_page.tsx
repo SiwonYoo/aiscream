@@ -12,13 +12,13 @@ export default function Post() {
   if (process.env.NODE_ENV === 'production') return null;
 
   // 테스트 postId : DB posts 테이블에서 id 확인 후 넣어서 조회/수정/삭제 테스트하시면 됩니다.
-  const postId = '5a38e2a7-705d-4045-8fef-336144cde5ad';
+  const postId = 'bd827841-3797-4909-9ff8-eb2578396270';
 
   // [CREATE] 글 저장
   const handleSave = async () => {
     const res = await createPost({
-      topic: '글쓰기 주제',
-      title: '글쓰기 제목',
+      topic: '글쓰기 주제3',
+      title: '글쓰기 제목3',
       keywords: ['글', '작업'],
       type: 'til',
       content: '이렇게 글 쓰면 됩니다.',
