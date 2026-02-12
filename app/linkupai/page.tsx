@@ -16,11 +16,15 @@ export default function LinkUpAi() {
 
     const blogTitle = String(formData.get('blogTitle'));
     const blogKeyword = String(formData.get('blogKeyword'));
+    const blogType = String(formData.get('blogType'));
+    const blogLength = String(formData.get('blogLength'));
 
     if (!blogTitle.trim() || !blogKeyword.trim()) {
       alert('공백만 입력할 수 없습니다');
       return;
     }
+
+    console.log(blogLength, blogType);
 
     try {
       setResult('');
@@ -29,7 +33,7 @@ export default function LinkUpAi() {
       const res = await fetch('/api/open-ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: blogTitle, keyword: blogKeyword }),
+        body: JSON.stringify({ title: blogTitle, keyword: blogKeyword, type: blogType, length: blogLength }),
       });
 
       if (!res.ok) {
@@ -79,17 +83,21 @@ export default function LinkUpAi() {
             <div className="flex gap-3">
               <input type="text" name="blogTitle" placeholder="타이틀을 입력해주세요." required className="border border-input-stroke px-3 py-1" />
               <input type="text" name="blogKeyword" placeholder="포함될 키워드를 입력해주세요." required className="border border-input-stroke px-3 py-1" />
-              <select name="blogType">
-                <option>타입 선택</option>
-                <option>튜토리얼</option>
-                <option>TIL</option>
-                <option>트러블 슈팅</option>
+              <select name="blogType" defaultValue="" required>
+                <option value="" disabled>
+                  타입 선택
+                </option>
+                <option value="tutorial">튜토리얼</option>
+                <option value="til">TIL</option>
+                <option value="trouble">트러블슈팅</option>
               </select>
-              <select name="blogLength">
-                <option>글 길이 선택</option>
-                <option>간단 요약</option>
-                <option>보통 글</option>
-                <option>상세 설명</option>
+              <select name="blogLength" defaultValue="" required>
+                <option value="" disabled>
+                  글 길이 선택
+                </option>
+                <option value="short">간단 요약</option>
+                <option value="normal">보통 글</option>
+                <option value="long">상세 설명</option>
               </select>
             </div>
             <button type="submit" className="cursor-pointer bg-active px-3 py-1 text-white" disabled={loading}>
@@ -97,13 +105,16 @@ export default function LinkUpAi() {
             </button>
           </form>
         </div>
-        <button
-          onClick={() => {
-            setHasError(true);
-          }}
-        >
-          에러버튼
-        </button>
+        <div className="w-full text-left">
+          <button
+            className="mt-5 bg-red-500 text-white"
+            onClick={() => {
+              setHasError(true);
+            }}
+          >
+            에러버튼
+          </button>
+        </div>
       </div>
     </>
   );
