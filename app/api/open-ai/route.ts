@@ -25,7 +25,7 @@ TIL 형식으로 새로 학습하는 입장에서 더 와닿게 이해되도록 
 비유나 비전공자의 관점에서 이해될 만한 비슷한 사례들을 넣어줘.
   `,
   trouble: `
-	touble shooting 광점에서 작성해줘.
+	trouble shooting 관점에서 작성해줘.
 	일어날 수 있는 실수나 오류들 관점에서 작성하거나,
 	더 개선할 수 있는 방법들을 작성해서 trouble shooting에 알맞게 작성해줘.
   `,
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     const postType = typePrompt[type as BlogType];
 
-    const res = await openai.responses.stream({
+    const res = await openai.responses.create({
       model: 'gpt-4o-mini',
       input: `
       너는 개발 기술 전문 블로거야.
@@ -49,8 +49,9 @@ export async function POST(request: NextRequest) {
 
 	  ${postType}
 
-      ${postToken}토큰 내에서 글을 마무리 해줘!
+      ${postToken}토큰 분량으로 글을 마무리 해줘!
       `,
+      stream: true,
       max_output_tokens: postToken,
       temperature: 0.5,
     });
