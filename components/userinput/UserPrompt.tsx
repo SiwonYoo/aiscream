@@ -18,7 +18,7 @@ export default function UserPrompt() {
       <button type="button" onClick={() => setIsDrop(prev => !prev)} className={`absolute right-7 z-30 transition-all pc:right-6 ${isDrop ? '-top-1' : '-top-6'}`}>
         <Image src="/assets/images/drop.svg" width={48} height={16.8} alt="드롭다운 버튼" className={`aspect-20/7 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] transition-transform pc:h-7 pc:w-20 ${isDrop ? '' : 'rotate-180'}`} />
       </button>
-      <div className={`flex flex-col gap-5 border-t border-base-stroke px-4 py-7 transition-all duration-300 pc:px-5 pc:py-8 ${isDrop ? 'max-h-[1000px] opacity-100' : 'max-h-0 overflow-hidden py-0 opacity-0'}`}>
+      <div className={`flex flex-col gap-5 border-t border-base-stroke px-4 py-7 transition-all duration-300 pc:px-5 pc:py-8 ${isDrop ? 'max-h-full opacity-100' : 'max-h-0 overflow-hidden py-0 opacity-0'}`}>
         <BlogPrompt value={blogContent} setValue={setBlogContent} />
         <KeywordPrompt keywords={keywords} setKeywords={setKeywords} />
         <TypeSelect selectedType={selectedType} setSelectedType={setSelectedType} isFormComplete={isFormComplete} />
