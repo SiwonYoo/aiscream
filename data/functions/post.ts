@@ -30,3 +30,29 @@ export async function getPostById(postId: string) {
 
   return post;
 }
+
+/**
+ * [READ] 내 글 전체 조회
+ */
+export async function getMyPosts() {
+  const { supabase, user } = await getAuthenticatedUser();
+
+  const { data, error } = await supabase.from('posts').select('*').eq('author_id', user.id).order('created_at', { ascending: false });
+
+  if (error) throw error;
+  if (!data) return [];
+
+  const posts: Post[] = data.map(row => ({
+    id: row.id,
+    authorId: row.author_id,
+    topic: row.topic,
+    keywords: row.keywords,
+    type: row.type,
+    title: row.title,
+    content: row.content,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  }));
+
+  return posts;
+}
