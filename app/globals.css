@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @theme {
   /* 폰트 */
@@ -142,4 +143,17 @@ body {
 
 .itim {
   font-family: 'Itim';
+}
+
+.prose :not(pre) > code {
+  background-color: var(--color-muted);
+  color: #f6b1c3;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+.prose code::before,
+.prose code::after {
+  content: none;
 }

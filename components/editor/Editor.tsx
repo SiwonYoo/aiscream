@@ -1,3 +1,5 @@
+import MarkdownEditor from '@/components/editor/MarkdownEditor';
+
 export default function Editor() {
   return (
     <>
@@ -13,7 +15,9 @@ export default function Editor() {
         </div>
       </div>
       {/* 에디터 들어갈 영역 입니다. */}
-      <div className="editor-wrap h-125">editor 영역입니다.</div>
+      <div className="editor-wrap px-7 py-1.5 pc:px-30 pc:py-5">
+        <MarkdownEditor />
+      </div>
     </>
   );
 }
