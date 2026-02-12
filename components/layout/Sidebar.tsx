@@ -5,28 +5,17 @@ import { useUIStore } from '@/stores/ui-store';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/app/hooks/useAuth';
-import { getMyPosts } from '@/data/functions/post';
-import type { Post } from '@/types/post';
+import { usePostStore } from '@/stores/post-store';
 
 // const MOCK_BLOG_TITLE = ['초보자를 위한 Next.js 시작하기 가이드', '프론트엔드 개발자 관점으로 바라보는 관심사의 분리와 좋은 폴더 구조 (feat. FSD)', 'Redux 어떻게 써야 잘 썼다고 소문이 날까?', 'Clean Architecture on Frontend'];
 export default function Sidebar() {
   const { logout, user } = useAuth();
   const { toggleSidebar, isSidebarOpen } = useUIStore();
-  const [posts, setPosts] = useState<Post[] | null>(null);
+  const { posts, selectedPost, fetchMyPosts, selectPost } = usePostStore();
 
   useEffect(() => {
-    const loadPosts = async () => {
-      try {
-        const data = await getMyPosts();
-        setPosts(data);
-      } catch (e) {
-        console.error(e);
-        setPosts([]);
-      }
-    };
-
-    loadPosts();
-  }, []);
+    fetchMyPosts();
+  }, [fetchMyPosts]);
 
   return (
     <aside id="sidebar" className={`z-10 flex h-dvh w-70 flex-col self-stretch border-r border-base-stroke bg-muted text-sm transition-all duration-200 max-pc:absolute max-pc:inset-0 ${isSidebarOpen ? 'pc:w-75' : 'max-pc:w-0 pc:w-15.5'}`}>
@@ -56,18 +45,21 @@ export default function Sidebar() {
           <div className="flex h-full justify-center text-primary">아직 작성한 블로그가 없습니다.</div>
         ) : (
           <ul>
-            {posts.map((post, idx) => (
-              <li key={post.id}>
-                <Link href="#" className="flex items-center gap-1.5 rounded-lg py-2 hover:bg-base-stroke pc:p-2">
-                  {idx === 0 && (
-                    <div className="h-1 w-1 shrink-0 rounded-full bg-red-500">
-                      <span className="sr-only">최신 글</span>
-                    </div>
-                  )}
-                  <p className="truncate">{post.title}</p>
-                </Link>
-              </li>
-            ))}
+            {posts.map((post, idx) => {
+              const isActive = selectedPost?.id === post.id;
+              return (
+                <li key={post.id}>
+                  <button type="button" onClick={() => selectPost(post)} className={`flex w-full cursor-pointer items-center gap-1.5 rounded-lg py-2 pc:p-2 ${isActive ? 'bg-base-stroke' : ''}`} aria-current={isActive ? 'true' : undefined}>
+                    {idx === 0 && (
+                      <div className="h-1 w-1 shrink-0 rounded-full bg-red-500">
+                        <span className="sr-only">최신 글</span>
+                      </div>
+                    )}
+                    <p className="truncate">{post.title}</p>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </nav>
