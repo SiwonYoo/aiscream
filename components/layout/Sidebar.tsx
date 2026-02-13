@@ -55,7 +55,7 @@ export default function Sidebar() {
                         <span className="sr-only">최신 글</span>
                       </div>
                     )}
-                    <p className="truncate">{post.title}</p>
+                    <p className="truncate">{post.topic}</p>
                   </button>
                 </li>
               );
