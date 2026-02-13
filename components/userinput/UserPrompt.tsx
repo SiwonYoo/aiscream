@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import PlusIcon from '../common/PlusIcon';
 
 export default function UserPrompt() {
   const [blogContent, setBlogContent] = useState('');
@@ -88,7 +89,7 @@ export function KeywordPrompt({ keywords, setKeywords }: { keywords: string[]; s
       <div className="mb-1 flex items-center justify-between gap-3 pc:mb-3">
         <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} className="h-8.5 flex-1 rounded-sm border border-input-stroke px-2.5 py-2.5 text-sm text-primary focus:ring-0 focus:outline-none pc:h-9 pc:text-base" placeholder="키워드를 입력하고 Enter를 누르세요." />
         <button type="button" onClick={addKeyword} className="flex h-8.5 w-8.5 items-center justify-center rounded-sm border border-input-stroke pc:h-9 pc:w-9">
-          <Image src="/assets/images/ico-plus.svg" width={14} height={14} alt="생성하기 버튼 +" />
+          <PlusIcon color="#333" className="h-3 w-3 pc:h-3.5 pc:w-3.5" />
         </button>
       </div>
       {/* 키워드 태그 */}
