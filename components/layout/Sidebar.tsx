@@ -11,7 +11,7 @@ import { usePostStore } from '@/stores/post-store';
 export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Post[]; userEmail: string }) {
   const { logout } = useAuth();
   const { toggleSidebar, isSidebarOpen } = useUIStore();
-  const { selectedPostId, selectPostId } = usePostStore();
+  const { selectPostId } = usePostStore();
   const pathname = usePathname();
 
   return (
