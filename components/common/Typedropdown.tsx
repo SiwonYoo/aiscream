@@ -40,10 +40,10 @@ export default function TypeDropdown({ selectedType, onSelect, options }: TypeDr
 
       {/* 드롭다운 옵션 */}
       {isOpen && (
-        <ul className="absolute bottom-full left-0 z-10 mb-1 rounded-sm border border-input-stroke bg-white whitespace-nowrap shadow-sm">
+        <ul className="absolute bottom-full left-0 z-10 mb-1 w-30 rounded-sm border border-input-stroke bg-white whitespace-nowrap shadow-sm pc:w-35">
           {options.map(option => (
             <li key={option}>
-              <button type="button" onClick={() => handleSelect(option)} className="w-full px-4 py-2 text-left text-sm text-primary hover:bg-gray-100">
+              <button type="button" onClick={() => handleSelect(option)} className="w-full px-4 py-2 text-left text-sm text-primary hover:bg-gray-100 pc:text-base">
                 {option}
               </button>
             </li>
