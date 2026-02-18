@@ -22,7 +22,7 @@ export default function Header() {
       </h1>
 
       {/* 새 블로그 작성 버튼 */}
-      <button className="flex h-6 w-6 items-center justify-center rounded-sm bg-black">
+      <button type="button" aria-label="새 블로그 작성" className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-sm bg-black">
         <PlusIcon color="#fff" className="h-2.5 w-2.5" />
       </button>
     </header>
