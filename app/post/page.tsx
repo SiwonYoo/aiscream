@@ -1,9 +1,11 @@
-'use client';
+import Base from '@/components/editor/Base';
+import UserPrompt from '@/components/userinput/UserPrompt';
 
 export default function PostPage() {
   return (
-    <div className="p-6">
-      <div className="rounded bg-gray-100 p-4 text-sm text-gray-500">왼쪽에서 글 선택</div>
+    <div className="flex min-h-[93vh] flex-col pc:min-h-screen">
+      <Base />
+      <UserPrompt />
     </div>
   );
 }
