@@ -58,7 +58,7 @@ export function useMarkdownEditor(initialContent: string) {  // TipTap 에디터
     // 3. editorProps: 에디터 DOM에 적용할 속성
     editorProps: {
       attributes: {
-        class: 'prose prose-sm min-w-full my-2 p-2 focus:outline-none',
+        class: 'prose prose-sm min-w-full h-full p-2 focus:outline-none',
       },
     },
 

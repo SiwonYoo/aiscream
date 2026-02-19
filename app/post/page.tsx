@@ -56,7 +56,7 @@ export default function PostPage() {
   }
 
   return (
-    <div className="flex min-h-[93vh] flex-col pc:min-h-screen">
+    <div className="flex h-[93vh] flex-col pc:h-screen">
       <Base result={result} />
       <UserPrompt createBlog={createBlog} />
     </div>
