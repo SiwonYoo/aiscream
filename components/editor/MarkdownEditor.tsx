@@ -1,12 +1,17 @@
 'use client';
 
-import EditorToolbar from '@/components/editor/EditorToolbar';
-import { MarkdownEditorProps } from '@/types/editor';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
 import { common, createLowlight } from 'lowlight';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import StarterKit from '@tiptap/starter-kit';
+import { EditorContent, ReactNodeViewRenderer, useEditor } from '@tiptap/react';
 import { Markdown } from 'tiptap-markdown';
+import { MarkdownEditorProps } from '@/types/editor';
+import EditorToolbar from '@/components/editor/EditorToolbar';
+import CustomCodeBlock from '@/components/editor/CustomCodeBlock';
+import Link from '@tiptap/extension-link';
+
+import 'highlight.js/styles/github-dark.css';
+import { CodeBlockTabExtension } from '@/extensions/CodeBlockTab';
 
 // lowlight 인스턴스 생성 (common: 주요 언어 묶음)
 const lowlight = createLowlight(common);
@@ -46,10 +51,26 @@ export default function MarkdownEditor({ initialContent = mockContent, onContent
       }),
 
       // CodeBlockLowlight: 문법 하이라이팅이 적용된 코드 블록
-      CodeBlockLowlight.configure({
+      CodeBlockLowlight.extend({
+        addNodeView() {
+          // 코드 블럭 커스텀
+          return ReactNodeViewRenderer(CustomCodeBlock);
+        },
+      }).configure({
         lowlight,
         defaultLanguage: 'javascript', // 기본 언어 js로 설정
       }),
+
+      // Link: 스타일 적용
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'cursor-pointer text-[#6B9BD1] hover:text-[#5082C1]',
+        },
+      }),
+
+      // CodeBlockTabExtension(Custom): 코드 블럭 내 tab, shift+tab 기능 추가
+      CodeBlockTabExtension,
 
       // Markdown: 마크다운 입출력 지원
       Markdown.configure({
