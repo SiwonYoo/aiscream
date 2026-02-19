@@ -1,18 +1,17 @@
 import { notFound } from 'next/navigation';
 import { getPostById } from '@/data/functions/post';
+import PostDetailClient from './PostDetailClient';
 
 export default async function PostDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  const post = await getPostById(id);
-  if (!post) notFound();
+  try {
+    const post = await getPostById(id);
 
-  return (
-    <div className="p-6">
-      <div className="rounded bg-gray-100 p-4">
-        <h2 className="text-lg font-bold">{post.title}</h2>
-        <pre className="mt-2 text-sm whitespace-pre-wrap">{post.content}</pre>
-      </div>
-    </div>
-  );
+    if (!post) notFound();
+
+    return <PostDetailClient post={post} />;
+  } catch (e) {
+    notFound();
+  }
 }

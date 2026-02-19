@@ -1,6 +1,7 @@
 import MarkdownEditor from '@/components/editor/MarkdownEditor';
+import { Post } from '@/types/post';
 
-export default function Editor() {
+export default function Editor({ post }: { post: Post }) {
   return (
     <>
       {/* 임시로 높이 125 줬어요 */}
@@ -16,7 +17,7 @@ export default function Editor() {
       </div>
       {/* 에디터 들어갈 영역 입니다. */}
       <div className="editor-wrap px-7 py-1.5 pc:px-30 pc:py-5">
-        <MarkdownEditor />
+        <MarkdownEditor initialContent={post.content ?? ''} />
       </div>
     </>
   );
