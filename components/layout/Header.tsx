@@ -2,6 +2,7 @@
 
 import { useUIStore } from '@/stores/ui-store';
 import Image from 'next/image';
+import PlusIcon from '../common/PlusIcon';
 
 export default function Header() {
   const { isSidebarOpen, toggleSidebar } = useUIStore();
@@ -21,8 +22,8 @@ export default function Header() {
       </h1>
 
       {/* 새 블로그 작성 버튼 */}
-      <button aria-label="글 생성하기" className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-sm bg-black">
-        <Image src="/assets/images/ico-plus.svg" width={10} height={10} alt="" />
+      <button type="button" aria-label="새 블로그 작성" className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-sm bg-black">
+        <PlusIcon color="#fff" className="h-2.5 w-2.5" />
       </button>
     </header>
   );
