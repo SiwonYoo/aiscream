@@ -42,6 +42,7 @@ export default function TypeDropdown({ selectedType, onSelect, options, disabled
       {/* 타입 선택창 */}
       <button
         type="button"
+        disabled={disabled}
         onClick={() => {
           if (disabled) return;
           setIsOpen(prev => !prev);
