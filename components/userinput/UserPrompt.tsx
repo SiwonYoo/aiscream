@@ -6,9 +6,12 @@ import PlusIcon from '../common/PlusIcon';
 import TypeDropdown from '../common/Typedropdown';
 import { BlogLength, BlogType, UserPromptType } from '@/types/blog-type';
 
-interface UserPromptProps{createBlog: ({ blogTitle, blogKeyword, blogType, blogLength }: UserPromptType) => Promise<void>}
+interface UserPromptProps {
+  createBlog: ({ blogTitle, blogKeyword, blogType, blogLength }: UserPromptType) => Promise<void>;
+  loading: boolean;
+}
 
-export default function UserPrompt({createBlog}:UserPromptProps) {
+export default function UserPrompt({ createBlog, loading }: UserPromptProps) {
   const [blogContent, setBlogContent] = useState('');
   const [keywords, setKeywords] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<BlogType | '타입선택'>('타입선택');
@@ -16,11 +19,11 @@ export default function UserPrompt({createBlog}:UserPromptProps) {
   const [isDrop, setIsDrop] = useState(true);
   const isFormComplete = blogContent.trim() !== '' && keywords.length > 0 && selectedType !== '타입선택' && selectedContent !== '길이선택';
 
-const handleSubmit = async () => {
-  if (!isFormComplete) return;
+  const handleSubmit = async () => {
+    if (!isFormComplete) return;
 
-  await createBlog({blogType: selectedType, blogKeyword: keywords, blogLength: selectedContent, blogTitle: blogContent })
-}
+    await createBlog({ blogType: selectedType, blogKeyword: keywords, blogLength: selectedContent, blogTitle: blogContent });
+  };
 
   return (
     <div className="relative">
@@ -32,7 +35,7 @@ const handleSubmit = async () => {
         <div className={`flex flex-col gap-5 px-4 transition-all duration-300 pc:px-5 ${isDrop ? 'py-7 opacity-100 pc:py-8' : 'invisible h-10 overflow-hidden opacity-0'}`}>
           <BlogPrompt value={blogContent} setValue={setBlogContent} />
           <KeywordPrompt keywords={keywords} setKeywords={setKeywords} />
-          <TypeSelect selectedType={selectedType} handleSubmit={handleSubmit} setSelectedType={setSelectedType} selectedContent={selectedContent} setSelectedContent={setSelectedContent} isFormComplete={isFormComplete} />
+          <TypeSelect selectedType={selectedType} handleSubmit={handleSubmit} setSelectedType={setSelectedType} selectedContent={selectedContent} setSelectedContent={setSelectedContent} isFormComplete={isFormComplete} loading={loading} />
         </div>
       </div>
     </div>
@@ -121,10 +124,18 @@ export function KeywordPrompt({ keywords, setKeywords }: { keywords: string[]; s
   );
 }
 
-const TYPE_OPTIONS: {label: string; value:BlogType}[] = [{label:'트러블 슈팅', value: 'trouble'}, {label:'TIL', value:'til'}, {label:'튜토리얼', value:'tutorial'}];
-const CONTENT_OPTIONS: {label: string; value:BlogLength}[]  = [{label:'간단 요약', value: 'short'}, {label: '보통 글', value: 'normal'}, {label:'상세 설명', value: 'long'}];
+const TYPE_OPTIONS: { label: string; value: BlogType }[] = [
+  { label: '트러블 슈팅', value: 'trouble' },
+  { label: 'TIL', value: 'til' },
+  { label: '튜토리얼', value: 'tutorial' },
+];
+const CONTENT_OPTIONS: { label: string; value: BlogLength }[] = [
+  { label: '간단 요약', value: 'short' },
+  { label: '보통 글', value: 'normal' },
+  { label: '상세 설명', value: 'long' },
+];
 
-export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isFormComplete, selectedContent, setSelectedContent }: {  handleSubmit: () => Promise<void>, selectedType: string; setSelectedType: Dispatch<SetStateAction<BlogType | "타입선택">>; isFormComplete: boolean; selectedContent: string; setSelectedContent: Dispatch<SetStateAction<BlogLength | "길이선택">>}) {
+export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isFormComplete, selectedContent, setSelectedContent, loading }: { handleSubmit: () => Promise<void>; selectedType: string; setSelectedType: Dispatch<SetStateAction<BlogType | '타입선택'>>; isFormComplete: boolean; selectedContent: string; setSelectedContent: Dispatch<SetStateAction<BlogLength | '길이선택'>>; loading: boolean }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
@@ -142,7 +153,7 @@ export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isForm
   return (
     <div className="flex items-center justify-between gap-3">
       <div className="flex items-center gap-2">
-        <TypeDropdown selectedType={selectedType} onSelect={v=>setSelectedType(v as BlogType)} options={TYPE_OPTIONS} />
+        <TypeDropdown selectedType={selectedType} onSelect={v => setSelectedType(v as BlogType)} options={TYPE_OPTIONS} />
 
         {/* 설명 툴팁 */}
         <div className="relative" ref={tooltipRef}>
@@ -161,10 +172,10 @@ export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isForm
         </div>
       </div>
 
-      <TypeDropdown selectedType={selectedContent} onSelect={v=>setSelectedContent(v as BlogLength)} options={CONTENT_OPTIONS} />
+      <TypeDropdown selectedType={selectedContent} onSelect={v => setSelectedContent(v as BlogLength)} options={CONTENT_OPTIONS} />
 
       {/* 블로그 글 생성하기 */}
-      <button type="button" onClick={handleSubmit} disabled={!isFormComplete} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${isFormComplete ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
+      <button type="button" onClick={handleSubmit} disabled={!isFormComplete || loading} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${!loading && isFormComplete ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
         <Image src="/assets/images/creat.svg" width={16} height={16} alt="" />
         <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
       </button>
