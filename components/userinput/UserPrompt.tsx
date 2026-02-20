@@ -32,7 +32,7 @@ export default function UserPrompt({ createBlog, readOnly = false, initialValue 
     if (readOnly || !createBlog) return;
     if (!isFormComplete) return;
 
-    await createBlog({ blogType: selectedType, blogKeyword: keywords, blogLength: selectedContent, blogTitle: blogContent });
+    await createBlog({ blogType: selectedType as BlogType, blogKeyword: keywords, blogLength: selectedContent as BlogLength, blogTitle: blogContent });
   };
 
   return (
