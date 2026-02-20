@@ -39,7 +39,7 @@ export default function EditorToolbar({ editor, isMarkdownMode, setIsMarkdownMod
         </button>
       </div>
 
-      <div className={`flex items-center gap-1 overflow-y-auto *:rounded *:px-3 *:py-1 *:text-nowrap *:hover:bg-base-stroke *:hover:text-black ${isMarkdownMode ? 'hidden' : ''}`}>
+      <div className={`flex items-center gap-1 overflow-x-auto *:rounded *:px-3 *:py-1 *:text-nowrap *:hover:bg-base-stroke *:hover:text-black ${isMarkdownMode ? 'hidden' : ''}`}>
         <button type="button" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} aria-label="실행 취소" className={!editorState.canUndo ? 'cursor-not-allowed opacity-30' : ''}>
           <Image src="/assets/images/ico_undo.svg" width={14} height={14} alt="" className="min-w-4" />
         </button>

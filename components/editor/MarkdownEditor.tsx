@@ -10,7 +10,7 @@ import 'highlight.js/styles/github-dark.css';
 export default function MarkdownEditor({ initialContent='', streamedMarkdown, onContentChange }: MarkdownEditorProps) {
   const { editor } = useMarkdownEditor(initialContent);
   const [isMarkdownMode, setIsMarkdownMode] = useState(true);
-  const [markdownSource, setMarkdownSource] = useState('');
+  const [markdownSource, setMarkdownSource] = useState(initialContent);
 
   // edit/preview 탭 전환 시, 현재 상태 반영
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function MarkdownEditor({ initialContent='', streamedMarkdown, on
         editor?.commands.setContent(markdownSource);
       });
     }
-  }, [isMarkdownMode])
+  }, [isMarkdownMode, editor])
 
   // 스트리밍할 때 markdown으로 받음
   useEffect(() => {
