@@ -24,7 +24,6 @@ export default function LinkUpAi() {
       return;
     }
 
-    console.log(blogLength, blogType);
 
     try {
       setResult('');
