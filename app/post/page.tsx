@@ -19,7 +19,7 @@ export default function PostPage() {
       const res = await fetch('/api/open-ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: blogTitle, keyword: blogKeyword.join(''), type: blogType, length: blogLength }),
+        body: JSON.stringify({ title: blogTitle, keyword: blogKeyword.join(','), type: blogType, length: blogLength }),
       });
 
       if (!res.ok) {
@@ -38,7 +38,6 @@ export default function PostPage() {
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
-        console.log(chunk);
 
         setResult(prev => prev + chunk);
       }
