@@ -26,6 +26,7 @@ export async function getPostById(postId: string) {
     content: data.content,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
+    postLength: data.post_length,
   };
 
   return post;
@@ -52,6 +53,7 @@ export async function getMyPosts() {
     content: row.content,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+    postLength: row.post_length,
   }));
 
   return posts;

@@ -12,9 +12,10 @@ interface TypeDropdownProps {
   selectedType: string;
   onSelect: (value: string) => void;
   options: Option[];
+  disabled?: boolean;
 }
 
-export default function TypeDropdown({ selectedType, onSelect, options }: TypeDropdownProps) {
+export default function TypeDropdown({ selectedType, onSelect, options, disabled = false }: TypeDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +30,7 @@ export default function TypeDropdown({ selectedType, onSelect, options }: TypeDr
   }, []);
 
   const handleSelect = (type: string) => {
+    if (disabled) return;
     onSelect(type);
     setIsOpen(false);
   };
@@ -38,7 +40,14 @@ export default function TypeDropdown({ selectedType, onSelect, options }: TypeDr
   return (
     <div className="relative" ref={dropdownRef}>
       {/* 타입 선택창 */}
-      <button type="button" onClick={() => setIsOpen(prev => !prev)} className="flex w-30 items-center justify-between gap-4 rounded-sm border border-input-stroke px-4 py-2 whitespace-nowrap pc:w-35">
+      <button
+        type="button"
+        onClick={() => {
+          if (disabled) return;
+          setIsOpen(prev => !prev);
+        }}
+        className="flex w-30 items-center justify-between gap-4 rounded-sm border border-input-stroke px-4 py-2 whitespace-nowrap pc:w-35"
+      >
         <span className="text-center text-sm leading-3.5 font-normal text-primary pc:text-base pc:leading-4">{selectedType}</span>
         <Image src="/assets/images/down.svg" width={10} height={5} alt="타입선택 버튼" className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
