@@ -9,9 +9,6 @@ export interface PostContent {
 
 export interface MarkdownEditorProps {
   initialContent?: string;
+  streamedMarkdown?: string;
   onContentChange?: (content: string) => void;
-}
-
-export interface MarkdownPreviewProps {
-  content: string;
 }
