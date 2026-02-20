@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Base from '@/components/editor/Base';
 import UserPrompt from '@/components/userinput/UserPrompt';
@@ -6,12 +6,11 @@ import { UserPromptType } from '@/types/blog-type';
 import { useState } from 'react';
 
 export default function PostPage() {
-    const [result, setResult] = useState(''); // 보여질 내용
-    const [loading, setLoading] = useState(false); // 로딩 상태
-    const [hasError, setHasError] = useState(false); // 에러 상태
+  const [result, setResult] = useState(''); // 보여질 내용
+  const [loading, setLoading] = useState(false); // 로딩 상태
+  const [hasError, setHasError] = useState(false); // 에러 상태
 
-    const createBlog = async ({blogTitle, blogKeyword, blogType, blogLength}:UserPromptType) => {
-  
+  const createBlog = async ({ blogTitle, blogKeyword, blogType, blogLength }: UserPromptType) => {
     try {
       setResult('');
       setHasError(false);
@@ -56,8 +55,8 @@ export default function PostPage() {
 
   return (
     <div className="flex h-[93vh] flex-col pc:h-screen">
-      <Base result={result} />
-      <UserPrompt createBlog={createBlog} />
+      <Base result={result} loading={loading} />
+      <UserPrompt createBlog={createBlog} loading={loading} />
     </div>
   );
 }
