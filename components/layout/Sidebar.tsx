@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/app/hooks/useAuth';
 import PlusIcon from '../common/PlusIcon';
+import ThemeModeToggle from '../common/Toggle';
 
 const MOCK_BLOG_TITLE = ['초보자를 위한 Next.js 시작하기 가이드', '프론트엔드 개발자 관점으로 바라보는 관심사의 분리와 좋은 폴더 구조 (feat. FSD)', 'Redux 어떻게 써야 잘 썼다고 소문이 날까?', 'Clean Architecture on Frontend'];
 export default function Sidebar() {
@@ -56,6 +57,7 @@ export default function Sidebar() {
       <footer className={`flex px-4 py-4.5 ${isSidebarOpen ? 'justify-between' : 'justify-center max-pc:hidden'}`}>
         {/* 계정 정보 */}
         <span className={isSidebarOpen ? '' : 'hidden'}>email@gmail.com</span>
+        <ThemeModeToggle />
         {/* 로그아웃 버튼 */}
         <button type="button" aria-label="로그아웃" className="cursor-pointer" onClick={() => logout('/login')}>
           <Image src="/assets/images/ico-logout.svg" width={12} height={12} alt="" />
