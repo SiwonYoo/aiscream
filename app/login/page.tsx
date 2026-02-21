@@ -17,7 +17,7 @@ export default async function LoginPage() {
   if (user) redirect('/post');
 
   return (
-    <main className="min-h-dvh bg-white">
+    <main className="flex min-h-dvh items-center justify-center">
       <div className="mx-auto w-full max-w-90 px-5 md:max-w-115 md:px-0">
         <BrandHeader />
         <LoginForm />
