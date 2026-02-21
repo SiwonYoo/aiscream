@@ -32,13 +32,19 @@ export function useAuth() {
       if (!mounted) return;
 
       if (error) {
+        const code = (error as any).code;
+        if (code === 'refresh_token_not_found') {
+          setUser(null);
+          return;
+        }
+
+        console.warn('[auth.getUser]', error);
         setUser(null);
         return;
       }
 
       setUser(data.user ?? null);
     };
-
     init();
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
