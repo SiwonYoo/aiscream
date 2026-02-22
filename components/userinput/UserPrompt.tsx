@@ -10,9 +10,9 @@ interface UserPromptProps {
   createBlog?: ({ blogTitle, blogKeyword, blogType, blogLength }: UserPromptType) => Promise<void>;
   readOnly?: boolean;
   initialValue?: Partial<UserPromptType>;
-  loading: boolean;
+  loading?: boolean;
 }
-export default function UserPrompt({ createBlog, readOnly = false, initialValue, loading }: UserPromptProps) {
+export default function UserPrompt({ createBlog, readOnly = false, initialValue, loading=false }: UserPromptProps) {
   const [blogContent, setBlogContent] = useState(initialValue?.blogTitle ?? '');
   const [keywords, setKeywords] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<BlogType | '타입선택'>('타입선택');
@@ -148,7 +148,7 @@ const CONTENT_OPTIONS: { label: string; value: BlogLength }[] = [
   { label: '상세 설명', value: 'long' },
 ];
 
-export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isFormComplete, selectedContent, setSelectedContent, disabled = false, loading }: { handleSubmit: () => Promise<void>; selectedType: string; setSelectedType: Dispatch<SetStateAction<BlogType | '타입선택'>>; isFormComplete: boolean; selectedContent: string; setSelectedContent: Dispatch<SetStateAction<BlogLength | '길이선택'>>; disabled?: boolean; loading: boolean }) {
+export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isFormComplete, selectedContent, setSelectedContent, disabled = false, loading = false }: { handleSubmit: () => Promise<void>; selectedType: string; setSelectedType: Dispatch<SetStateAction<BlogType | '타입선택'>>; isFormComplete: boolean; selectedContent: string; setSelectedContent: Dispatch<SetStateAction<BlogLength | '길이선택'>>; disabled?: boolean; loading?: boolean }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const isDisabled = disabled || !isFormComplete;
@@ -189,7 +189,7 @@ export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isForm
       <TypeDropdown selectedType={selectedContent} onSelect={v => !disabled && setSelectedContent(v as BlogLength)} options={CONTENT_OPTIONS} disabled={disabled} />
 
       {/* 블로그 글 생성하기 */}
-      <button type="button" onClick={handleSubmit} disabled={isDisabled || loading} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${isDisabled || loading ? 'cursor-not-allowed bg-disabled' : 'cursor-pointer bg-active hover:bg-hover active:bg-active'}`}>
+      <button type="button" onClick={handleSubmit} disabled={isDisabled || loading} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${!loading && !isDisabled ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
         <Image src="/assets/images/creat.svg" width={16} height={16} alt="" />
         <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
       </button>
