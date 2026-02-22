@@ -36,10 +36,7 @@ export default function TypeDropdown({ selectedType, onSelect, options, disabled
   };
 
   /* 타입 선택창 + 드롭다운 */
-  const displayText = useMemo(() => {
-    const found = options.find(o => o.value === selectedType);
-    return found ? found.label : selectedType;
-  }, [options, selectedType]);
+  const displayText = options.find(o => o.value === selectedType)?.label ?? selectedType;
 
   return (
     <div className="relative" ref={dropdownRef}>
