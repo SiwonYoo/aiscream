@@ -189,7 +189,7 @@ export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isForm
       <TypeDropdown selectedType={selectedContent} onSelect={v => !disabled && setSelectedContent(v as BlogLength)} options={CONTENT_OPTIONS} disabled={disabled} />
 
       {/* 블로그 글 생성하기 */}
-      <button type="button" onClick={handleSubmit} disabled={!isFormComplete || loading} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${!loading && isFormComplete ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
+      <button type="button" onClick={handleSubmit} disabled={isDisabled || loading} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${isDisabled || loading ? 'cursor-not-allowed bg-disabled' : 'cursor-pointer bg-active hover:bg-hover active:bg-active'}`}>
         <Image src="/assets/images/creat.svg" width={16} height={16} alt="" />
         <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
       </button>
