@@ -6,21 +6,34 @@ import PlusIcon from '../common/PlusIcon';
 import TypeDropdown from '../common/Typedropdown';
 import { BlogLength, BlogType, UserPromptType } from '@/types/blog-type';
 
-interface UserPromptProps{createBlog: ({ blogTitle, blogKeyword, blogType, blogLength }: UserPromptType) => Promise<void>}
-
-export default function UserPrompt({createBlog}:UserPromptProps) {
-  const [blogContent, setBlogContent] = useState('');
+interface UserPromptProps {
+  createBlog?: ({ blogTitle, blogKeyword, blogType, blogLength }: UserPromptType) => Promise<void>;
+  readOnly?: boolean;
+  initialValue?: Partial<UserPromptType>;
+}
+export default function UserPrompt({ createBlog, readOnly = false, initialValue }: UserPromptProps) {
+  const [blogContent, setBlogContent] = useState(initialValue?.blogTitle ?? '');
   const [keywords, setKeywords] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<BlogType | '타입선택'>('타입선택');
   const [selectedContent, setSelectedContent] = useState<BlogLength | '길이선택'>('길이선택');
   const [isDrop, setIsDrop] = useState(true);
   const isFormComplete = blogContent.trim() !== '' && keywords.length > 0 && selectedType !== '타입선택' && selectedContent !== '길이선택';
 
-const handleSubmit = async () => {
-  if (!isFormComplete) return;
+  useEffect(() => {
+    if (!initialValue) return;
 
-  await createBlog({blogType: selectedType, blogKeyword: keywords, blogLength: selectedContent, blogTitle: blogContent })
-}
+    setBlogContent(initialValue.blogTitle ?? '');
+    setKeywords(initialValue.blogKeyword ?? []);
+    setSelectedType((initialValue.blogType as BlogType) ?? '타입선택');
+    setSelectedContent((initialValue.blogLength as BlogLength) ?? '길이선택');
+  }, [initialValue]);
+
+  const handleSubmit = async () => {
+    if (readOnly || !createBlog) return;
+    if (!isFormComplete) return;
+
+    await createBlog({ blogType: selectedType as BlogType, blogKeyword: keywords, blogLength: selectedContent as BlogLength, blogTitle: blogContent });
+  };
 
   return (
     <div className="relative">
@@ -30,29 +43,31 @@ const handleSubmit = async () => {
       </button>
       <div className="border-t border-base-stroke">
         <div className={`flex flex-col gap-5 px-4 transition-all duration-300 pc:px-5 ${isDrop ? 'py-7 opacity-100 pc:py-8' : 'invisible h-10 overflow-hidden opacity-0'}`}>
-          <BlogPrompt value={blogContent} setValue={setBlogContent} />
-          <KeywordPrompt keywords={keywords} setKeywords={setKeywords} />
-          <TypeSelect selectedType={selectedType} handleSubmit={handleSubmit} setSelectedType={setSelectedType} selectedContent={selectedContent} setSelectedContent={setSelectedContent} isFormComplete={isFormComplete} />
+          <BlogPrompt value={blogContent} setValue={setBlogContent} disabled={readOnly} />
+          <KeywordPrompt keywords={keywords} setKeywords={setKeywords} disabled={readOnly} />
+          <TypeSelect selectedType={selectedType} handleSubmit={handleSubmit} setSelectedType={setSelectedType} selectedContent={selectedContent} setSelectedContent={setSelectedContent} isFormComplete={isFormComplete} disabled={readOnly} />
         </div>
       </div>
     </div>
   );
 }
 
-export function BlogPrompt({ value, setValue }: { value: string; setValue: (value: string) => void }) {
+export function BlogPrompt({ value, setValue, disabled = false }: { value: string; setValue: (value: string) => void; disabled?: boolean }) {
   return (
     <div className="w-full">
       <p className="mb-1.5 text-sm leading-3.5 font-semibold text-black pc:mb-3 pc:text-lg pc:leading-4.5">블로그 내용</p>
-      <textarea className="min-h-15 w-full resize-none rounded-sm border border-input-stroke px-2.5 py-2.5 text-sm leading-3.5 font-normal text-primary focus:ring-0 focus:outline-none pc:min-h-20 pc:px-3.5 pc:py-3 pc:text-base pc:leading-4" placeholder={`어떤 내용의 블로그 글을 작성하고 싶으신가요?\n예: 초보자를 위한 Next.js 시작하기 가이드`} value={value} onChange={e => setValue(e.target.value)} />
+      <textarea disabled={disabled} className="min-h-15 w-full resize-none rounded-sm border border-input-stroke px-2.5 py-2.5 text-sm leading-3.5 font-normal text-primary focus:ring-0 focus:outline-none pc:min-h-20 pc:px-3.5 pc:py-3 pc:text-base pc:leading-4" placeholder={`어떤 내용의 블로그 글을 작성하고 싶으신가요?\n예: 초보자를 위한 Next.js 시작하기 가이드`} value={value} onChange={e => setValue(e.target.value)} />
     </div>
   );
 }
 
-export function KeywordPrompt({ keywords, setKeywords }: { keywords: string[]; setKeywords: React.Dispatch<React.SetStateAction<string[]>> }) {
+export function KeywordPrompt({ keywords, setKeywords, disabled = false }: { keywords: string[]; setKeywords: React.Dispatch<React.SetStateAction<string[]>>; disabled?: boolean }) {
   const [inputValue, setInputValue] = useState('');
 
   // 키워드 추가
   const addKeyword = () => {
+    if (disabled) return;
+
     const value = inputValue.trim();
     if (!value) return;
 
@@ -98,8 +113,8 @@ export function KeywordPrompt({ keywords, setKeywords }: { keywords: string[]; s
       <p className="mb-1.5 text-sm leading-3.5 font-semibold text-black pc:mb-3 pc:text-lg">키워드</p>
       {/* 키워드 프롬포트 */}
       <div className="mb-1 flex items-center justify-between gap-3 pc:mb-3">
-        <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} className="h-8.5 flex-1 rounded-sm border border-input-stroke px-2.5 py-2.5 text-sm text-primary focus:ring-0 focus:outline-none pc:h-9 pc:text-base" placeholder="키워드를 입력하고 Enter를 누르세요." />
-        <button type="button" onClick={addKeyword} className="flex h-8.5 w-8.5 items-center justify-center rounded-sm border border-input-stroke pc:h-9 pc:w-9">
+        <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} disabled={disabled} className="h-8.5 flex-1 rounded-sm border border-input-stroke px-2.5 py-2.5 text-sm text-primary focus:ring-0 focus:outline-none pc:h-9 pc:text-base" placeholder="키워드를 입력하고 Enter를 누르세요." />
+        <button type="button" onClick={addKeyword} disabled={disabled} className="flex h-8.5 w-8.5 items-center justify-center rounded-sm border border-input-stroke pc:h-9 pc:w-9">
           <PlusIcon color="#333" className="h-3 w-3 pc:h-3.5 pc:w-3.5" />
         </button>
       </div>
@@ -110,7 +125,7 @@ export function KeywordPrompt({ keywords, setKeywords }: { keywords: string[]; s
             <div key={`${keyword}-${index}`} className="inline-flex h-4.5 items-center gap-1.5 bg-keyword p-1">
               <span className="text-xs text-primary">{keyword}</span>
               {/* 삭제버튼 */}
-              <button type="button" onClick={() => removeKeyword(index)} className="flex items-center justify-center">
+              <button type="button" onClick={() => removeKeyword(index)} disabled={disabled} className="flex items-center justify-center">
                 <Image src="/assets/images/vector.svg" width={5} height={5} alt="삭제하기 버튼" />
               </button>
             </div>
@@ -121,12 +136,21 @@ export function KeywordPrompt({ keywords, setKeywords }: { keywords: string[]; s
   );
 }
 
-const TYPE_OPTIONS: {label: string; value:BlogType}[] = [{label:'트러블 슈팅', value: 'trouble'}, {label:'TIL', value:'til'}, {label:'튜토리얼', value:'tutorial'}];
-const CONTENT_OPTIONS: {label: string; value:BlogLength}[]  = [{label:'간단 요약', value: 'short'}, {label: '보통 글', value: 'normal'}, {label:'상세 설명', value: 'long'}];
+const TYPE_OPTIONS: { label: string; value: BlogType }[] = [
+  { label: '트러블 슈팅', value: 'trouble' },
+  { label: 'TIL', value: 'til' },
+  { label: '튜토리얼', value: 'tutorial' },
+];
+const CONTENT_OPTIONS: { label: string; value: BlogLength }[] = [
+  { label: '간단 요약', value: 'short' },
+  { label: '보통 글', value: 'normal' },
+  { label: '상세 설명', value: 'long' },
+];
 
-export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isFormComplete, selectedContent, setSelectedContent }: {  handleSubmit: () => Promise<void>, selectedType: string; setSelectedType: Dispatch<SetStateAction<BlogType | "타입선택">>; isFormComplete: boolean; selectedContent: string; setSelectedContent: Dispatch<SetStateAction<BlogLength | "길이선택">>}) {
+export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isFormComplete, selectedContent, setSelectedContent, disabled = false }: { handleSubmit: () => Promise<void>; selectedType: string; setSelectedType: Dispatch<SetStateAction<BlogType | '타입선택'>>; isFormComplete: boolean; selectedContent: string; setSelectedContent: Dispatch<SetStateAction<BlogLength | '길이선택'>>; disabled?: boolean }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
+  const isDisabled = disabled || !isFormComplete;
 
   // 외부 클릭 감지
   useEffect(() => {
@@ -142,7 +166,7 @@ export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isForm
   return (
     <div className="flex items-center justify-between gap-3">
       <div className="flex items-center gap-2">
-        <TypeDropdown selectedType={selectedType} onSelect={v=>setSelectedType(v as BlogType)} options={TYPE_OPTIONS} />
+        <TypeDropdown selectedType={selectedType} onSelect={v => !disabled && setSelectedType(v as BlogType)} options={TYPE_OPTIONS} disabled={disabled} />
 
         {/* 설명 툴팁 */}
         <div className="relative" ref={tooltipRef}>
@@ -161,10 +185,10 @@ export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isForm
         </div>
       </div>
 
-      <TypeDropdown selectedType={selectedContent} onSelect={v=>setSelectedContent(v as BlogLength)} options={CONTENT_OPTIONS} />
+      <TypeDropdown selectedType={selectedContent} onSelect={v => !disabled && setSelectedContent(v as BlogLength)} options={CONTENT_OPTIONS} disabled={disabled} />
 
       {/* 블로그 글 생성하기 */}
-      <button type="button" onClick={handleSubmit} disabled={!isFormComplete} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${isFormComplete ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
+      <button type="button" onClick={handleSubmit} disabled={isDisabled} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${!isDisabled ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'bg-disabled'}`}>
         <Image src="/assets/images/creat.svg" width={16} height={16} alt="" />
         <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
       </button>

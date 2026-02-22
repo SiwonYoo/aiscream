@@ -10,11 +10,11 @@ export default async function LoginPage() {
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser().catch(() => ({
+    data: { user: null },
+  }));
 
-  if (user) {
-    redirect('/post');
-  }
+  if (user) redirect('/post');
 
   return (
     <main className="min-h-dvh bg-white">

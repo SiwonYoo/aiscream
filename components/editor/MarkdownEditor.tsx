@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useMarkdownEditor } from '@/hooks/useMarkdownEditor';
 import 'highlight.js/styles/github-dark.css';
 
-export default function MarkdownEditor({ initialContent='', streamedMarkdown, onContentChange }: MarkdownEditorProps) {
+export default function MarkdownEditor({ initialContent = '', streamedMarkdown, onContentChange }: MarkdownEditorProps) {
   const { editor } = useMarkdownEditor(initialContent);
   const [isMarkdownMode, setIsMarkdownMode] = useState(true);
   const [markdownSource, setMarkdownSource] = useState(initialContent);
