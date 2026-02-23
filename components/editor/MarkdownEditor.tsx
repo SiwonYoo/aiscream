@@ -14,41 +14,46 @@ export default function MarkdownEditor({ initialContent = '', streamedMarkdown, 
 
   // edit/preview 탭 전환 시, 현재 상태 반영
   useEffect(() => {
+    if (!editor) return;
+
     // preview -> edit
     if (isMarkdownMode) {
-      setMarkdownSource(editor?.storage.markdown?.getMarkdown() || '');
-    } 
+      setMarkdownSource(editor.storage.markdown?.getMarkdown() || '');
+    }
     // edit -> preview
     else {
       queueMicrotask(() => {
-        editor?.commands.setContent(markdownSource);
+        editor.commands.setContent(markdownSource);
       });
     }
-  }, [isMarkdownMode, editor])
+  }, [isMarkdownMode, editor]);
 
   // 스트리밍할 때 markdown으로 받음
   useEffect(() => {
     if (streamedMarkdown) {
       setMarkdownSource(streamedMarkdown);
     }
-  }, [streamedMarkdown])
+  }, [streamedMarkdown]);
 
   if (!editor) return null;
 
   return (
-    <div className='flex flex-col flex-1 min-h-0 w-full p-4'>
+    <div className="flex min-h-0 w-full flex-1 flex-col p-4">
       <EditorToolbar editor={editor} isMarkdownMode={isMarkdownMode} setIsMarkdownMode={setIsMarkdownMode} />
 
       {/* markdown(edit) 모드 */}
-      {isMarkdownMode && 
-        <textarea value={markdownSource} onChange={e => {
+      {isMarkdownMode && (
+        <textarea
+          value={markdownSource}
+          onChange={e => {
             setMarkdownSource(e.target.value);
-          }} 
-          className='flex-1 overflow-y-auto min-h-0 p-2 focus:outline-none'
+          }}
+          aria-label="마크다운 편집기"
+          className="min-h-0 flex-1 overflow-y-auto p-2 focus:outline-none"
         />
-      }
+      )}
       {/* preview 모드 */}
-      {!isMarkdownMode && <EditorContent editor={editor} className='flex-1 overflow-y-auto min-h-0' />}
+      {!isMarkdownMode && <EditorContent editor={editor} className="min-h-0 flex-1 overflow-y-auto" />}
     </div>
   );
 }
