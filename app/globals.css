@@ -32,6 +32,33 @@
   --color-hover: #222222; /* Active 버튼 Hover */
 }
 
+/* 다크모드 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Text */
+    --color-primary: #f3f4f6;
+    --color-secondary: #cbd5e1;
+    --color-black: #ffffff;
+    --color-white: #000000;
+    --color-placeholder: #9ca3af;
+
+    /* Background */
+    --color-bg-base: #1e1e1e;
+    --color-muted: #121212;
+    --color-info: #242424;
+    --color-keyword: #2a2a2a;
+
+    /* Stroke */
+    --color-base-stroke: #2f2f2f;
+    --color-input-stroke: #3a3a3a;
+
+    /* Button */
+    --color-disabled: #5f5f5f;
+    --color-active: #ffffff;
+    --color-hover: #e5e7eb;
+  }
+}
+
 /* font 설정 */
 @font-face {
   font-family: 'Pretendard';
