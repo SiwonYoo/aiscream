@@ -3,7 +3,7 @@
 import { useMarkdownEditor } from '@/hooks/useMarkdownEditor';
 import { EditorContextProps } from '@/types/editor';
 import { Editor } from '@tiptap/react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 export interface EditorContextType {
   editor: Editor | null;
@@ -19,9 +19,17 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
   const { editor } = useMarkdownEditor(initialContent);
   const [isMarkdownMode, setIsMarkdownMode] = useState(true);
   const [markdownSource, setMarkdownSource] = useState(initialContent);
+  const editorInitializedRef = useRef(false);
 
   // edit/preview 탭 전환 시, 현재 상태 반영
   useEffect(() => {
+    if (!editor) return;
+    if (!editorInitializedRef.current) {
+      // 에디터 최초 초기화 시에는 markdownSource를 덮어쓰지 않음
+      editorInitializedRef.current = true;
+      return;
+    }
+
     // preview -> edit
     if (isMarkdownMode) {
       setMarkdownSource(editor?.storage.markdown?.getMarkdown() || '');
