@@ -36,6 +36,7 @@ export default function TypeDropdown({ selectedType, onSelect, options, disabled
   };
 
   /* 타입 선택창 + 드롭다운 */
+  const displayText = options.find(o => o.value === selectedType)?.label ?? selectedType;
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -49,7 +50,7 @@ export default function TypeDropdown({ selectedType, onSelect, options, disabled
         }}
         className="flex w-30 items-center justify-between gap-4 rounded-sm border border-input-stroke px-4 py-2 whitespace-nowrap pc:w-35"
       >
-        <span className="text-center text-sm leading-3.5 font-normal text-primary pc:text-base pc:leading-4">{selectedType}</span>
+        <span className="text-center text-sm leading-3.5 font-normal text-primary pc:text-base pc:leading-4">{displayText}</span>
         <Image src="/assets/images/down.svg" width={10} height={5} alt="타입선택 버튼" className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 

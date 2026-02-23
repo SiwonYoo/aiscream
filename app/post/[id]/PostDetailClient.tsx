@@ -3,7 +3,6 @@
 import Base from '@/components/editor/Base';
 import UserPrompt from '@/components/userinput/UserPrompt';
 import type { Post } from '@/types/post';
-import type { BlogType } from '@/types/blog-type';
 
 export default function PostDetailClient({ post }: { post: Post }) {
   return (
@@ -15,7 +14,7 @@ export default function PostDetailClient({ post }: { post: Post }) {
         initialValue={{
           blogTitle: post.topic,
           blogKeyword: post.keywords ?? [],
-          blogType: post.type === 'troubleshooting' ? 'trouble' : (post.type as BlogType),
+          blogType: post.type === 'troubleshooting' ? 'trouble' : post.type,
           blogLength: post.postLength ?? 'normal',
         }}
       />
