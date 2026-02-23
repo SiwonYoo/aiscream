@@ -1,11 +1,19 @@
 'use client';
 
 import UtilButton from '@/components/editor/UtilButton';
+import { useEditorContext } from '@/contexts/EditorContext';
 import { useModalStore } from '@/stores/modal-store';
 import { useState } from 'react';
 
 export default function UtilButtonList() {
   const [isDownOpen, setIsDownOpen] = useState(false); // 다운받기 하위 옵션 열림/닫힘 상태
+
+  // 에디터 관련
+  const { editor, markdownSource } = useEditorContext();
+
+  // 참고해서 사용하시면 됩니다!
+  // markdown 형식: markdownSource
+  // html 형식: editor.getHTML()
 
   // 다운받기 클릭 이벤트
   const onClickDown = () => {

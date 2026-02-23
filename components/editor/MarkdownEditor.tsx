@@ -1,39 +1,12 @@
 'use client';
 
 import { EditorContent } from '@tiptap/react';
-import { MarkdownEditorProps } from '@/types/editor';
 import EditorToolbar from '@/components/editor/EditorToolbar';
-import { useEffect, useState } from 'react';
-import { useMarkdownEditor } from '@/hooks/useMarkdownEditor';
 import 'highlight.js/styles/github-dark.css';
+import { useEditorContext } from '@/contexts/EditorContext';
 
-export default function MarkdownEditor({ initialContent = '', streamedMarkdown, onContentChange }: MarkdownEditorProps) {
-  const { editor } = useMarkdownEditor(initialContent);
-  const [isMarkdownMode, setIsMarkdownMode] = useState(true);
-  const [markdownSource, setMarkdownSource] = useState(initialContent);
-
-  // edit/preview 탭 전환 시, 현재 상태 반영
-  useEffect(() => {
-    if (!editor) return;
-
-    // preview -> edit
-    if (isMarkdownMode) {
-      setMarkdownSource(editor.storage.markdown?.getMarkdown() || '');
-    }
-    // edit -> preview
-    else {
-      queueMicrotask(() => {
-        editor.commands.setContent(markdownSource);
-      });
-    }
-  }, [isMarkdownMode, editor]);
-
-  // 스트리밍할 때 markdown으로 받음
-  useEffect(() => {
-    if (streamedMarkdown) {
-      setMarkdownSource(streamedMarkdown);
-    }
-  }, [streamedMarkdown]);
+export default function MarkdownEditor() {
+  const { editor, isMarkdownMode, setIsMarkdownMode, markdownSource, setMarkdownSource } = useEditorContext();
 
   if (!editor) return null;
 
