@@ -3,7 +3,7 @@ import EditorPlaceholder from '@/components/editor/EditorPlaceholder';
 import MarkdownEditor from '@/components/editor/MarkdownEditor';
 import UtilButtonList from '@/components/editor/UtilButtonList';
 
-export default function Base({ result, loading }: { result: string; loading: boolean }) {
+export default function Base({ result, loading = false }: { result: string; loading?: boolean }) {
   return (
     <>
       {/* 글 생성되기 전 상태 */}
