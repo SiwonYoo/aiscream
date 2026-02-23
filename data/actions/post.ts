@@ -27,7 +27,7 @@ export async function createPost(post: CreatePostData) {
 
   if (error) throw error;
 
-  // revalidatePath('/post');
+  revalidatePath('/post');
   return { success: true, post: data };
 }
 
