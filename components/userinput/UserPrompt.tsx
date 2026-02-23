@@ -7,12 +7,12 @@ import TypeDropdown from '../common/Typedropdown';
 import { BlogLength, BlogType, UserPromptType } from '@/types/blog-type';
 
 interface UserPromptProps {
-  createBlog?: ({ blogTitle, blogKeyword, blogType, blogLength }: UserPromptType) => Promise<void>;
+  handleCreateBlog?: ({ blogTitle, blogKeyword, blogType, blogLength }: UserPromptType) => Promise<void>;
   readOnly?: boolean;
   initialValue?: Partial<UserPromptType>;
   loading?: boolean;
 }
-export default function UserPrompt({ createBlog, readOnly = false, initialValue, loading=false }: UserPromptProps) {
+export default function UserPrompt({ handleCreateBlog, readOnly = false, initialValue, loading = false }: UserPromptProps) {
   const [blogContent, setBlogContent] = useState(initialValue?.blogTitle ?? '');
   const [keywords, setKeywords] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<BlogType | '타입선택'>('타입선택');
@@ -30,10 +30,10 @@ export default function UserPrompt({ createBlog, readOnly = false, initialValue,
   }, [initialValue]);
 
   const handleSubmit = async () => {
-    if (readOnly || !createBlog) return;
+    if (readOnly || !handleCreateBlog) return;
     if (!isFormComplete) return;
 
-    await createBlog({ blogType: selectedType as BlogType, blogKeyword: keywords, blogLength: selectedContent as BlogLength, blogTitle: blogContent });
+    await handleCreateBlog({ blogType: selectedType as BlogType, blogKeyword: keywords, blogLength: selectedContent as BlogLength, blogTitle: blogContent });
   };
 
   return (
@@ -138,7 +138,7 @@ export function KeywordPrompt({ keywords, setKeywords, disabled = false }: { key
 }
 
 const TYPE_OPTIONS: { label: string; value: BlogType }[] = [
-  { label: '트러블 슈팅', value: 'trouble' },
+  { label: '트러블 슈팅', value: 'troubleshooting' },
   { label: 'TIL', value: 'til' },
   { label: '튜토리얼', value: 'tutorial' },
 ];

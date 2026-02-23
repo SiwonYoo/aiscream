@@ -14,7 +14,7 @@ export default function PostDetailClient({ post }: { post: Post }) {
         initialValue={{
           blogTitle: post.topic,
           blogKeyword: post.keywords ?? [],
-          blogType: post.type === 'troubleshooting' ? 'trouble' : post.type,
+          blogType: post.type,
           blogLength: post.postLength ?? 'normal',
         }}
       />
