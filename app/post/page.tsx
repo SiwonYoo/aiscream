@@ -15,13 +15,12 @@ export default function PostPage() {
     try {
       setResult('');
       setHasError(false);
-      setLoading(true);
+
       const res = await fetch('/api/open-ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: blogTitle, keyword: blogKeyword.join(','), type: blogType, length: blogLength }),
       });
-
       if (!res.ok) {
         throw new Error(`서버 오류: ${res.status}`);
       }
@@ -63,6 +62,8 @@ export default function PostPage() {
 
   // 블로그 생성 + DB 저장
   const handleCreateBlog = async (params: UserPromptType) => {
+    setLoading(true);
+
     const result = await createBlog(params); // 만든 블로그 내용(topic, fullContent,)
 
     if (!result) return;
