@@ -50,8 +50,6 @@ export default function PostPage() {
     } catch (err) {
       console.log(err, '생성 도중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
       setHasError(true);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -63,18 +61,24 @@ export default function PostPage() {
   // 블로그 생성 + DB 저장
   const handleCreateBlog = async (params: UserPromptType) => {
     setLoading(true);
+    try {
+      const blogResult = await createBlog(params); // 만든 블로그 내용(topic, fullContent,)
 
-    const result = await createBlog(params); // 만든 블로그 내용(topic, fullContent,)
+      if (!blogResult) return;
 
-    if (!result) return;
-
-    await createPost({
-      topic: result.topic,
-      title: params.blogTitle,
-      keywords: params.blogKeyword,
-      content: result.fullContent,
-      type: params.blogType,
-    });
+      await createPost({
+        topic: blogResult.topic,
+        title: params.blogTitle,
+        keywords: params.blogKeyword,
+        content: blogResult.fullContent,
+        type: params.blogType,
+      });
+    } catch (err) {
+      console.error('DB 저장 중 오류가 발생했습니다.', err);
+      setHasError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
