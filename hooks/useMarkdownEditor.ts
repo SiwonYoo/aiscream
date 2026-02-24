@@ -1,17 +1,18 @@
-import CustomCodeBlock from "@/components/editor/CustomCodeBlock";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import { ReactNodeViewRenderer, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { common, createLowlight } from "lowlight";
+import CustomCodeBlock from '@/components/editor/CustomCodeBlock';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { ReactNodeViewRenderer, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { common, createLowlight } from 'lowlight';
 import Link from '@tiptap/extension-link';
 import { CodeBlockTabExtension } from '@/extensions/CodeBlockTab';
 
 import 'highlight.js/styles/github-dark.css';
-import { Markdown } from "tiptap-markdown";
+import { Markdown } from 'tiptap-markdown';
 
 const lowlight = createLowlight(common);
 
-export function useMarkdownEditor(initialContent: string) {  // TipTap 에디터 인스턴스 생성
+export function useMarkdownEditor(initialContent: string) {
+  // TipTap 에디터 인스턴스 생성
 
   const editor = useEditor({
     // 0. SSR 환경에서 hydration mismatch 방지
@@ -63,13 +64,8 @@ export function useMarkdownEditor(initialContent: string) {  // TipTap 에디터
     },
 
     // 4. onUpdate: 내용 변경 감지
-    onUpdate: ({ editor }) => {
-      // TODO html, markdown 다운로드에 활용
-      const html = editor.getHTML();
-      // onContentChange?.(html);
-      const markdown = editor.storage.markdown?.getMarkdown();
-    },
+    onUpdate: () => {},
   });
-  
+
   return { editor };
 }

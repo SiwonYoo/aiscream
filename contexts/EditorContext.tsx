@@ -3,7 +3,7 @@
 import { useMarkdownEditor } from '@/hooks/useMarkdownEditor';
 import { EditorContextProps } from '@/types/editor';
 import { Editor } from '@tiptap/react';
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface EditorContextType {
   editor: Editor | null;
@@ -16,9 +16,9 @@ export interface EditorContextType {
 
 const EditorContext = createContext<EditorContextType | null>(null);
 
-export function EditorProvider({ children, initialContent = '', streamedMarkdown }: EditorContextProps) {
+export function EditorProvider({ children, initialContent = '', streamedMarkdown, initialMarkdownMode }: EditorContextProps) {
   const { editor } = useMarkdownEditor(initialContent);
-  const [isMarkdownMode, setIsMarkdownMode] = useState(true);
+  const [isMarkdownMode, setIsMarkdownMode] = useState(initialMarkdownMode);
   const [markdownSource, setMarkdownSource] = useState(initialContent);
   const isChanged = markdownSource !== initialContent;
 
@@ -33,9 +33,7 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
   useEffect(() => {
     if (!editor || isMarkdownMode) return;
 
-    setTimeout(() => {
-      editor?.commands.setContent(markdownSource);
-    }, 0);
+    editor?.commands.setContent(markdownSource);
   }, [isMarkdownMode, editor]);
 
   // preview -> edit 탭 전환 시, 현재 상태 반영

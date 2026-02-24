@@ -77,7 +77,7 @@ export default function PostPage() {
         type: params.blogType,
       });
 
-      router.push(res.post.id);
+      router.push(`/post/${res.post.id}`);
     } catch (err) {
       console.error('DB 저장 중 오류가 발생했습니다.', err);
       setHasError(true);

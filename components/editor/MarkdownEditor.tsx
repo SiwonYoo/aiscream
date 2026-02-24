@@ -15,22 +15,19 @@ export default function MarkdownEditor() {
       <EditorToolbar editor={editor} isMarkdownMode={isMarkdownMode} setIsMarkdownMode={setIsMarkdownMode} />
 
       {/* markdown(edit) 모드 */}
-      {isMarkdownMode && (
-        <textarea
-          value={markdownSource}
-          onChange={e => {
-            setMarkdownSource(e.target.value);
-          }}
-          aria-label="마크다운 편집기"
-          className="min-h-0 flex-1 overflow-y-auto p-2 focus:outline-none"
-        />
-      )}
+      <textarea
+        value={markdownSource}
+        onChange={e => {
+          setMarkdownSource(e.target.value);
+        }}
+        aria-label="마크다운 편집기"
+        className={`min-h-0 flex-1 overflow-y-auto p-2 focus:outline-none ${!isMarkdownMode ? 'hidden' : ''}`}
+      />
+
       {/* preview 모드 */}
-      {!isMarkdownMode && (
-        <div className="relative min-h-0 flex-1 overflow-y-auto">
-          <EditorContent editor={editor} className="absolute inset-0" />
-        </div>
-      )}
+      <div className={`relative min-h-0 flex-1 overflow-y-auto ${isMarkdownMode ? 'hidden' : ''}`}>
+        <EditorContent editor={editor} className="absolute inset-0" />
+      </div>
     </div>
   );
 }
