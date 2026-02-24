@@ -32,7 +32,7 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
       </header>
 
       {/* (only-PC) 새 블로그 작성 버튼 */}
-      <Link href="#" className={`mx-3 mt-5 hidden items-center justify-center gap-3 rounded-sm bg-black text-base text-white pc:flex ${isSidebarOpen ? 'h-10' : 'h-9.5'}`}>
+      <Link href="/post" className={`mx-3 mt-5 hidden items-center justify-center gap-3 rounded-sm bg-black text-base text-white pc:flex ${isSidebarOpen ? 'h-10' : 'h-9.5'}`}>
         <PlusIcon color="#fff" className="h-3.5 w-3.5" />
         <span className={isSidebarOpen ? '' : 'hidden'}>새 블로그 작성</span>
       </Link>
