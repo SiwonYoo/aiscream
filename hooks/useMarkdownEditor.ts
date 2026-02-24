@@ -59,7 +59,7 @@ export function useMarkdownEditor(initialContent: string) {
     // 3. editorProps: 에디터 DOM에 적용할 속성
     editorProps: {
       attributes: {
-        class: 'text-black prose prose-sm min-w-full h-full p-2 focus:outline-none ',
+        class: 'text-black prose prose-sm min-w-full h-full p-2 focus:outline-none dark:prose-invert ',
       },
     },
 
