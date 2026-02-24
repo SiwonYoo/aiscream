@@ -2,9 +2,9 @@
 
 import UtilButton from '@/components/editor/UtilButton';
 import { useEditorContext } from '@/contexts/EditorContext';
-import { updatePost } from '@/data/actions/post';
+import { deletePost, updatePost } from '@/data/actions/post';
 import { useModalStore } from '@/stores/modal-store';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function UtilButtonList() {
@@ -13,15 +13,13 @@ export default function UtilButtonList() {
   const params = useParams();
   const postId = params.id as string;
 
+  const router = useRouter();
+
   // 에디터 관련
   const { editor, markdownSource, isChanged, syncInitialContent } = useEditorContext();
 
   // 모달 열기
   const openModal = useModalStore(state => state.openModal);
-
-  // 참고해서 사용하시면 됩니다!
-  // markdown 형식: markdownSource
-  // html 형식: editor.getHTML()
 
   // 수정완료
   const handleUpdate = async () => {
@@ -86,8 +84,16 @@ export default function UtilButtonList() {
   };
 
   // 삭제하기
-  const handleDelete = () => {
-    alert('완료!');
+  const handleDelete = async () => {
+    if (!postId) return;
+
+    try {
+      await deletePost(postId);
+      router.replace('/post');
+    } catch (error) {
+      console.error('삭제 중 오류가 발생했습니다.', error);
+      openModal({ title: '오류', message: '삭제 중 문제가 발생했습니다.', variant: 'info', contentLabel: '삭제 에러 알림 모달' });
+    }
   };
 
   return (

@@ -8,11 +8,10 @@ import type { Post } from '@/types/post';
 import { usePostStore } from '@/stores/post-store';
 import PlusIcon from '../common/PlusIcon';
 
-// const MOCK_BLOG_TITLE = ['초보자를 위한 Next.js 시작하기 가이드', '프론트엔드 개발자 관점으로 바라보는 관심사의 분리와 좋은 폴더 구조 (feat. FSD)', 'Redux 어떻게 써야 잘 썼다고 소문이 날까?', 'Clean Architecture on Frontend'];
 export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Post[]; userEmail: string }) {
   const { logout } = useAuth();
   const { toggleSidebar, isSidebarOpen } = useUIStore();
-  const { selectPostId } = usePostStore();
+  const { selectPostId, isChanged } = usePostStore();
   const pathname = usePathname();
 
   return (
@@ -48,9 +47,9 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
               return (
                 <li key={post.id}>
                   <Link href={`/post/${post.id}`} onClick={() => selectPostId(post.id)} className={`flex w-full cursor-pointer items-center gap-1.5 rounded-lg py-2 pc:p-2 ${isActive ? 'bg-base-stroke' : ''}`} aria-current={isActive ? 'page' : undefined}>
-                    {idx === 0 && (
+                    {isActive && isChanged && (
                       <div className="h-1 w-1 shrink-0 rounded-full bg-red-500">
-                        <span className="sr-only">최신 글</span>
+                        <span className="sr-only">수정 중</span>
                       </div>
                     )}
                     <p className="truncate">{post.topic}</p>

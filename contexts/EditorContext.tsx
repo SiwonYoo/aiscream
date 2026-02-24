@@ -1,6 +1,7 @@
 'use client';
 
 import { useMarkdownEditor } from '@/hooks/useMarkdownEditor';
+import { usePostStore } from '@/stores/post-store';
 import { EditorContextProps } from '@/types/editor';
 import { Editor } from '@tiptap/react';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -23,8 +24,15 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
   const [markdownSource, setMarkdownSource] = useState(initialContent);
   const [savedContent, setSavedContent] = useState(initialContent);
 
+  const { setIsChanged } = usePostStore();
+
   const isChanged = markdownSource !== savedContent;
   const syncInitialContent = () => setSavedContent(markdownSource);
+
+  // isChanged 상태 동기화
+  useEffect(() => {
+    setIsChanged(isChanged);
+  }, [isChanged]);
 
   // 스트리밍할 때 markdown으로 받음
   useEffect(() => {

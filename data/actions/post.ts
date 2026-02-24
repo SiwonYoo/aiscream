@@ -54,5 +54,6 @@ export async function deletePost(postId: string) {
 
   if (error) throw error;
 
+  revalidatePath('/post');
   return { success: true };
 }
