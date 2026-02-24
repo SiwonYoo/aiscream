@@ -3,59 +3,64 @@
 import UtilButton from '@/components/editor/UtilButton';
 import { useEditorContext } from '@/contexts/EditorContext';
 import { useModalStore } from '@/stores/modal-store';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 export default function UtilButtonList() {
   const [isDownOpen, setIsDownOpen] = useState(false); // 다운받기 하위 옵션 열림/닫힘 상태
 
+  const params = useParams();
+  const postId = params.id;
+
   // 에디터 관련
-  const { editor, markdownSource } = useEditorContext();
+  const { editor, markdownSource, isChanged } = useEditorContext();
+
+  // 모달 열기
+  const openModal = useModalStore(state => state.openModal);
 
   // 참고해서 사용하시면 됩니다!
   // markdown 형식: markdownSource
   // html 형식: editor.getHTML()
 
-  // 다운받기 클릭 이벤트
-  const onClickDown = () => {
-    setIsDownOpen(!isDownOpen);
-  };
+  // 수정완료
+  const handleUpdate = () => {};
 
-  // 다운로드 옵션 클릭 이벤트 (임시로 alert을 띄워서 확인했습니다. 해당 부분 작업 시 변경하거나 앲애주세요!)
-  const onClickDownOption = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const downType = e.currentTarget.dataset.downtype;
-    setIsDownOpen(!isDownOpen);
-    alert(`.${downType} 파일 다운로드`);
-  };
+  // 복사하기
+  const handleCopy = () => {};
 
-  // 모달 열기
-  const openModal = useModalStore(state => state.openModal);
+  // .md 다운
+  const handleDownloadMd = () => {};
 
-  // 테스트 함수 (삭제 모달에 넣었습니다. 해당 부분 작업 시 없애주세요!)
-  const testFunc = () => {
+  // .html 다운
+  const handleDownloadHtml = () => {};
+
+  // 삭제하기
+  const handleDelete = () => {
     alert('완료!');
   };
 
   return (
     <div className="util-button-list flex items-center justify-center gap-4 border-t border-base-stroke px-4 py-5 pc:gap-7.5">
-      <UtilButton iconSrc="/assets/images/ico-save-black-2x.png" onClick={() => {}} disabled>
+      <UtilButton iconSrc="/assets/images/ico-save-black-2x.png" onClick={handleUpdate} disabled={!isChanged}>
         수정완료
       </UtilButton>
       <UtilButton
         iconSrc="/assets/images/ico-copy-black-2x.png"
-        onClick={() =>
+        onClick={() => {
+          handleCopy();
           openModal({
             title: '복사 완료',
             message: '복사가 완료되었습니다.',
             variant: 'info',
             cancelText: '확인',
             contentLabel: '복사 완료 알림 모달',
-          })
-        }
+          });
+        }}
       >
         복사하기
       </UtilButton>
       <div className="relative">
-        <UtilButton iconSrc="/assets/images/ico-download-black-2x.png" onClick={onClickDown} aria-haspopup="menu">
+        <UtilButton iconSrc="/assets/images/ico-download-black-2x.png" onClick={() => setIsDownOpen(!isDownOpen)} aria-haspopup="menu">
           <div className="flex items-center gap-1 pc:gap-2">
             다운받기
             <span
@@ -68,14 +73,14 @@ export default function UtilButtonList() {
             />
           </div>
         </UtilButton>
-        <ul className={`absolute -bottom-[130%] left-0 w-full overflow-hidden rounded-xs border border-input-stroke bg-white text-[10px] transition duration-300 pc:-bottom-[250%] pc:text-base ${isDownOpen ? 'visible translate-y-1 opacity-100' : 'invisible translate-y-0 opacity-0'}`} role="menu">
+        <ul className={`absolute -bottom-[130%] left-0 z-10 w-full overflow-hidden rounded-xs border border-input-stroke bg-white text-[10px] transition duration-300 pc:-bottom-[250%] pc:text-base ${isDownOpen ? 'visible translate-y-1 opacity-100' : 'invisible translate-y-0 opacity-0'}`} role="menu">
           <li className="border-b border-input-stroke">
-            <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={onClickDownOption} data-downtype="md">
+            <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={handleDownloadMd} data-downtype="md">
               .md
             </button>
           </li>
           <li role="menuitem">
-            <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={onClickDownOption} data-downtype="html">
+            <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={handleDownloadHtml} data-downtype="html">
               .html
             </button>
           </li>
@@ -104,7 +109,7 @@ export default function UtilButtonList() {
             variant: 'confirm',
             cancelText: '취소',
             confirmText: '삭제하기',
-            onConfirm: testFunc,
+            onConfirm: handleDelete,
             contentLabel: '삭제 알림 및 선택 모달',
           })
         }

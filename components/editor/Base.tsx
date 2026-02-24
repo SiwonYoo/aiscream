@@ -11,7 +11,7 @@ export default function Base({ result, loading = false }: { result: string; load
       {!result && !loading && <EditorPlaceholder />}
       {/* 글 생성 후 상태 */}
       {(result || loading) && (
-        <EditorProvider streamedMarkdown={result}>
+        <EditorProvider streamedMarkdown={result} initialContent={result}>
           <div className="relative flex min-h-0 flex-1 flex-col">
             {loading && <Loading />}
 

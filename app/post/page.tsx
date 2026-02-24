@@ -4,12 +4,15 @@ import Base from '@/components/editor/Base';
 import UserPrompt from '@/components/userinput/UserPrompt';
 import { createPost } from '@/data/actions/post';
 import { UserPromptType } from '@/types/blog-type';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function PostPage() {
   const [result, setResult] = useState(''); // 보여질 내용
   const [loading, setLoading] = useState(false); // 로딩 상태
   const [hasError, setHasError] = useState(false); // 에러 상태
+
+  const router = useRouter();
 
   const createBlog = async ({ blogTitle, blogKeyword, blogType, blogLength }: UserPromptType) => {
     try {
@@ -66,13 +69,15 @@ export default function PostPage() {
 
       if (!blogResult) return;
 
-      await createPost({
+      const res = await createPost({
         topic: blogResult.topic,
         title: params.blogTitle,
         keywords: params.blogKeyword,
         content: blogResult.fullContent,
         type: params.blogType,
       });
+
+      router.push(res.post.id);
     } catch (err) {
       console.error('DB 저장 중 오류가 발생했습니다.', err);
       setHasError(true);

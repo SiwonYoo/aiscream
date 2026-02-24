@@ -11,6 +11,7 @@ export interface EditorContextType {
   setIsMarkdownMode: (v: boolean) => void;
   markdownSource: string;
   setMarkdownSource: (v: string) => void;
+  isChanged: boolean;
 }
 
 const EditorContext = createContext<EditorContextType | null>(null);
@@ -20,6 +21,7 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
   const [isMarkdownMode, setIsMarkdownMode] = useState(true);
   const [markdownSource, setMarkdownSource] = useState(initialContent);
   const editorInitializedRef = useRef(false);
+  const isChanged = markdownSource !== initialContent;
 
   // edit/preview 탭 전환 시, 현재 상태 반영
   useEffect(() => {
@@ -49,7 +51,7 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
     }
   }, [streamedMarkdown]);
 
-  return <EditorContext.Provider value={{ editor, isMarkdownMode, setIsMarkdownMode, markdownSource, setMarkdownSource }}>{children}</EditorContext.Provider>;
+  return <EditorContext.Provider value={{ editor, isMarkdownMode, setIsMarkdownMode, markdownSource, setMarkdownSource, isChanged }}>{children}</EditorContext.Provider>;
 }
 
 export function useEditorContext() {
