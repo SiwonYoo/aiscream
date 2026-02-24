@@ -14,7 +14,7 @@ export default function UtilButtonList() {
   const postId = params.id as string;
 
   // 에디터 관련
-  const { editor, markdownSource, isChanged } = useEditorContext();
+  const { editor, markdownSource, isChanged, syncInitialContent } = useEditorContext();
 
   // 모달 열기
   const openModal = useModalStore(state => state.openModal);
@@ -31,6 +31,7 @@ export default function UtilButtonList() {
       await updatePost(postId, {
         content: markdownSource,
       });
+      syncInitialContent();
     } catch (error) {
       console.error('저장 중 오류가 발생했습니다.', error);
       openModal({ title: '오류', message: '저장 중 문제가 발생했습니다.', variant: 'info', contentLabel: '수정 에러 알림 모달' });
@@ -38,13 +39,51 @@ export default function UtilButtonList() {
   };
 
   // 복사하기
-  const handleCopy = () => {};
+  const handleCopy = () => {
+    navigator.clipboard.writeText(markdownSource);
+    openModal({
+      title: '복사 완료',
+      message: '복사가 완료되었습니다.',
+      variant: 'info',
+      cancelText: '확인',
+      contentLabel: '복사 완료 알림 모달',
+    });
+  };
 
-  // .md 다운
-  const handleDownloadMd = () => {};
+  // 다운로드
+  const handleDownload = (type: 'md' | 'html') => {
+    if (!editor) return;
+    const isMdType = type === 'md';
 
-  // .html 다운
-  const handleDownloadHtml = () => {};
+    // HTML 다운 시 에디터를 최신 마크다운으로 동기화
+    if (!isMdType) {
+      editor.commands.setContent(markdownSource);
+    }
+
+    // 파일 이름 설정
+    const now = new Date();
+    const formatted = now.toISOString().slice(0, 10);
+    const fileName = `doc-${formatted}.${type}`;
+
+    // 데이터 설정
+    const data = isMdType ? markdownSource : editor.getHTML();
+    const mime = isMdType ? 'text/markdown;charset=utf-8;' : 'text/html;charset=utf-8;';
+
+    // 문자열을 파일 객체로 변환
+    const blob = new Blob([data], { type: mime });
+
+    // 임시 URL 생성
+    const url = URL.createObjectURL(blob);
+
+    // a 태그 강제 클릭
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+
+    // 메모리 정리
+    URL.revokeObjectURL(url);
+  };
 
   // 삭제하기
   const handleDelete = () => {
@@ -54,21 +93,9 @@ export default function UtilButtonList() {
   return (
     <div className="util-button-list flex items-center justify-center gap-4 border-t border-base-stroke px-4 py-5 pc:gap-7.5">
       <UtilButton iconSrc="/assets/images/ico-save-black-2x.png" onClick={handleUpdate} disabled={!isChanged}>
-        수정완료
+        {isChanged ? '수정하기' : '수정완료'}
       </UtilButton>
-      <UtilButton
-        iconSrc="/assets/images/ico-copy-black-2x.png"
-        onClick={() => {
-          handleCopy();
-          openModal({
-            title: '복사 완료',
-            message: '복사가 완료되었습니다.',
-            variant: 'info',
-            cancelText: '확인',
-            contentLabel: '복사 완료 알림 모달',
-          });
-        }}
-      >
+      <UtilButton iconSrc="/assets/images/ico-copy-black-2x.png" onClick={handleCopy}>
         복사하기
       </UtilButton>
       <div className="relative">
@@ -87,12 +114,12 @@ export default function UtilButtonList() {
         </UtilButton>
         <ul className={`absolute -bottom-[130%] left-0 z-10 w-full overflow-hidden rounded-xs border border-input-stroke bg-white text-[10px] transition duration-300 pc:-bottom-[250%] pc:text-base ${isDownOpen ? 'visible translate-y-1 opacity-100' : 'invisible translate-y-0 opacity-0'}`} role="menu">
           <li className="border-b border-input-stroke">
-            <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={handleDownloadMd} data-downtype="md">
+            <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={() => handleDownload('md')}>
               .md
             </button>
           </li>
           <li role="menuitem">
-            <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={handleDownloadHtml} data-downtype="html">
+            <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={() => handleDownload('html')}>
               .html
             </button>
           </li>

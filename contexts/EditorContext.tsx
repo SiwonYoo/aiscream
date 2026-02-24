@@ -12,6 +12,7 @@ export interface EditorContextType {
   markdownSource: string;
   setMarkdownSource: (v: string) => void;
   isChanged: boolean;
+  syncInitialContent: () => void;
 }
 
 const EditorContext = createContext<EditorContextType | null>(null);
@@ -20,7 +21,10 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
   const { editor } = useMarkdownEditor(initialContent);
   const [isMarkdownMode, setIsMarkdownMode] = useState(initialMarkdownMode);
   const [markdownSource, setMarkdownSource] = useState(initialContent);
-  const isChanged = markdownSource !== initialContent;
+  const [savedContent, setSavedContent] = useState(initialContent);
+
+  const isChanged = markdownSource !== savedContent;
+  const syncInitialContent = () => setSavedContent(markdownSource);
 
   // 스트리밍할 때 markdown으로 받음
   useEffect(() => {
@@ -48,7 +52,7 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
     };
   }, [editor, isMarkdownMode]);
 
-  return <EditorContext.Provider value={{ editor, isMarkdownMode, setIsMarkdownMode, markdownSource, setMarkdownSource, isChanged }}>{children}</EditorContext.Provider>;
+  return <EditorContext.Provider value={{ editor, isMarkdownMode, setIsMarkdownMode, markdownSource, setMarkdownSource, isChanged, syncInitialContent }}>{children}</EditorContext.Provider>;
 }
 
 export function useEditorContext() {

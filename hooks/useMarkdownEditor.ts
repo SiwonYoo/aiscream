@@ -50,6 +50,7 @@ export function useMarkdownEditor(initialContent: string) {
       // Markdown: 마크다운 입출력 지원
       Markdown.configure({
         transformCopiedText: true,
+        transformPastedText: true,
       }),
     ],
 
