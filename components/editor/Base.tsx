@@ -2,8 +2,6 @@ import Loading from '@/components/common/Loading';
 import EditorPlaceholder from '@/components/editor/EditorPlaceholder';
 import MarkdownEditor from '@/components/editor/MarkdownEditor';
 import UtilButtonList from '@/components/editor/UtilButtonList';
-import Image from 'next/image';
-import StarIcon from '../common/StarIcon';
 import { EditorProvider } from '@/contexts/EditorContext';
 
 export default function Base({ result, loading = false }: { result: string; loading?: boolean }) {
