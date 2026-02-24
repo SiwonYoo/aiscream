@@ -20,29 +20,7 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
   const { editor } = useMarkdownEditor(initialContent);
   const [isMarkdownMode, setIsMarkdownMode] = useState(true);
   const [markdownSource, setMarkdownSource] = useState(initialContent);
-  const editorInitializedRef = useRef(false);
   const isChanged = markdownSource !== initialContent;
-
-  // edit/preview 탭 전환 시, 현재 상태 반영
-  useEffect(() => {
-    if (!editor) return;
-    if (!editorInitializedRef.current) {
-      // 에디터 최초 초기화 시에는 markdownSource를 덮어쓰지 않음
-      editorInitializedRef.current = true;
-      return;
-    }
-
-    // preview -> edit
-    if (isMarkdownMode) {
-      setMarkdownSource(editor?.storage.markdown?.getMarkdown() || '');
-    }
-    // edit -> preview
-    else {
-      queueMicrotask(() => {
-        editor?.commands.setContent(markdownSource);
-      });
-    }
-  }, [isMarkdownMode, editor]);
 
   // 스트리밍할 때 markdown으로 받음
   useEffect(() => {
@@ -51,11 +29,32 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
     }
   }, [streamedMarkdown]);
 
+  // edit -> preview 탭 전환 시, 현재 상태 반영
+  useEffect(() => {
+    if (!editor || isMarkdownMode) return;
+
+    setTimeout(() => {
+      editor?.commands.setContent(markdownSource);
+    }, 0);
+  }, [isMarkdownMode, editor]);
+
+  // preview -> edit 탭 전환 시, 현재 상태 반영
+  useEffect(() => {
+    if (!editor || isMarkdownMode) return;
+    const handleUpdate = () => {
+      setMarkdownSource(editor.storage.markdown?.getMarkdown() ?? '');
+    };
+    editor.on('update', handleUpdate);
+    return () => {
+      editor.off('update', handleUpdate);
+    };
+  }, [editor, isMarkdownMode]);
+
   return <EditorContext.Provider value={{ editor, isMarkdownMode, setIsMarkdownMode, markdownSource, setMarkdownSource, isChanged }}>{children}</EditorContext.Provider>;
 }
 
 export function useEditorContext() {
   const context = useContext(EditorContext);
-  if (!context) throw new Error();
+  if (!context) throw new Error('EditorContext는 EditorProvider 내부에서만 사용할 수 있습니다.');
   return context;
 }

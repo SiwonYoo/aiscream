@@ -26,7 +26,11 @@ export default function MarkdownEditor() {
         />
       )}
       {/* preview 모드 */}
-      {!isMarkdownMode && <EditorContent editor={editor} className="min-h-0 flex-1 overflow-y-auto" />}
+      {!isMarkdownMode && (
+        <div className="relative min-h-0 flex-1 overflow-y-auto">
+          <EditorContent editor={editor} className="absolute inset-0" />
+        </div>
+      )}
     </div>
   );
 }
