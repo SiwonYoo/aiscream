@@ -129,7 +129,7 @@ export function KeywordPrompt({ keywords, setKeywords, disabled = false }: { key
             <div key={`${keyword}-${index}`} className="inline-flex h-4.5 items-center gap-1.5 bg-keyword p-1">
               <span className="text-xs text-primary">{keyword}</span>
               {/* 삭제버튼 */}
-              <button type="button" onClick={() => removeKeyword(index)} disabled={disabled} className="flex items-center justify-center">
+              <button type="button" aria-label={`키워드 "${keyword}" 삭제`} onClick={() => removeKeyword(index)} disabled={disabled} className="flex items-center justify-center">
                 <CloseIcon />
               </button>
             </div>
