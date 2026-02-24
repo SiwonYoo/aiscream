@@ -16,7 +16,7 @@ export default function PostPage() {
       setResult('');
       setHasError(false);
 
-      const res = await fetch('/api/open-ai', {
+      const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: blogTitle, keyword: blogKeyword.join(','), type: blogType, length: blogLength }),
