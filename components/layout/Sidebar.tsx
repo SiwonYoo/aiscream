@@ -30,7 +30,7 @@ export default function Sidebar() {
 
       {/* (only-PC) 새 블로그 작성 버튼 */}
       <Link href="#" className={`mx-3 mt-5 hidden items-center justify-center gap-3 rounded-sm bg-black text-base text-white pc:flex ${isSidebarOpen ? 'h-10' : 'h-9.5'}`}>
-        <PlusIcon color="#fff" className="h-3.5 w-3.5" />
+        <PlusIcon className="h-3.5 w-3.5 text-white" />
         <span className={isSidebarOpen ? '' : 'hidden'}>새 블로그 작성</span>
       </Link>
 
@@ -60,7 +60,7 @@ export default function Sidebar() {
         <ThemeModeToggle />
         {/* 로그아웃 버튼 */}
         <button type="button" aria-label="로그아웃" className="cursor-pointer" onClick={() => logout('/login')}>
-          <Image src="/assets/images/ico-logout.svg" width={12} height={12} alt="" />
+          <Image src="/assets/images/ico-logout.svg" width={12} height={12} alt="" className="dark:invert" />
         </button>
       </footer>
     </aside>

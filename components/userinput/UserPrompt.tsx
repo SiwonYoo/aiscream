@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import PlusIcon from '../common/PlusIcon';
 import TypeDropdown from '../common/Typedropdown';
+import DropIcon from '../common/DropIcon';
+import CloseIcon from '../common/CloseIcon';
+import CreatIcon from '../common/CreatIcon';
 
 export default function UserPrompt() {
   const [blogContent, setBlogContent] = useState('');
@@ -17,7 +20,7 @@ export default function UserPrompt() {
     <div className="relative">
       {/* 드롭다운 버튼 */}
       <button type="button" onClick={() => setIsDrop(prev => !prev)} className={`absolute right-7 z-30 transition-all pc:right-6 ${isDrop ? '-top-0.5' : '-top-6'}`}>
-        <Image src="/assets/images/drop.svg" width={48} height={16.8} alt="드롭다운 버튼" className={`aspect-20/7 h-7 w-20 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] transition-transform ${isDrop ? '' : 'rotate-180'}`} />
+        <DropIcon className={`aspect-20/7 h-7 w-20 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] transition-transform ${isDrop ? '' : 'rotate-180'}`} />
       </button>
       <div className="border-t border-base-stroke">
         <div className={`flex flex-col gap-5 px-4 transition-all duration-300 pc:px-5 ${isDrop ? 'py-7 opacity-100 pc:py-8' : 'invisible h-10 overflow-hidden opacity-0'}`}>
@@ -91,7 +94,7 @@ export function KeywordPrompt({ keywords, setKeywords }: { keywords: string[]; s
       <div className="mb-1 flex items-center justify-between gap-3 pc:mb-3">
         <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} className="h-8.5 flex-1 rounded-sm border border-input-stroke px-2.5 py-2.5 text-sm text-primary focus:ring-0 focus:outline-none pc:h-9 pc:text-base" placeholder="키워드를 입력하고 Enter를 누르세요." />
         <button type="button" onClick={addKeyword} className="flex h-8.5 w-8.5 items-center justify-center rounded-sm border border-input-stroke pc:h-9 pc:w-9">
-          <PlusIcon color="#333" className="h-3 w-3 pc:h-3.5 pc:w-3.5" />
+          <PlusIcon className="h-3 w-3 text-primary pc:h-3.5 pc:w-3.5" />
         </button>
       </div>
       {/* 키워드 태그 */}
@@ -102,7 +105,7 @@ export function KeywordPrompt({ keywords, setKeywords }: { keywords: string[]; s
               <span className="text-xs text-primary">{keyword}</span>
               {/* 삭제버튼 */}
               <button type="button" onClick={() => removeKeyword(index)} className="flex items-center justify-center">
-                <Image src="/assets/images/vector.svg" width={5} height={5} alt="삭제하기 버튼" />
+                <CloseIcon />
               </button>
             </div>
           ))}
@@ -156,7 +159,7 @@ export function TypeSelect({ selectedType, setSelectedType, isFormComplete, sele
 
       {/* 블로그 글 생성하기 */}
       <button type="button" disabled={!isFormComplete} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${isFormComplete ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
-        <Image src="/assets/images/creat.svg" width={16} height={16} alt="" />
+        <CreatIcon className="text-white" />
         <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
       </button>
     </div>
