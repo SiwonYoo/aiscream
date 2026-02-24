@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 export default function ThemeModeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -13,7 +13,7 @@ export default function ThemeModeToggle() {
   if (!mounted) return null; // 마운트 전에 렌더링 X
 
   // 라이트 모드일 때 true
-  const isOn = theme !== 'dark';
+  const isOn = resolvedTheme !== 'dark';
   const bgClass = isOn ? 'bg-[linear-gradient(90deg,#F6B1C3_7.5%,#D8CFF0_100%)]' : 'bg-[#C7C7C7]';
   const circleClass = isOn ? 'bg-[#FCEBEF]' : 'translate-x-4 ';
 
