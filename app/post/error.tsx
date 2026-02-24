@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-export default function Error({ reset }: { reset: () => void }) {
+export default function Error() {
   const router = useRouter();
 
   return (
@@ -15,8 +15,7 @@ export default function Error({ reset }: { reset: () => void }) {
         <h3 className="text-[22px] font-bold text-primary pc:text-[28px]">예기치 않은 오류가 발생했습니다.</h3>
         <p className="text-sm text-secondary pc:text-base">불편을 드려 죄송합니다. 잠시 후 다시 시도해 주세요.</p>
       </div>
-      {/* 여기 router.push 부분 경로에 맞게 바꿔주세요! */}
-      <button type="button" className="cursor-pointer rounded-sm bg-active px-3 py-1.5 text-sm text-white hover:bg-hover pc:px-4 pc:py-2 pc:text-base" onClick={() => reset()}>
+      <button type="button" className="cursor-pointer rounded-sm bg-active px-3 py-1.5 text-sm text-white hover:bg-hover pc:px-4 pc:py-2 pc:text-base" onClick={() => router.push('/post')}>
         다시 시도
       </button>
     </div>

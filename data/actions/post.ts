@@ -2,6 +2,7 @@
 
 import { getAuthenticatedUser } from '@/lib/auth';
 import { CreatePostData, UpdatePostData } from '@/types/post';
+import { revalidatePath } from 'next/cache';
 
 /**
  * [CREATE] 글 저장
@@ -26,6 +27,7 @@ export async function createPost(post: CreatePostData) {
 
   if (error) throw error;
 
+  revalidatePath('/post');
   return { success: true, post: data };
 }
 

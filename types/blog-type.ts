@@ -1,3 +1,10 @@
 export type BlogLength = 'short' | 'normal' | 'long';
 
-export type BlogType = 'tutorial' | 'til' | 'trouble';
+export type BlogType = 'tutorial' | 'til' | 'troubleshooting';
+
+export type UserPromptType = {
+  blogTitle: string;
+  blogKeyword: string[];
+  blogType: BlogType;
+  blogLength: BlogLength;
+};

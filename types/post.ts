@@ -1,4 +1,5 @@
 export type PostType = 'tutorial' | 'til' | 'troubleshooting';
+export type PostLength = 'short' | 'normal' | 'long';
 
 // DB에 저장된 완전한 Post (조회용)
 export interface Post {
@@ -11,6 +12,7 @@ export interface Post {
   content: string;
   createdAt: string;
   updatedAt: string;
+  postLength?: PostLength;
 }
 
 // Post 생성 요청 (authorId, id 제외)
@@ -20,6 +22,7 @@ export interface CreatePostData {
   type: PostType;
   title: string;
   content: string;
+  postLength?: PostLength;
 }
 
 // Post 수정 요청 (authorId, id 제외, 옵셔널)

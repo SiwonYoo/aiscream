@@ -12,9 +12,9 @@ export default function DemoModeNotice() {
         </div>
 
         <p className="text-xs leading-5 text-secondary md:text-[14px]">
-          아무 이메일과 비밀번호로 로그인할 수 있습니다.
+          ID : demo@aiscream.com
           <br />
-          구글로 로그인하시면 발행 기능을 확인하실 수 있습니다.
+          PW : rkskekfk12
         </p>
       </div>
     </section>

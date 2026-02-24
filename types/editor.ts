@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type EditorMode = 'preview' | 'edit';
 
 export interface PostContent {
@@ -7,11 +9,9 @@ export interface PostContent {
   metaDescription: string;
 }
 
-export interface MarkdownEditorProps {
+export interface EditorContextProps {
+  children: ReactNode;
   initialContent?: string;
+  streamedMarkdown?: string;
   onContentChange?: (content: string) => void;
-}
-
-export interface MarkdownPreviewProps {
-  content: string;
 }
