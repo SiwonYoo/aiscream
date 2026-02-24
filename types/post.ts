@@ -22,7 +22,7 @@ export interface CreatePostData {
   type: PostType;
   title: string;
   content: string;
-  postLength: PostLength;
+  postLength?: PostLength;
 }
 
 // Post 수정 요청 (authorId, id 제외, 옵셔널)
