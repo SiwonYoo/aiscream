@@ -28,7 +28,7 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
 
         {/* (only-PC) 토글 */}
         <button type="button" aria-expanded={isSidebarOpen} aria-controls="sidebar" aria-label="사이드바 토글" onClick={toggleSidebar} className="cursor-pointer p-2">
-          <Image src={isSidebarOpen ? '/assets/images/ico-chevron-left.svg' : '/assets/images/ico-chevron-right.svg'} width={6} height={12} alt="" />
+          <Image src={isSidebarOpen ? '/assets/images/ico-chevron-left.svg' : '/assets/images/ico-chevron-right.svg'} width={6} height={12} alt="" className="dark:invert" />
         </button>
       </header>
 
@@ -48,7 +48,7 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
               const isActive = pathname === `/post/${post.id}`;
               return (
                 <li key={post.id}>
-                  <Link href={`/post/${post.id}`} onClick={() => selectPostId(post.id)} className={`flex w-full cursor-pointer items-center gap-1.5 rounded-lg py-2 pc:p-2 ${isActive ? 'bg-base-stroke' : ''}`} aria-current={isActive ? 'page' : undefined}>
+                  <Link href={`/post/${post.id}`} onClick={() => selectPostId(post.id)} className={`flex w-full cursor-pointer items-center gap-1.5 rounded-lg py-2 hover:bg-base-stroke pc:p-2 ${isActive ? 'bg-base-stroke' : ''}`} aria-current={isActive ? 'page' : undefined}>
                     {idx === 0 && (
                       <div className="h-1 w-1 shrink-0 rounded-full bg-red-500">
                         <span className="sr-only">최신 글</span>
