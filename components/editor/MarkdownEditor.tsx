@@ -13,20 +13,21 @@ export default function MarkdownEditor() {
   return (
     <div className="flex min-h-0 w-full flex-1 flex-col p-4">
       <EditorToolbar editor={editor} isMarkdownMode={isMarkdownMode} setIsMarkdownMode={setIsMarkdownMode} />
+      <div className="mx-auto flex w-full flex-1 flex-col pc:max-w-300">
+        {/* markdown(edit) 모드 */}
+        <textarea
+          value={markdownSource}
+          onChange={e => {
+            setMarkdownSource(e.target.value);
+          }}
+          aria-label="마크다운 편집기"
+          className={`min-h-0 flex-1 overflow-y-auto p-2 focus:outline-none ${!isMarkdownMode ? 'hidden' : ''}`}
+        />
 
-      {/* markdown(edit) 모드 */}
-      <textarea
-        value={markdownSource}
-        onChange={e => {
-          setMarkdownSource(e.target.value);
-        }}
-        aria-label="마크다운 편집기"
-        className={`min-h-0 flex-1 overflow-y-auto p-2 focus:outline-none ${!isMarkdownMode ? 'hidden' : ''}`}
-      />
-
-      {/* preview 모드 */}
-      <div className={`relative min-h-0 flex-1 overflow-y-auto ${isMarkdownMode ? 'hidden' : ''}`}>
-        <EditorContent editor={editor} className="absolute inset-0" />
+        {/* preview 모드 */}
+        <div className={`relative min-h-0 flex-1 overflow-y-auto ${isMarkdownMode ? 'hidden' : ''}`}>
+          <EditorContent editor={editor} className="absolute inset-0" />
+        </div>
       </div>
     </div>
   );
