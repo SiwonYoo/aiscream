@@ -38,15 +38,20 @@ export default function UtilButtonList() {
   };
 
   // 복사하기
-  const handleCopy = () => {
-    navigator.clipboard.writeText(markdownSource);
-    openModal({
-      title: '복사 완료',
-      message: '복사가 완료되었습니다.',
-      variant: 'info',
-      cancelText: '확인',
-      contentLabel: '복사 완료 알림 모달',
-    });
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(markdownSource);
+      openModal({
+        title: '복사 완료',
+        message: '복사가 완료되었습니다.',
+        variant: 'info',
+        cancelText: '확인',
+        contentLabel: '복사 완료 알림 모달',
+      });
+    } catch (error) {
+      console.error('복사 중 오류가 발생했습니다.', error);
+      openModal({ title: '오류', message: '복사 중 문제가 발생했습니다.', variant: 'info', contentLabel: '복사 에러 알림 모달' });
+    }
   };
 
   // 다운로드
