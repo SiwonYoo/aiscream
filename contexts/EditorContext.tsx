@@ -1,9 +1,10 @@
 'use client';
 
 import { useMarkdownEditor } from '@/hooks/useMarkdownEditor';
+import { usePostStore } from '@/stores/post-store';
 import { EditorContextProps } from '@/types/editor';
 import { Editor } from '@tiptap/react';
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface EditorContextType {
   editor: Editor | null;
@@ -11,36 +12,31 @@ export interface EditorContextType {
   setIsMarkdownMode: (v: boolean) => void;
   markdownSource: string;
   setMarkdownSource: (v: string) => void;
+  isChanged: boolean;
+  syncInitialContent: () => void;
 }
 
 const EditorContext = createContext<EditorContextType | null>(null);
 
-export function EditorProvider({ children, initialContent = '', streamedMarkdown }: EditorContextProps) {
+export function EditorProvider({ children, initialContent = '', streamedMarkdown, initialMarkdownMode }: EditorContextProps) {
   const { editor } = useMarkdownEditor(initialContent);
-  const [isMarkdownMode, setIsMarkdownMode] = useState(true);
+  const [isMarkdownMode, setIsMarkdownMode] = useState(initialMarkdownMode);
   const [markdownSource, setMarkdownSource] = useState(initialContent);
-  const editorInitializedRef = useRef(false);
+  const [savedContent, setSavedContent] = useState(initialContent);
 
-  // edit/preview 탭 전환 시, 현재 상태 반영
+  const { setIsChanged } = usePostStore();
+
+  const isChanged = markdownSource !== savedContent;
+  const syncInitialContent = () => setSavedContent(markdownSource);
+
+  // isChanged 상태 동기화
   useEffect(() => {
-    if (!editor) return;
-    if (!editorInitializedRef.current) {
-      // 에디터 최초 초기화 시에는 markdownSource를 덮어쓰지 않음
-      editorInitializedRef.current = true;
-      return;
-    }
+    setIsChanged(isChanged);
 
-    // preview -> edit
-    if (isMarkdownMode) {
-      setMarkdownSource(editor?.storage.markdown?.getMarkdown() || '');
-    }
-    // edit -> preview
-    else {
-      queueMicrotask(() => {
-        editor?.commands.setContent(markdownSource);
-      });
-    }
-  }, [isMarkdownMode, editor]);
+    return () => {
+      setIsChanged(false);
+    };
+  }, [isChanged, setIsChanged]);
 
   // 스트리밍할 때 markdown으로 받음
   useEffect(() => {
@@ -49,11 +45,30 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
     }
   }, [streamedMarkdown]);
 
-  return <EditorContext.Provider value={{ editor, isMarkdownMode, setIsMarkdownMode, markdownSource, setMarkdownSource }}>{children}</EditorContext.Provider>;
+  // edit -> preview 탭 전환 시, 현재 상태 반영
+  useEffect(() => {
+    if (!editor || isMarkdownMode) return;
+
+    editor?.commands.setContent(markdownSource);
+  }, [isMarkdownMode, editor]);
+
+  // preview -> edit 탭 전환 시, 현재 상태 반영
+  useEffect(() => {
+    if (!editor || isMarkdownMode) return;
+    const handleUpdate = () => {
+      setMarkdownSource(editor.storage.markdown?.getMarkdown() ?? '');
+    };
+    editor.on('update', handleUpdate);
+    return () => {
+      editor.off('update', handleUpdate);
+    };
+  }, [editor, isMarkdownMode]);
+
+  return <EditorContext.Provider value={{ editor, isMarkdownMode, setIsMarkdownMode, markdownSource, setMarkdownSource, isChanged, syncInitialContent }}>{children}</EditorContext.Provider>;
 }
 
 export function useEditorContext() {
   const context = useContext(EditorContext);
-  if (!context) throw new Error();
+  if (!context) throw new Error('EditorContext는 EditorProvider 내부에서만 사용할 수 있습니다.');
   return context;
 }

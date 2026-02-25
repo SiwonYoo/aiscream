@@ -14,4 +14,5 @@ export interface EditorContextProps {
   initialContent?: string;
   streamedMarkdown?: string;
   onContentChange?: (content: string) => void;
+  initialMarkdownMode: boolean;
 }

@@ -13,7 +13,7 @@ import { useModalStore } from '@/stores/modal-store';
 export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Post[]; userEmail: string }) {
   const { logout } = useAuth();
   const { toggleSidebar, isSidebarOpen } = useUIStore();
-  const { selectPostId } = usePostStore();
+  const { selectPostId, isChanged } = usePostStore();
   const pathname = usePathname();
 
   const openModal = useModalStore(state => state.openModal);
@@ -53,9 +53,9 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
               return (
                 <li key={post.id}>
                   <Link href={`/post/${post.id}`} onClick={() => selectPostId(post.id)} className={`flex w-full cursor-pointer items-center gap-1.5 rounded-lg py-2 hover:bg-base-stroke pc:p-2 ${isActive ? 'bg-base-stroke' : ''}`} aria-current={isActive ? 'page' : undefined}>
-                    {idx === 0 && (
+                    {isActive && isChanged && (
                       <div className="h-1 w-1 shrink-0 rounded-full bg-red-500">
-                        <span className="sr-only">최신 글</span>
+                        <span className="sr-only">수정 중</span>
                       </div>
                     )}
                     <p className="truncate">{post.topic}</p>
