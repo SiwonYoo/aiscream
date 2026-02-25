@@ -168,33 +168,35 @@ export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isForm
   }, []);
 
   return (
-    <div className="flex items-center justify-between gap-3">
+    <div className="flex items-center justify-between gap-7">
       <div className="flex items-center gap-2">
-        <TypeDropdown selectedType={selectedType} onSelect={v => !disabled && setSelectedType(v as BlogType)} options={TYPE_OPTIONS} disabled={disabled} />
-
-        {/* 설명 툴팁 */}
-        <div className="relative" ref={tooltipRef}>
-          <button type="button" onClick={() => setShowTooltip(prev => !prev)}>
-            <Image src="/assets/images/explain.svg" width={16} height={16} alt="타입선택 설명" />
-          </button>
-          {showTooltip && (
-            <div className="absolute bottom-full left-0 z-20 mb-3 w-full min-w-70 rounded-sm bg-info p-2.5 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] pc:min-w-81 pc:p-3">
-              <p className="text-left text-[10px] leading-4 font-light text-primary pc:text-xs">
-                튜토리얼 : 코드예시가 포함된 형식의 블로그를 생성합니다.
-                <br /> TIL : Today I Learned 방식으로 블로그를 생성합니다.
-                <br /> 트러블슈팅 : 발생한 에러/문제를 중심으로 블로그를 생성합니다.
-              </p>
+        <div className="flex flex-col gap-2 pc:contents">
+          <div className="flex items-center gap-2">
+            <TypeDropdown selectedType={selectedType} onSelect={v => !disabled && setSelectedType(v as BlogType)} options={TYPE_OPTIONS} disabled={disabled} />
+            {/* 설명 툴팁 */}
+            <div className="relative" ref={tooltipRef}>
+              <button type="button" onClick={() => setShowTooltip(prev => !prev)}>
+                <Image src="/assets/images/explain.svg" width={16} height={16} alt="타입선택 설명" />
+              </button>
+              {showTooltip && (
+                <div className="absolute bottom-full left-0 z-20 mb-3 w-full min-w-70 rounded-sm bg-info p-2.5 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] pc:min-w-81 pc:p-3">
+                  <p className="text-left text-[10px] leading-4 font-light text-primary pc:text-xs">
+                    튜토리얼 : 코드예시가 포함된 형식의 블로그를 생성합니다.
+                    <br /> TIL : Today I Learned 방식으로 블로그를 생성합니다.
+                    <br /> 트러블슈팅 : 발생한 에러/문제를 중심으로 블로그를 생성합니다.
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+          </div>
+          <TypeDropdown selectedType={selectedContent} onSelect={v => !disabled && setSelectedContent(v as BlogLength)} options={CONTENT_OPTIONS} disabled={disabled} />
         </div>
       </div>
 
-      <TypeDropdown selectedType={selectedContent} onSelect={v => !disabled && setSelectedContent(v as BlogLength)} options={CONTENT_OPTIONS} disabled={disabled} />
-
       {/* 블로그 글 생성하기 */}
-      <button type="button" onClick={handleSubmit} disabled={isDisabled || loading} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${!loading && !isDisabled ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
+      <button type="button" onClick={handleSubmit} disabled={isDisabled || loading} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-6 transition-colors pc:py-2 ${!loading && !isDisabled ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
         <CreatIcon className="text-white" />
-        <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
+        <span className="text-base leading-3.5 font-normal text-white pc:leading-4">블로그 글 생성하기</span>
       </button>
     </div>
   );
