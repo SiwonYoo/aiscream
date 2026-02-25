@@ -4,6 +4,9 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import PlusIcon from '../common/PlusIcon';
 import TypeDropdown from '../common/Typedropdown';
+import DropIcon from '../common/DropIcon';
+import CloseIcon from '../common/CloseIcon';
+import CreatIcon from '../common/CreatIcon';
 import { BlogLength, BlogType, UserPromptType } from '@/types/blog-type';
 
 interface UserPromptProps {
@@ -40,7 +43,7 @@ export default function UserPrompt({ handleCreateBlog, readOnly = false, initial
     <div className="relative">
       {/* 드롭다운 버튼 */}
       <button type="button" onClick={() => setIsDrop(prev => !prev)} className={`absolute right-7 z-30 transition-all pc:right-6 ${isDrop ? '-top-0.5' : '-top-6'}`}>
-        <Image src="/assets/images/drop.svg" width={48} height={16.8} alt="드롭다운 버튼" className={`aspect-20/7 h-7 w-20 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] transition-transform ${isDrop ? '' : 'rotate-180'}`} />
+        <DropIcon aria-label={isDrop ? '프롬프트 접기' : '프롬프트 펼치기'} className={`aspect-20/7 h-7 w-20 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] transition-transform ${isDrop ? '' : 'rotate-180'}`} />
       </button>
       <div className="border-t border-base-stroke">
         <div className={`flex flex-col gap-5 px-4 transition-all duration-300 pc:px-5 ${isDrop ? 'py-7 opacity-100 pc:py-8' : 'invisible h-10 overflow-hidden opacity-0'}`}>
@@ -116,7 +119,7 @@ export function KeywordPrompt({ keywords, setKeywords, disabled = false }: { key
       <div className="mb-1 flex items-center justify-between gap-3 pc:mb-3">
         <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} disabled={disabled} className="h-8.5 flex-1 rounded-sm border border-input-stroke px-2.5 py-2.5 text-sm text-primary focus:ring-0 focus:outline-none pc:h-9 pc:text-base" placeholder="키워드를 입력하고 Enter를 누르세요." />
         <button type="button" onClick={addKeyword} disabled={disabled} className="flex h-8.5 w-8.5 items-center justify-center rounded-sm border border-input-stroke pc:h-9 pc:w-9">
-          <PlusIcon color="#333" className="h-3 w-3 pc:h-3.5 pc:w-3.5" />
+          <PlusIcon className="h-3 w-3 text-primary pc:h-3.5 pc:w-3.5" />
         </button>
       </div>
       {/* 키워드 태그 */}
@@ -126,8 +129,8 @@ export function KeywordPrompt({ keywords, setKeywords, disabled = false }: { key
             <div key={`${keyword}-${index}`} className="inline-flex h-4.5 items-center gap-1.5 bg-keyword p-1">
               <span className="text-xs text-primary">{keyword}</span>
               {/* 삭제버튼 */}
-              <button type="button" onClick={() => removeKeyword(index)} disabled={disabled} className="flex items-center justify-center">
-                <Image src="/assets/images/vector.svg" width={5} height={5} alt="삭제하기 버튼" />
+              <button type="button" aria-label={`키워드 "${keyword}" 삭제`} onClick={() => removeKeyword(index)} disabled={disabled} className="flex items-center justify-center">
+                <CloseIcon />
               </button>
             </div>
           ))}
@@ -165,33 +168,35 @@ export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isForm
   }, []);
 
   return (
-    <div className="flex items-center justify-between gap-3">
+    <div className="flex items-center justify-between gap-7">
       <div className="flex items-center gap-2">
-        <TypeDropdown selectedType={selectedType} onSelect={v => !disabled && setSelectedType(v as BlogType)} options={TYPE_OPTIONS} disabled={disabled} />
-
-        {/* 설명 툴팁 */}
-        <div className="relative" ref={tooltipRef}>
-          <button type="button" onClick={() => setShowTooltip(prev => !prev)}>
-            <Image src="/assets/images/explain.svg" width={16} height={16} alt="타입선택 설명" />
-          </button>
-          {showTooltip && (
-            <div className="absolute bottom-full left-0 z-20 mb-3 w-full min-w-70 rounded-sm bg-info p-2.5 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] pc:min-w-81 pc:p-3">
-              <p className="text-left text-[10px] leading-4 font-light text-primary pc:text-xs">
-                튜토리얼 : 코드예시가 포함된 형식의 블로그를 생성합니다.
-                <br /> TIL : Today I Learned 방식으로 블로그를 생성합니다.
-                <br /> 트러블슈팅 : 발생한 에러/문제를 중심으로 블로그를 생성합니다.
-              </p>
+        <div className="flex flex-col gap-2 pc:contents">
+          <div className="flex items-center gap-2">
+            <TypeDropdown selectedType={selectedType} onSelect={v => !disabled && setSelectedType(v as BlogType)} options={TYPE_OPTIONS} disabled={disabled} />
+            {/* 설명 툴팁 */}
+            <div className="relative" ref={tooltipRef}>
+              <button type="button" onClick={() => setShowTooltip(prev => !prev)}>
+                <Image src="/assets/images/explain.svg" width={16} height={16} alt="타입선택 설명" />
+              </button>
+              {showTooltip && (
+                <div className="absolute bottom-full left-0 z-20 mb-3 w-full min-w-70 rounded-sm bg-info p-2.5 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] pc:min-w-81 pc:p-3">
+                  <p className="text-left text-[10px] leading-4 font-light text-primary pc:text-xs">
+                    튜토리얼 : 코드예시가 포함된 형식의 블로그를 생성합니다.
+                    <br /> TIL : Today I Learned 방식으로 블로그를 생성합니다.
+                    <br /> 트러블슈팅 : 발생한 에러/문제를 중심으로 블로그를 생성합니다.
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+          </div>
+          <TypeDropdown selectedType={selectedContent} onSelect={v => !disabled && setSelectedContent(v as BlogLength)} options={CONTENT_OPTIONS} disabled={disabled} />
         </div>
       </div>
 
-      <TypeDropdown selectedType={selectedContent} onSelect={v => !disabled && setSelectedContent(v as BlogLength)} options={CONTENT_OPTIONS} disabled={disabled} />
-
       {/* 블로그 글 생성하기 */}
-      <button type="button" onClick={handleSubmit} disabled={isDisabled || loading} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-2 transition-colors ${!loading && !isDisabled ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
-        <Image src="/assets/images/creat.svg" width={16} height={16} alt="" />
-        <span className="text-sm leading-3.5 font-normal text-white pc:text-base pc:leading-4">블로그 글 생성하기</span>
+      <button type="button" onClick={handleSubmit} disabled={isDisabled || loading} className={`flex flex-1 items-center justify-center gap-3 rounded-sm px-2.5 py-6 transition-colors pc:py-2 ${!loading && !isDisabled ? 'cursor-pointer bg-active hover:bg-hover active:bg-active' : 'cursor-not-allowed bg-disabled'}`}>
+        <CreatIcon className="text-white" />
+        <span className="text-base leading-3.5 font-normal text-white pc:leading-4">블로그 글 생성하기</span>
       </button>
     </div>
   );

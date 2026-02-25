@@ -3,6 +3,7 @@
 import { useUIStore } from '@/stores/ui-store';
 import Image from 'next/image';
 import PlusIcon from '../common/PlusIcon';
+import Link from 'next/link';
 
 export default function Header() {
   const { isSidebarOpen, toggleSidebar } = useUIStore();
@@ -12,7 +13,7 @@ export default function Header() {
     <header className="flex items-center justify-between border-b border-base-stroke bg-muted p-4 pc:hidden">
       {/* 사이드바 토글 */}
       <button type="button" aria-expanded={isSidebarOpen} aria-controls="sidebar" aria-label="사이드바 토글" onClick={toggleSidebar} className="cursor-pointer">
-        <Image src="/assets/images/ico-menu.svg" width={18} height={18} alt="" />
+        <Image src="/assets/images/ico-menu.svg" width={18} height={18} alt="메뉴" className="dark:invert" />
       </button>
 
       {/* 로고 */}
@@ -22,9 +23,9 @@ export default function Header() {
       </h1>
 
       {/* 새 블로그 작성 버튼 */}
-      <button type="button" aria-label="새 블로그 작성" className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-sm bg-black">
-        <PlusIcon color="#fff" className="h-2.5 w-2.5" />
-      </button>
+      <Link href="/post" aria-label="새 블로그 작성" className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-sm bg-black">
+        <PlusIcon color="#fff" className="h-2.5 w-2.5 text-white" />
+      </Link>
     </header>
   );
 }

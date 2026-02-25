@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import ModalInitializer from '@/components/common/ModalInitializer';
 import GlobalModal from '@/components/modal/GlobalModal';
+import { ThemeProvider } from 'next-themes';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,13 +26,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ModalInitializer />
-        <div id="app-root" className='flex min-h-screen flex-col antialiased'>
-          {children}
-          <GlobalModal />
-        </div>
+        <ThemeProvider attribute={'class'} defaultTheme="system" enableSystem>
+          <ModalInitializer />
+          <div id="app-root" className="flex min-h-screen flex-col antialiased">
+            {children}
+            <GlobalModal />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
