@@ -4,6 +4,7 @@ import UtilButton from '@/components/editor/UtilButton';
 import { useEditorContext } from '@/contexts/EditorContext';
 import { useModalStore } from '@/stores/modal-store';
 import { useState } from 'react';
+import NotionPublishModal from '../modal/NotionPublishModal';
 
 export default function UtilButtonList() {
   const [isDownOpen, setIsDownOpen] = useState(false); // 다운받기 하위 옵션 열림/닫힘 상태
@@ -85,11 +86,12 @@ export default function UtilButtonList() {
         iconSrc="/assets/images/ico-publish-black-2x.png"
         onClick={() =>
           openModal({
-            title: '발행 완료',
-            message: '발행이 완료되었습니다.',
-            variant: 'info',
-            cancelText: '확인',
-            contentLabel: '발행 완료 알림 모달',
+            title: 'Notion 발행',
+            message: '',
+            variant: 'custom',
+            cancelText: '닫기',
+            contentLabel: 'Notion 발행 모달',
+            children: <NotionPublishModal postId={'86542016-6d3d-4e67-9eca-72372f9baf0f'} postTitle={'Next.js App Router에서 서버 컴포넌트와 클라이언트 컴포넌트의 차이'} markdown={markdownSource} />,
           })
         }
       >
