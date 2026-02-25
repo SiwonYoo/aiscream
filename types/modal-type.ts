@@ -1,4 +1,5 @@
-export type ModalVariant = 'info' | 'confirm';
+import type { ReactNode } from 'react';
+export type ModalVariant = 'info' | 'confirm' | 'custom';
 
 export interface ModalType {
   title: string; // modal 타이틀
@@ -10,4 +11,6 @@ export interface ModalType {
 
   onConfirm?: () => void; // 동작 버튼으로 동작할 함수
   contentLabel: string; // 어떤 모달인지 명시 (접근성 - 스크린리더용)
+
+  children?: ReactNode;
 }
