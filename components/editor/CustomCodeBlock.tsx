@@ -31,14 +31,14 @@ export default function CustomCodeBlock({ node, deleteNode, updateAttributes }: 
   const handleCopy = () => {
     const code = node.textContent;
 
-    try{navigator.clipboard.writeText(code);
-    setIsCopied(true);
+    try {
+      navigator.clipboard.writeText(code);
+      setIsCopied(true);
 
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2000);
-    }
-    catch {
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000);
+    } catch {
       console.error('복사 실패');
     }
   };
