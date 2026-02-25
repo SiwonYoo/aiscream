@@ -21,7 +21,7 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
   const onClickLogout = () => {};
 
   return (
-    <aside id="sidebar" className={`z-10 flex w-70 flex-col self-stretch border-r border-base-stroke bg-muted text-sm transition-all duration-200 max-pc:absolute max-pc:inset-0 pc:h-dvh ${isSidebarOpen ? 'pc:w-75' : 'max-pc:w-0 pc:w-15.5'}`}>
+    <aside id="sidebar" className={`z-10 flex w-70 flex-col self-stretch border-r border-base-stroke bg-muted text-xs transition-all duration-200 max-pc:absolute max-pc:inset-0 pc:h-dvh pc:text-sm ${isSidebarOpen ? 'pc:w-75' : 'max-pc:w-0 pc:w-15.5'}`}>
       {/* (only-PC) 사이드바 헤더 */}
       <header className={`hidden h-15.5 border-b border-base-stroke px-4 py-4.5 pc:flex ${isSidebarOpen ? 'justify-between' : 'justify-center'}`}>
         {/* (only-PC) 로고 */}
@@ -43,7 +43,7 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
       </Link>
 
       {/* 블로그 목록 */}
-      <nav aria-label="블로그 목록" className={`flex-1 space-y-1 overflow-auto px-4 pt-5 pc:mx-3 pc:mt-8 pc:px-0 pc:pt-0`} aria-hidden={!isSidebarOpen}>
+      <nav aria-label="블로그 목록" className={`flex-1 space-y-1 overflow-auto px-2.5 pt-5 pc:mx-3 pc:mt-8 pc:px-0 pc:pt-0`} aria-hidden={!isSidebarOpen}>
         {!isSidebarOpen ? null : initialPosts.length === 0 ? (
           <div className="flex h-full justify-center text-primary">아직 작성한 블로그가 없습니다.</div>
         ) : (
@@ -52,7 +52,7 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
               const isActive = pathname === `/post/${post.id}`;
               return (
                 <li key={post.id}>
-                  <Link href={`/post/${post.id}`} onClick={() => selectPostId(post.id)} className={`flex w-full cursor-pointer items-center gap-1.5 rounded-lg py-2 hover:bg-base-stroke pc:p-2 ${isActive ? 'bg-base-stroke' : ''}`} aria-current={isActive ? 'page' : undefined}>
+                  <Link href={`/post/${post.id}`} onClick={() => selectPostId(post.id)} className={`flex w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 py-2 hover:bg-base-stroke pc:p-2 ${isActive ? 'bg-base-stroke' : ''}`} aria-current={isActive ? 'page' : undefined}>
                     {isActive && isChanged && (
                       <div className="h-1 w-1 shrink-0 rounded-full bg-red-500">
                         <span className="sr-only">수정 중</span>

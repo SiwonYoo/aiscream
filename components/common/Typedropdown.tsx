@@ -39,7 +39,7 @@ export default function TypeDropdown({ selectedType, onSelect, options, disabled
   const displayText = options.find(o => o.value === selectedType)?.label ?? selectedType;
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative bg-bg-base" ref={dropdownRef}>
       {/* 타입 선택창 */}
       <button
         type="button"
@@ -48,7 +48,7 @@ export default function TypeDropdown({ selectedType, onSelect, options, disabled
           if (disabled) return;
           setIsOpen(prev => !prev);
         }}
-        className="flex w-30 items-center justify-between gap-4 rounded-sm border border-input-stroke px-4 py-2 whitespace-nowrap pc:w-35"
+        className="flex w-30 cursor-pointer items-center justify-between gap-4 rounded-sm border border-input-stroke px-4 py-2 whitespace-nowrap pc:w-35"
       >
         <span className="text-center text-sm leading-3.5 font-normal text-primary pc:text-base pc:leading-4">{displayText}</span>
         <Image src="/assets/images/down.svg" width={10} height={5} alt="타입선택 버튼" className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -56,7 +56,7 @@ export default function TypeDropdown({ selectedType, onSelect, options, disabled
 
       {/* 드롭다운 옵션 */}
       {isOpen && (
-        <ul className="absolute bottom-full left-0 z-10 mb-1 w-30 rounded-sm border border-input-stroke bg-white whitespace-nowrap shadow-sm pc:w-35">
+        <ul className="absolute bottom-full left-0 z-10 mb-1 w-30 rounded-sm border border-input-stroke bg-bg-base whitespace-nowrap shadow-sm pc:w-35">
           {options.map(option => (
             <li key={option.value}>
               <button type="button" onClick={() => handleSelect(option.value)} className="w-full border border-input-stroke px-4 py-2 text-left text-sm text-primary hover:bg-base-stroke pc:text-base">
