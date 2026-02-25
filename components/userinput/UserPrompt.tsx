@@ -176,7 +176,7 @@ export function TypeSelect({ handleSubmit, selectedType, setSelectedType, isForm
             <TypeDropdown selectedType={selectedType} onSelect={v => !disabled && setSelectedType(v as BlogType)} options={TYPE_OPTIONS} disabled={disabled} />
             {/* 설명 툴팁 */}
             <div className="relative" ref={tooltipRef}>
-              <button type="button" className="flex h-4 w-4 cursor-help items-center justify-center rounded-full border border-placeholder text-xs text-placeholder" aria-hidden="true" onClick={() => setShowTooltip(prev => !prev)}>
+              <button type="button" className="flex h-4 w-4 cursor-help items-center justify-center rounded-full border border-placeholder text-xs text-placeholder" aria-label="블로그 타입 설명 보기" aria-expanded={showTooltip} onClick={() => setShowTooltip(prev => !prev)}>
                 i
               </button>
               {showTooltip && (
