@@ -32,7 +32,11 @@ export function EditorProvider({ children, initialContent = '', streamedMarkdown
   // isChanged 상태 동기화
   useEffect(() => {
     setIsChanged(isChanged);
-  }, [isChanged]);
+
+    return () => {
+      setIsChanged(false);
+    };
+  }, [isChanged, setIsChanged]);
 
   // 스트리밍할 때 markdown으로 받음
   useEffect(() => {
