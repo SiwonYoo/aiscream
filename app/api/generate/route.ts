@@ -24,7 +24,7 @@ export const typePrompt: Record<BlogType, string> = {
 TIL 형식으로 새로 학습하는 입장에서 더 와닿게 이해되도록 작성해줘.
 비유나 비전공자의 관점에서 이해될 만한 비슷한 사례들을 넣어줘.
   `,
-  trouble: `
+  troubleshooting: `
 	trouble shooting 관점에서 작성해줘.
 	일어날 수 있는 실수나 오류들 관점에서 작성하거나,
 	더 개선할 수 있는 방법들을 작성해서 trouble shooting에 알맞게 작성해줘.
@@ -39,12 +39,30 @@ export async function POST(request: NextRequest) {
 
     const postType = typePrompt[type as BlogType];
 
+    const topicRes = await openai.responses.create({
+      model: 'gpt-4o-mini',
+      input: `
+      너는 개발 기술 전문 블로거야.
+      
+      아래 정보를 바탕으로 블로그 글 전체의 주제를 담은 제목(topic)을 한 줄로만 생성해줘.
+      제목 외에 다른 설명은 절대 붙이지 마. ''나 ""로 감싸지도 말아줘.
+
+      - 제목: ${title}
+      - 키워드: ${keyword}
+      - 글 유형: ${type}
+      `,
+      max_output_tokens: 100,
+      temperature: 0.5,
+    });
+
+    const topic = topicRes.output_text.trim();
+
     const res = await openai.responses.create({
       model: 'gpt-4o-mini',
       input: `
       너는 개발 기술 전문 블로거야.
 
-      ${title}에 관한 개발자 기술 블로그를 작성해줘.
+      ${topic}을 기반으로 ${title}에 관한 개발자 기술 블로그를 작성해줘.
       ${keyword} 내용이 반드시 포함되어야 해.
 
 	  ${postType}
@@ -78,6 +96,7 @@ export async function POST(request: NextRequest) {
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
         'Cache-Control': 'no-cache',
+        'X-Topic': encodeURIComponent(topic),
       },
     });
   } catch (err) {

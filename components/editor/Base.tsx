@@ -8,9 +8,9 @@ export default function Base({ result, loading = false }: { result: string; load
   return (
     <>
       {/* 글 생성되기 전 상태 */}
-      {!result && <EditorPlaceholder />}
+      {!result && !loading && <EditorPlaceholder />}
       {/* 글 생성 후 상태 */}
-      {result && (
+      {(result || loading) && (
         <EditorProvider streamedMarkdown={result}>
           <div className="relative flex min-h-0 flex-1 flex-col">
             {loading && <Loading />}
