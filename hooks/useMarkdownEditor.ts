@@ -1,17 +1,18 @@
-import CustomCodeBlock from "@/components/editor/CustomCodeBlock";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import { ReactNodeViewRenderer, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { common, createLowlight } from "lowlight";
+import CustomCodeBlock from '@/components/editor/CustomCodeBlock';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { ReactNodeViewRenderer, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { common, createLowlight } from 'lowlight';
 import Link from '@tiptap/extension-link';
 import { CodeBlockTabExtension } from '@/extensions/CodeBlockTab';
 
 import 'highlight.js/styles/github-dark.css';
-import { Markdown } from "tiptap-markdown";
+import { Markdown } from 'tiptap-markdown';
 
 const lowlight = createLowlight(common);
 
-export function useMarkdownEditor(initialContent: string) {  // TipTap 에디터 인스턴스 생성
+export function useMarkdownEditor(initialContent: string) {
+  // TipTap 에디터 인스턴스 생성
 
   const editor = useEditor({
     // 0. SSR 환경에서 hydration mismatch 방지
@@ -58,7 +59,7 @@ export function useMarkdownEditor(initialContent: string) {  // TipTap 에디터
     // 3. editorProps: 에디터 DOM에 적용할 속성
     editorProps: {
       attributes: {
-        class: 'prose prose-sm min-w-full h-full p-2 focus:outline-none',
+        class: 'prose prose-sm min-w-full h-full p-2 focus:outline-none dark:prose-invert ',
       },
     },
 
@@ -70,6 +71,6 @@ export function useMarkdownEditor(initialContent: string) {  // TipTap 에디터
       const markdown = editor.storage.markdown?.getMarkdown();
     },
   });
-  
+
   return { editor };
 }

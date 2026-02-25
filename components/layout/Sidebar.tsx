@@ -7,6 +7,7 @@ import { useAuth } from '@/app/hooks/useAuth';
 import type { Post } from '@/types/post';
 import { usePostStore } from '@/stores/post-store';
 import PlusIcon from '../common/PlusIcon';
+import ThemeModeToggle from '../common/Toggle';
 
 // const MOCK_BLOG_TITLE = ['초보자를 위한 Next.js 시작하기 가이드', '프론트엔드 개발자 관점으로 바라보는 관심사의 분리와 좋은 폴더 구조 (feat. FSD)', 'Redux 어떻게 써야 잘 썼다고 소문이 날까?', 'Clean Architecture on Frontend'];
 export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Post[]; userEmail: string }) {
@@ -27,13 +28,13 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
 
         {/* (only-PC) 토글 */}
         <button type="button" aria-expanded={isSidebarOpen} aria-controls="sidebar" aria-label="사이드바 토글" onClick={toggleSidebar} className="cursor-pointer p-2">
-          <Image src={isSidebarOpen ? '/assets/images/ico-chevron-left.svg' : '/assets/images/ico-chevron-right.svg'} width={6} height={12} alt="" />
+          <Image src={isSidebarOpen ? '/assets/images/ico-chevron-left.svg' : '/assets/images/ico-chevron-right.svg'} width={6} height={12} alt="" className="dark:invert" />
         </button>
       </header>
 
       {/* (only-PC) 새 블로그 작성 버튼 */}
       <Link href="/post" className={`mx-3 mt-5 hidden items-center justify-center gap-3 rounded-sm bg-black text-base text-white pc:flex ${isSidebarOpen ? 'h-10' : 'h-9.5'}`}>
-        <PlusIcon color="#fff" className="h-3.5 w-3.5" />
+        <PlusIcon color="#fff" className="h-3.5 w-3.5 text-white" />
         <span className={isSidebarOpen ? '' : 'hidden'}>새 블로그 작성</span>
       </Link>
 
@@ -47,7 +48,7 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
               const isActive = pathname === `/post/${post.id}`;
               return (
                 <li key={post.id}>
-                  <Link href={`/post/${post.id}`} onClick={() => selectPostId(post.id)} className={`flex w-full cursor-pointer items-center gap-1.5 rounded-lg py-2 pc:p-2 ${isActive ? 'bg-base-stroke' : ''}`} aria-current={isActive ? 'page' : undefined}>
+                  <Link href={`/post/${post.id}`} onClick={() => selectPostId(post.id)} className={`flex w-full cursor-pointer items-center gap-1.5 rounded-lg py-2 hover:bg-base-stroke pc:p-2 ${isActive ? 'bg-base-stroke' : ''}`} aria-current={isActive ? 'page' : undefined}>
                     {idx === 0 && (
                       <div className="h-1 w-1 shrink-0 rounded-full bg-red-500">
                         <span className="sr-only">최신 글</span>
@@ -66,9 +67,10 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
       <footer className={`mt-auto flex px-4 py-4.5 ${isSidebarOpen ? 'justify-between' : 'justify-center max-pc:hidden'}`}>
         {/* 계정 정보 */}
         <span className={isSidebarOpen ? '' : 'hidden'}>{userEmail}</span>
+        <ThemeModeToggle />
         {/* 로그아웃 버튼 */}
         <button type="button" aria-label="로그아웃" className="cursor-pointer" onClick={() => logout('/login')}>
-          <Image src="/assets/images/ico-logout.svg" width={12} height={12} alt="" />
+          <Image src="/assets/images/ico-logout.svg" width={12} height={12} alt="" className="dark:invert" />
         </button>
       </footer>
     </aside>

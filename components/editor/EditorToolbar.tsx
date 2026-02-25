@@ -3,7 +3,7 @@
 import { Editor, useEditorState } from '@tiptap/react';
 import Image from 'next/image';
 
-export default function EditorToolbar({ editor, isMarkdownMode, setIsMarkdownMode }: { editor: Editor, isMarkdownMode:boolean, setIsMarkdownMode: (prev: boolean) => void }) {
+export default function EditorToolbar({ editor, isMarkdownMode, setIsMarkdownMode }: { editor: Editor; isMarkdownMode: boolean; setIsMarkdownMode: (prev: boolean) => void }) {
   // 활성화 상태 구독
   const editorState = useEditorState({
     editor,
@@ -29,12 +29,12 @@ export default function EditorToolbar({ editor, isMarkdownMode, setIsMarkdownMod
   const activeStyle = 'bg-active text-white font-bold';
 
   return (
-    <div className='flex justify-between border-b pb-2 text-sm gap-4'>
-      <div className='flex'>
-        <button type="button" className={`cursor-pointer rounded-xs px-1.5 py-0.5 pc:px-2 pc:py-1 ${isMarkdownMode ? 'bg-white text-primary' : 'bg-black text-white'}`} onClick={()=>setIsMarkdownMode(false)}>
+    <div className="flex justify-between gap-4 border-b pb-2 text-sm">
+      <div className="flex">
+        <button type="button" className={`cursor-pointer rounded-xs px-1.5 py-0.5 pc:px-2 pc:py-1 ${isMarkdownMode ? 'bg-white text-primary' : 'bg-black text-white'}`} onClick={() => setIsMarkdownMode(false)}>
           Preview
         </button>
-        <button type="button" className={`cursor-pointer rounded-xs px-1.5 py-0.5 pc:px-2 pc:py-1 ${isMarkdownMode ? 'bg-black text-white' : 'bg-white text-primary'}`} onClick={()=>setIsMarkdownMode(true)}>
+        <button type="button" className={`cursor-pointer rounded-xs px-1.5 py-0.5 pc:px-2 pc:py-1 ${isMarkdownMode ? 'bg-black text-white' : 'bg-white text-primary'}`} onClick={() => setIsMarkdownMode(true)}>
           Edit
         </button>
       </div>
