@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
+import type { User } from '@supabase/supabase-js';
 
 const getURL = () => {
   let url = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.NEXT_PUBLIC_VERCEL_URL ?? 'http://localhost:3000/';
@@ -17,11 +18,44 @@ type AuthResult = { ok: true } | { ok: false; message: string };
 
 export function useAuth() {
   const router = useRouter();
-
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const clearError = () => setErrorMessage('');
+
+  useEffect(() => {
+    let mounted = true;
+
+    const init = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (!mounted) return;
+
+      if (error) {
+        const code = (error as any).code;
+        if (code === 'refresh_token_not_found') {
+          setUser(null);
+          return;
+        }
+
+        console.warn('[auth.getUser]', error);
+        setUser(null);
+        return;
+      }
+
+      setUser(data.user ?? null);
+    };
+    init();
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
 
   const loginWithGoogle = async (nextPath: string = '/post'): Promise<AuthResult> => {
     setIsLoading(true);
@@ -85,6 +119,7 @@ export function useAuth() {
   };
 
   return {
+    user,
     isLoading,
     errorMessage,
     clearError,
