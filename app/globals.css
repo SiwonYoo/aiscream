@@ -169,6 +169,11 @@ body {
   word-break: keep-all;
 }
 
+:focus {
+  border-color: #e6a1b3;
+  outline-color: #e6a1b3;
+}
+
 .itim {
   font-family: 'Itim';
 }
