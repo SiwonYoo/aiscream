@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabaseServer';
 import { Client } from '@notionhq/client';
 
+function isDemoUser(email?: string | null) {
+  return email === 'demo@aiscream.com';
+}
+
 /**
  * Notion page 객체에서 제목을 뽑아오는 함수
  * - Notion page는 title이 properties 안에 들어있어서 직접 찾아야 함
@@ -43,10 +47,21 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 });
   }
 
+  const demo = isDemoUser(user.email);
+  const installId = req.headers.get('x-install-id') ?? '';
+  if (demo && !installId) {
+    return NextResponse.json({ error: 'MISSING_INSTALL_ID' }, { status: 400 });
+  }
+
+  let qb = supabase.from('notion_connections').select('access_token').eq('user_id', user.id);
+
+  if (demo) qb = qb.eq('demo_install_id', installId);
+  else qb = qb.is('demo_install_id', '');
+
   /**
    * DB에서 해당 유저의 Notion access_token 가져오기
    */
-  const { data: conn, error: connErr } = await supabase.from('notion_connections').select('access_token').eq('user_id', user.id).maybeSingle();
+  const { data: conn, error: connErr } = await qb.maybeSingle();
 
   if (connErr) {
     return NextResponse.json({ error: 'DB_ERROR' }, { status: 500 });
@@ -55,6 +70,8 @@ export async function GET(req: Request) {
   if (!conn?.access_token) {
     return NextResponse.json({ error: 'NOT_CONNECTED' }, { status: 404 });
   }
+
+  const notion = new Client({ auth: conn.access_token });
 
   /**
    * Notion API
@@ -69,7 +86,6 @@ export async function GET(req: Request) {
 
   // 검색어가 있을 때만 query를 넣기
   if (q) notionBody.query = q;
-  const notion = new Client({ auth: conn.access_token });
 
   let data;
   try {

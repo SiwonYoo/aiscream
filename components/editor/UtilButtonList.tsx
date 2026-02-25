@@ -3,8 +3,9 @@
 import UtilButton from '@/components/editor/UtilButton';
 import { useEditorContext } from '@/contexts/EditorContext';
 import { useModalStore } from '@/stores/modal-store';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import NotionPublishModal from '../modal/NotionPublishModal';
+import NotionAutoResume from '../notion/NotionAutoResume';
 
 export default function UtilButtonList() {
   const [isDownOpen, setIsDownOpen] = useState(false); // 다운받기 하위 옵션 열림/닫힘 상태
@@ -31,6 +32,25 @@ export default function UtilButtonList() {
   // 모달 열기
   const openModal = useModalStore(state => state.openModal);
 
+  // Notion 발행 모달 열기
+  const openNotionModal = useCallback(() => {
+    openModal({
+      title: 'Notion 발행',
+      message: '',
+      variant: 'custom',
+      cancelText: '닫기',
+      contentLabel: 'Notion 발행 모달',
+      children: (
+        <NotionPublishModal
+          postId={'86542016-6d3d-4e67-9eca-72372f9baf0f'}
+          postTitle={'Next.js App Router에서 서버 컴포넌트와 클라이언트 컴포넌트의 차이'}
+          markdown={markdownSource}
+          autoPick // 연결 직후 바로 PICK로
+        />
+      ),
+    });
+  }, [openModal, markdownSource]);
+
   // 테스트 함수 (삭제 모달에 넣었습니다. 해당 부분 작업 시 없애주세요!)
   const testFunc = () => {
     alert('완료!');
@@ -38,6 +58,7 @@ export default function UtilButtonList() {
 
   return (
     <div className="util-button-list flex items-center justify-center gap-4 border-t border-base-stroke px-4 py-5 pc:gap-7.5">
+      <NotionAutoResume onResume={openNotionModal} />
       <UtilButton iconSrc="/assets/images/ico-save-black-2x.png" onClick={() => {}} disabled>
         수정완료
       </UtilButton>
@@ -82,19 +103,7 @@ export default function UtilButtonList() {
           </li>
         </ul>
       </div>
-      <UtilButton
-        iconSrc="/assets/images/ico-publish-black-2x.png"
-        onClick={() =>
-          openModal({
-            title: 'Notion 발행',
-            message: '',
-            variant: 'custom',
-            cancelText: '닫기',
-            contentLabel: 'Notion 발행 모달',
-            children: <NotionPublishModal postId={'86542016-6d3d-4e67-9eca-72372f9baf0f'} postTitle={'Next.js App Router에서 서버 컴포넌트와 클라이언트 컴포넌트의 차이'} markdown={markdownSource} />,
-          })
-        }
-      >
+      <UtilButton iconSrc="/assets/images/ico-publish-black-2x.png" onClick={openNotionModal}>
         발행하기
       </UtilButton>
       <UtilButton

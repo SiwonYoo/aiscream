@@ -11,6 +11,17 @@ type NotionRichText = {
   };
 };
 
+const LANG_ALIAS: Record<string, string> = {
+  plaintext: 'plain text',
+  text: 'plain text',
+  txt: 'plain text',
+  js: 'javascript',
+  ts: 'typescript',
+  sh: 'bash',
+  shell: 'shell',
+  yml: 'yaml',
+};
+
 export type NotionBlock =
   | { object: 'block'; type: 'paragraph'; paragraph: { rich_text: NotionRichText[]; children?: NotionBlock[] } }
   | { object: 'block'; type: 'heading_1'; heading_1: { rich_text: NotionRichText[] } }
@@ -195,7 +206,9 @@ export function markdownToNotionBlocks(markdown: string): NotionBlock[] {
     if (trimmed.startsWith('```')) {
       flushParagraph();
       endList();
-      const lang = trimmed.slice(3).trim() || 'plain text';
+      let lang = trimmed.slice(3).trim().toLowerCase();
+      lang = LANG_ALIAS[lang] ?? lang;
+      if (!lang) lang = 'plain text';
       i += 1;
       const codeLines: string[] = [];
       while (i < lines.length && !lines[i].trim().startsWith('```')) {

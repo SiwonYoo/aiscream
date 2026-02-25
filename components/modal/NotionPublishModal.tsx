@@ -1,8 +1,9 @@
 'use client';
-
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useModalStore } from '@/stores/modal-store';
+import { getOrCreateInstallId } from '@/lib/installId';
+import { useEditorContext } from '@/contexts/EditorContext';
 
 type Step = 'HOME' | 'PICK' | 'PUBLISHING';
 
@@ -13,37 +14,37 @@ type NotionPageItem = {
   lastEditedTime?: string;
 };
 
-type PagesResponse = { pages: NotionPageItem[] } | { error: 'NOT_CONNECTED' | 'UNAUTHORIZED' | 'DB_ERROR' | 'NOTION_API_ERROR'; detail?: string };
+type PagesResponse = { pages: NotionPageItem[] } | { error: 'NOT_CONNECTED' | 'UNAUTHORIZED' | 'DB_ERROR' | 'NOTION_API_ERROR' | 'MISSING_INSTALL_ID'; detail?: string };
 
 type PublishResponse = { ok: true; page: { id: string; url: string } } | { ok: false; message: string };
 
-function formatKST(iso?: string) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  return d.toLocaleString('ko-KR', { dateStyle: 'medium', timeStyle: 'short' });
-}
-
-export default function NotionPublishModal({ postId, postTitle, markdown }: { postId: string; postTitle: string; markdown: string }) {
+export default function NotionPublishModal({ postId, postTitle, markdown, autoPick = false }: { postId: string; postTitle: string; markdown: string; autoPick?: boolean }) {
   const router = useRouter();
   const closeModal = useModalStore(s => s.closeModal);
-
   const [step, setStep] = useState<Step>('HOME');
   const [statusText, setStatusText] = useState('');
   const [errorText, setErrorText] = useState('');
-
   const [pages, setPages] = useState<NotionPageItem[]>([]);
   const [loadingPages, setLoadingPages] = useState(false);
   const [q, setQ] = useState('');
   const [selectedId, setSelectedId] = useState('');
-
+  const autoPickRan = useRef(false);
   const [isPersonalOpen, setIsPersonalOpen] = useState(true);
-
   const selectedPage = useMemo(() => pages.find(p => p.id === selectedId) ?? null, [pages, selectedId]);
   const personalPages: NotionPageItem[] = pages;
 
   const goConnect = () => {
-    window.location.href = '/api/notion/connect';
+    const installId = getOrCreateInstallId();
+    const returnTo = window.location.pathname + window.location.search;
+    const resume = 'notion_pick';
+
+    const qs = new URLSearchParams({
+      install_id: installId,
+      return_to: returnTo,
+      resume,
+    });
+
+    window.location.assign(`/api/notion/connect?${qs.toString()}`);
   };
 
   const loadPages = async (query = '') => {
@@ -52,7 +53,15 @@ export default function NotionPublishModal({ postId, postTitle, markdown }: { po
     setLoadingPages(true);
 
     try {
-      const res = await fetch(`/api/notion/pages?q=${encodeURIComponent(query)}`, { method: 'GET' });
+      const installId = getOrCreateInstallId();
+
+      const res = await fetch(`/api/notion/pages?q=${encodeURIComponent(query)}`, {
+        method: 'GET',
+        headers: {
+          'x-install-id': installId,
+        },
+      });
+
       const data = (await res.json()) as PagesResponse;
 
       if (!res.ok || 'error' in data) {
@@ -61,6 +70,12 @@ export default function NotionPublishModal({ postId, postTitle, markdown }: { po
           setStep('HOME');
           return;
         }
+        if ('error' in data && data.error === 'MISSING_INSTALL_ID') {
+          setErrorText('새로고침 후 다시 시도해주세요.');
+          setStep('HOME');
+          return;
+        }
+
         const msg = 'error' in data ? `${data.error}${data.detail ? `: ${data.detail}` : ''}` : 'PAGES_FETCH_FAILED';
         throw new Error(msg);
       }
@@ -77,6 +92,13 @@ export default function NotionPublishModal({ postId, postTitle, markdown }: { po
     }
   };
 
+  useEffect(() => {
+    if (!autoPick) return;
+    if (autoPickRan.current) return;
+    autoPickRan.current = true;
+    loadPages('');
+  }, [autoPick]);
+
   const publish = async () => {
     if (!selectedPage) {
       setErrorText('발행할 페이지를 선택해주세요.');
@@ -92,9 +114,14 @@ export default function NotionPublishModal({ postId, postTitle, markdown }: { po
     setStep('PUBLISHING');
 
     try {
+      const installId = getOrCreateInstallId();
+
       const res = await fetch('/api/notion/publish', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-install-id': installId,
+        },
         body: JSON.stringify({
           title: postTitle?.trim() || 'Untitled',
           markdown,
@@ -111,15 +138,14 @@ export default function NotionPublishModal({ postId, postTitle, markdown }: { po
 
       if (data.page?.url) window.open(data.page.url, '_blank', 'noopener,noreferrer');
 
+      router.refresh();
       closeModal();
-      router.push(`/post/${postId}`);
     } catch (e) {
       setErrorText(e instanceof Error ? e.message : '발행에 실패했어.');
       setStep('PICK');
     }
   };
 
-  // Step 0: HOME
   if (step === 'HOME') {
     return (
       <div className="flex w-full flex-col gap-4">
@@ -140,11 +166,9 @@ export default function NotionPublishModal({ postId, postTitle, markdown }: { po
     );
   }
 
-  // Step 1: PICK
   if (step === 'PICK') {
     return (
       <div className="flex w-full flex-col gap-4">
-        {/* 검색 */}
         <div className="flex h-10 items-center gap-2 rounded-sm border border-input-stroke bg-white px-3">
           <input value={q} onChange={e => setQ(e.target.value)} placeholder="페이지 검색" className="w-full text-sm outline-none placeholder:text-placeholder" />
           <button type="button" className="shrink-0 rounded-xs border border-input-stroke px-3 py-1 text-sm font-medium hover:bg-muted disabled:opacity-60" onClick={() => loadPages(q)} disabled={loadingPages}>
@@ -154,17 +178,14 @@ export default function NotionPublishModal({ postId, postTitle, markdown }: { po
 
         {errorText && <p className="rounded bg-info px-3 py-2 text-sm text-primary">{errorText}</p>}
 
-        {/* 페이지 선택 박스 */}
         <div className="rounded-sm border border-base-stroke bg-white">
-          {/* 헤더 */}
           <button type="button" className="flex w-full items-center justify-between border-b border-base-stroke px-4 py-3 text-left hover:bg-muted" onClick={() => setIsPersonalOpen(v => !v)}>
             <p className="text-sm font-medium text-primary">페이지 선택</p>
             <span className="text-sm text-placeholder">{isPersonalOpen ? '▾' : '▸'}</span>
           </button>
 
-          {/* ✅ 리스트 높이 고정 + 내부 스크롤 */}
           {isPersonalOpen && (
-            <div className="max-h-[420px] overflow-auto">
+            <div className="max-h-105 overflow-auto">
               {personalPages.length === 0 ? (
                 <div className="px-4 py-6 text-sm text-placeholder">표시할 페이지가 없습니다.</div>
               ) : (
@@ -175,8 +196,6 @@ export default function NotionPublishModal({ postId, postTitle, markdown }: { po
                         <input type="radio" name="notionPage" className="h-4 w-4" checked={selectedId === p.id} onChange={() => setSelectedId(p.id)} />
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm text-primary">{p.title || 'Untitled'}</p>
-                          {/* 원하면 최근편집 표시 켜도 됨 */}
-                          {p.lastEditedTime ? <p className="mt-0.5 text-[11px] text-placeholder">최근 편집: {formatKST(p.lastEditedTime)}</p> : null}
                         </div>
                       </label>
                     </li>
@@ -186,7 +205,6 @@ export default function NotionPublishModal({ postId, postTitle, markdown }: { po
             </div>
           )}
 
-          {/* ✅ 하단 버튼 정렬/라인 고정 */}
           <div className="flex items-center justify-between gap-3 border-t border-base-stroke px-4 py-3">
             <button type="button" className="h-10 w-1/2 rounded-sm border border-input-stroke bg-white text-sm font-semibold hover:bg-muted" onClick={() => setStep('HOME')}>
               뒤로 가기
@@ -201,7 +219,6 @@ export default function NotionPublishModal({ postId, postTitle, markdown }: { po
     );
   }
 
-  // Step 2: PUBLISHING
   return (
     <div className="flex w-full flex-col gap-3">
       <p className="text-sm text-secondary">{statusText || '발행 중…'}</p>
