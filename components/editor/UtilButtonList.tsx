@@ -89,7 +89,9 @@ export default function UtilButtonList() {
     const a = document.createElement('a');
     a.href = url;
     a.download = fileName;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
 
     // 메모리 정리
     URL.revokeObjectURL(url);
@@ -136,7 +138,7 @@ export default function UtilButtonList() {
               .md
             </button>
           </li>
-          <li role="menuitem">
+          <li>
             <button type="button" role="menuitem" className="h-full w-full px-2 py-1 text-left transition duration-300 hover:bg-keyword pc:px-4 pc:py-1.5" onClick={() => handleDownload('html')}>
               .html
             </button>
