@@ -43,7 +43,7 @@ export default function UserPrompt({ handleCreateBlog, readOnly = false, initial
     <div className="relative">
       {/* 드롭다운 버튼 */}
       <button type="button" onClick={() => setIsDrop(prev => !prev)} className={`absolute right-7 z-30 transition-all pc:right-6 ${isDrop ? '-top-0.5' : '-top-6'}`}>
-        <DropIcon className={`aspect-20/7 h-7 w-20 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] transition-transform ${isDrop ? '' : 'rotate-180'}`} />
+        <DropIcon aria-label={isDrop ? '프롬프트 접기' : '프롬프트 펼치기'} className={`aspect-20/7 h-7 w-20 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] transition-transform ${isDrop ? '' : 'rotate-180'}`} />
       </button>
       <div className="border-t border-base-stroke">
         <div className={`flex flex-col gap-5 px-4 transition-all duration-300 pc:px-5 ${isDrop ? 'py-7 opacity-100 pc:py-8' : 'invisible h-10 overflow-hidden opacity-0'}`}>
