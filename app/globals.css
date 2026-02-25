@@ -166,6 +166,7 @@ body {
   font-family: 'Pretendard', sans-serif;
   color: var(--color-primary);
   background-color: var(--color-bg-base);
+  word-break: keep-all;
 }
 
 .itim {
