@@ -7,7 +7,7 @@ import type { Post } from '@/types/post';
 export default function PostDetailClient({ post }: { post: Post }) {
   return (
     <div className="flex min-h-[93vh] flex-col pc:min-h-screen">
-      <Base result={post.content ?? ''} />
+      <Base result={post.content ?? ''} defaultPreview />
 
       <UserPrompt
         readOnly

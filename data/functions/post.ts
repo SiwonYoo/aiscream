@@ -2,6 +2,7 @@
 
 import { getAuthenticatedUser } from '@/lib/auth';
 import { Post } from '@/types/post';
+import { PostgrestSingleResponse } from '@supabase/supabase-js';
 
 /**
  * [READ] 글 조회
@@ -57,4 +58,21 @@ export async function getMyPosts() {
   }));
 
   return posts;
+}
+
+/**
+ * [READ] Id로 글 제목 조회 (단건)
+ */
+export async function getPostTopicById(postId: string) {
+  const { supabase, user } = await getAuthenticatedUser();
+
+  const { data, error }: PostgrestSingleResponse<{ topic: string }> = await supabase.from('posts').select('topic').eq('author_id', user.id).eq('id', postId).single();
+
+  // PGRST116: 데이터 없음 (정상이므로 무시)
+  if (error && error.code !== 'PGRST116') throw error;
+
+  if (!data) return null;
+  const topic: string = data.topic;
+
+  return topic;
 }
