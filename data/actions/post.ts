@@ -1,7 +1,8 @@
 'use server';
 
 import { getAuthenticatedUser } from '@/lib/auth';
-import { CreatePostData, UpdatePostData } from '@/types/post';
+import { CreatePostData, Post, UpdatePostData } from '@/types/post';
+import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
 
 /**
@@ -10,7 +11,7 @@ import { revalidatePath } from 'next/cache';
 export async function createPost(post: CreatePostData) {
   const { supabase, user } = await getAuthenticatedUser();
 
-  const { data, error } = await supabase
+  const { data, error }: PostgrestSingleResponse<Post> = await supabase
     .from('posts')
     .insert([
       {
@@ -37,7 +38,7 @@ export async function createPost(post: CreatePostData) {
 export async function updatePost(postId: string, post: UpdatePostData) {
   const { supabase, user } = await getAuthenticatedUser();
 
-  const { data, error } = await supabase.from('posts').update(post).eq('author_id', user.id).eq('id', postId).select().single();
+  const { data, error }: PostgrestSingleResponse<Post> = await supabase.from('posts').update(post).eq('author_id', user.id).eq('id', postId).select().single();
 
   if (error) throw error;
 
@@ -54,5 +55,6 @@ export async function deletePost(postId: string) {
 
   if (error) throw error;
 
+  revalidatePath('/post');
   return { success: true };
 }

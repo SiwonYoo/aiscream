@@ -50,6 +50,7 @@ export function useMarkdownEditor(initialContent: string) {
       // Markdown: 마크다운 입출력 지원
       Markdown.configure({
         transformCopiedText: true,
+        transformPastedText: true,
       }),
     ],
 
@@ -64,12 +65,7 @@ export function useMarkdownEditor(initialContent: string) {
     },
 
     // 4. onUpdate: 내용 변경 감지
-    onUpdate: ({ editor }) => {
-      // TODO html, markdown 다운로드에 활용
-      const html = editor.getHTML();
-      // onContentChange?.(html);
-      const markdown = editor.storage.markdown?.getMarkdown();
-    },
+    onUpdate: () => {},
   });
 
   return { editor };
