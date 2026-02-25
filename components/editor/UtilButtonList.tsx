@@ -3,6 +3,7 @@
 import UtilButton from '@/components/editor/UtilButton';
 import { useEditorContext } from '@/contexts/EditorContext';
 import { deletePost, updatePost } from '@/data/actions/post';
+import { getPostTopicById } from '@/data/functions/post';
 import { useModalStore } from '@/stores/modal-store';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -49,7 +50,7 @@ export default function UtilButtonList() {
   };
 
   // 다운로드
-  const handleDownload = (type: 'md' | 'html') => {
+  const handleDownload = async (type: 'md' | 'html') => {
     if (!editor) return;
     const isMdType = type === 'md';
 
@@ -58,10 +59,16 @@ export default function UtilButtonList() {
       editor.commands.setContent(markdownSource);
     }
 
-    // 파일 이름 설정
+    // 파일 이름 설정 (제목 조회 실패 시 날짜로 폴백)
     const now = new Date();
     const formatted = now.toISOString().slice(0, 10);
-    const fileName = `doc-${formatted}.${type}`;
+    let title: string | null = null;
+    try {
+      title = await getPostTopicById(postId);
+    } catch (error) {
+      console.error('제목 조회 중 오류가 발생했습니다. 날짜로 폴백합니다.', error);
+    }
+    const fileName = `${title ?? `doc-${formatted}`}.${type}`;
 
     // 데이터 설정
     const data = isMdType ? markdownSource : editor.getHTML();
