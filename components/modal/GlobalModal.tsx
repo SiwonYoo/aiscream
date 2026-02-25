@@ -51,7 +51,7 @@ export default function GlobalModal() {
                   {/* 기능 넣을 버튼(삭제...등등) */}
                   {variant === 'confirm' && (
                     <button
-                      className="cursor-pointer rounded-sm bg-[#E6A1B3] px-4 py-1.5 text-sm text-white hover:bg-[#D9A0B5] pc:text-base"
+                      className="cursor-pointer rounded-sm bg-[#E6A1B3] px-4 py-1.5 text-sm text-white hover:bg-[#D9A0B5] pc:text-base dark:text-black"
                       onClick={() => {
                         onConfirm?.();
                         closeModal();

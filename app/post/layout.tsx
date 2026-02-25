@@ -14,7 +14,7 @@ export default async function PostLayout({ children }: { children: React.ReactNo
   return (
     <>
       <Header />
-      <div className="relative flex flex-1 overflow-hidden">
+      <div className="relative flex h-dvh flex-1 overflow-hidden">
         <Sidebar initialPosts={posts} userEmail={user?.email ?? ''} />
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>

@@ -82,7 +82,7 @@ export default function PostPage() {
   };
 
   return (
-    <div className="flex h-[93vh] flex-col pc:h-screen">
+    <div className="flex h-full flex-col">
       <Base result={result} loading={loading} />
       <UserPrompt handleCreateBlog={handleCreateBlog} loading={loading} />
     </div>
