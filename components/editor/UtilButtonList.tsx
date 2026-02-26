@@ -136,7 +136,7 @@ export default function UtilButtonList() {
   };
 
   return (
-    <div className="util-button-list flex items-center justify-center gap-4 border-t border-base-stroke px-4 py-5 pc:gap-7.5">
+    <div className="util-button-list flex flex-wrap items-center justify-center gap-4 border-t border-base-stroke px-4 py-4 pc:gap-x-5 pc:gap-y-2">
       <NotionAutoResume onResume={() => openNotionModal()} />
       <UtilButton iconSrc="/assets/images/ico-save-black-2x.png" onClick={handleUpdate} disabled={!isChanged}>
         {isChanged ? '수정하기' : '수정완료'}

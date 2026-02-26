@@ -65,9 +65,11 @@ export async function POST(request: NextRequest) {
       ${topic}을 기반으로 ${title}에 관한 개발자 기술 블로그를 작성해줘.
       ${keyword} 내용이 반드시 포함되어야 해.
 
-	  ${postType}
+	    ${postType}
 
-      ${postToken}토큰 분량으로 글을 마무리 해줘!
+      ${topic}으로 만들어진 제목(h1)은 넣지 말고 본문 내용만 작성해줘.
+      본문 내용의 소주제는 h2부터 사용해주면 돼.
+      ${postToken}토큰 분량 안에서 글이 다 끝나도록 작성해줘.
       `,
       stream: true,
       max_output_tokens: postToken,
