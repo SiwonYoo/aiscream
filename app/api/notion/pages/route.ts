@@ -56,7 +56,7 @@ export async function GET(req: Request) {
   let qb = supabase.from('notion_connections').select('access_token').eq('user_id', user.id);
 
   if (demo) qb = qb.eq('demo_install_id', installId);
-  else qb = qb.is('demo_install_id', '');
+  else qb = qb.eq('demo_install_id', '');
 
   /**
    * DB에서 해당 유저의 Notion access_token 가져오기

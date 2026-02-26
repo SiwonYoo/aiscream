@@ -25,23 +25,27 @@ export default function UtilButtonList() {
   const openModal = useModalStore(state => state.openModal);
 
   // Notion 발행 모달 열기
-  const openNotionModal = useCallback(() => {
+  const openNotionModal = useCallback(async () => {
+    if (!postId) return;
+
+    let title = 'Untitled';
+
+    try {
+      const t = await getPostTopicById(postId);
+      if (t) title = t;
+    } catch (e) {
+      console.error('title fetch fail', e);
+    }
+
     openModal({
       title: 'Notion 발행',
       message: '',
       variant: 'custom',
       cancelText: '닫기',
       contentLabel: 'Notion 발행 모달',
-      children: (
-        <NotionPublishModal
-          postId={'86542016-6d3d-4e67-9eca-72372f9baf0f'}
-          postTitle={'Next.js App Router에서 서버 컴포넌트와 클라이언트 컴포넌트의 차이'}
-          markdown={markdownSource}
-          autoPick // 연결 직후 바로 PICK로
-        />
-      ),
+      children: <NotionPublishModal postId={postId} postTitle={title} markdown={markdownSource} autoPick />,
     });
-  }, [openModal, markdownSource]);
+  }, [openModal, markdownSource, postId]);
 
   // 수정완료
   const handleUpdate = async () => {
@@ -133,7 +137,7 @@ export default function UtilButtonList() {
 
   return (
     <div className="util-button-list flex items-center justify-center gap-4 border-t border-base-stroke px-4 py-5 pc:gap-7.5">
-      <NotionAutoResume onResume={openNotionModal} />
+      <NotionAutoResume onResume={() => openNotionModal()} />
       <UtilButton iconSrc="/assets/images/ico-save-black-2x.png" onClick={handleUpdate} disabled={!isChanged}>
         {isChanged ? '수정하기' : '수정완료'}
       </UtilButton>
@@ -167,7 +171,7 @@ export default function UtilButtonList() {
           </li>
         </ul>
       </div>
-      <UtilButton iconSrc="/assets/images/ico-publish-black-2x.png" onClick={openNotionModal}>
+      <UtilButton iconSrc="/assets/images/ico-publish-black-2x.png" onClick={() => openNotionModal()}>
         발행하기
       </UtilButton>
       <UtilButton

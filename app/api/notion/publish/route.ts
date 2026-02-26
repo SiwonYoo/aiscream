@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     let queryBuilder = supabase.from('notion_connections').select('access_token').eq('user_id', user.id);
 
     if (demo) queryBuilder = queryBuilder.eq('demo_install_id', installId);
-    else queryBuilder = queryBuilder.is('demo_install_id', '');
+    else queryBuilder = queryBuilder.eq('demo_install_id', '');
 
     const { data: conn } = await queryBuilder.maybeSingle();
 
