@@ -25,10 +25,10 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
       {/* (only-PC) 사이드바 헤더 */}
       <header className={`hidden h-15.5 border-b border-base-stroke px-4 py-4.5 pc:flex ${isSidebarOpen ? 'justify-between' : 'justify-center'}`}>
         {/* (only-PC) 로고 */}
-        <h1 className={`items-center gap-1.5 text-lg ${isSidebarOpen ? 'flex' : 'hidden'}`}>
+        <Link href="/post" aria-label="AiScReam 홈으로 이동" className={`${isSidebarOpen ? 'flex' : 'hidden'} flex items-center gap-1.5 text-lg`}>
           <Image src="/assets/images/logo.png" width={26} height={26} alt="" aria-hidden />
           <span className="itim">AiScReam</span>
-        </h1>
+        </Link>
 
         {/* (only-PC) 토글 */}
         <button type="button" aria-expanded={isSidebarOpen} aria-controls="sidebar" aria-label="사이드바 토글" onClick={toggleSidebar} className="cursor-pointer p-2">
