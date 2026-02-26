@@ -31,8 +31,10 @@ export default function MarkdownEditor() {
         />
 
         {/* preview 모드 */}
-        <div className={`relative min-h-0 flex-1 overflow-y-auto focus-within:ring-2 focus-within:ring-focus ${isMarkdownMode ? 'hidden' : ''}`}>
-          <EditorContent editor={editor} className="absolute inset-0" />
+        <div className={`relative min-h-0 flex-1 focus-within:ring-2 focus-within:ring-focus ${isMarkdownMode ? 'hidden' : ''}`}>
+          <div className="absolute inset-0 overflow-y-auto">
+            <EditorContent editor={editor} />
+          </div>
         </div>
 
         {/* 내용 미입력 에러 */}
