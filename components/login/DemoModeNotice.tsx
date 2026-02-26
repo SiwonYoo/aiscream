@@ -11,9 +11,9 @@ export default function DemoModeNotice() {
           <p className="text-sm text-black md:text-base">로그인 안내</p>
         </div>
         <p className="text-xs leading-5 text-secondary md:text-[14px]">
-          데모 계정은 생성한 블로그를 데모 노션에만 발행이 가능합니다.
+          데모 계정으로도 블로그 생성 및 개인 노션 발행이 가능합니다.
           <br />
-          개인 노션에 발행하고 싶으시면 구글로 로그인해 주세요.
+          개인 구글 계정으로 로그인하면 작성한 블로그 내역을 관리할 수 있습니다.
         </p>
       </div>
     </section>
