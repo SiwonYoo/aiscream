@@ -50,12 +50,17 @@ export function EditorProvider({ children, initialTopic = '', initialContent = '
     };
   }, [isChanged, setIsChanged]);
 
-  // 스트리밍할 때 markdown으로 받음
+  // 스트리밍할 때 markdown으로 받음 - 본문
   useEffect(() => {
     if (streamedMarkdown) {
       _setMarkdownSource(streamedMarkdown);
     }
   }, [streamedMarkdown]);
+
+  // 스트리밍할 때 text로 받음 - 제목
+  useEffect(() => {
+    if (initialTopic) _setTopic(initialTopic);
+  }, [initialTopic]);
 
   // edit -> preview 탭 전환 시, 현재 상태 반영
   useEffect(() => {
