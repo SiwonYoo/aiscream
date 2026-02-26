@@ -29,7 +29,7 @@ export default function EditorToolbar({ editor, isMarkdownMode, setIsMarkdownMod
   const activeStyle = 'bg-active text-white font-bold';
 
   return (
-    <div className="flex justify-between gap-4 border-b pb-2 text-sm">
+    <div className="mx-auto flex w-full justify-between gap-4 border-b pb-2 text-sm pc:max-w-300">
       <div className="flex">
         <button type="button" className={`cursor-pointer rounded-xs px-1.5 py-0.5 pc:px-2 pc:py-1 ${isMarkdownMode ? 'bg-white text-primary' : 'bg-black text-white'}`} onClick={() => setIsMarkdownMode(false)}>
           Preview
