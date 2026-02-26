@@ -141,7 +141,7 @@ export default function NotionPublishModal({ postId, postTitle, markdown, autoPi
       router.refresh();
       closeModal();
     } catch (e) {
-      setErrorText(e instanceof Error ? e.message : '발행에 실패했어.');
+      setErrorText(e instanceof Error ? e.message : '발행에 실패했습니다.');
       setStep('PICK');
     }
   };
@@ -169,15 +169,6 @@ export default function NotionPublishModal({ postId, postTitle, markdown, autoPi
   if (step === 'PICK') {
     return (
       <div className="flex w-full flex-col gap-4">
-        <div className="flex h-10 items-center gap-2 rounded-sm border border-input-stroke bg-white px-3">
-          <input value={q} onChange={e => setQ(e.target.value)} placeholder="페이지 검색" className="w-full text-sm outline-none placeholder:text-placeholder" />
-          <button type="button" className="shrink-0 rounded-xs border border-input-stroke px-3 py-1 text-sm font-medium hover:bg-muted disabled:opacity-60" onClick={() => loadPages(q)} disabled={loadingPages}>
-            {loadingPages ? '...' : '검색'}
-          </button>
-        </div>
-
-        {errorText && <p className="rounded bg-info px-3 py-2 text-sm text-primary">{errorText}</p>}
-
         <div className="rounded-sm border border-base-stroke bg-white">
           <button type="button" className="flex w-full items-center justify-between border-b border-base-stroke px-4 py-3 text-left hover:bg-muted" onClick={() => setIsPersonalOpen(v => !v)}>
             <p className="text-sm font-medium text-primary">페이지 선택</p>
@@ -185,7 +176,7 @@ export default function NotionPublishModal({ postId, postTitle, markdown, autoPi
           </button>
 
           {isPersonalOpen && (
-            <div className="max-h-105 overflow-auto">
+            <div className="max-h-60 overflow-auto pc:max-h-105">
               {personalPages.length === 0 ? (
                 <div className="px-4 py-6 text-sm text-placeholder">표시할 페이지가 없습니다.</div>
               ) : (
@@ -193,9 +184,9 @@ export default function NotionPublishModal({ postId, postTitle, markdown, autoPi
                   {personalPages.map(p => (
                     <li key={p.id} className="border-t border-base-stroke first:border-t-0">
                       <label className="flex cursor-pointer items-center gap-3 px-4 py-3 hover:bg-muted">
-                        <input type="radio" name="notionPage" className="h-4 w-4" checked={selectedId === p.id} onChange={() => setSelectedId(p.id)} />
+                        <input type="radio" name="notionPage" className="h-3 w-4 pc:h-4" checked={selectedId === p.id} onChange={() => setSelectedId(p.id)} />
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm text-primary">{p.title || 'Untitled'}</p>
+                          <p className="truncate text-start text-xs text-primary pc:text-sm">{p.title || 'Untitled'}</p>
                         </div>
                       </label>
                     </li>
