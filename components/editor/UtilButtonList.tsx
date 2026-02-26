@@ -5,8 +5,10 @@ import { useEditorContext } from '@/contexts/EditorContext';
 import { deletePost, updatePost } from '@/data/actions/post';
 import { getPostTopicById } from '@/data/functions/post';
 import { useModalStore } from '@/stores/modal-store';
+import { useState, useCallback } from 'react';
+import NotionPublishModal from '../modal/NotionPublishModal';
+import NotionAutoResume from '../notion/NotionAutoResume';
 import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 export default function UtilButtonList() {
   const [isDownOpen, setIsDownOpen] = useState(false); // 다운받기 하위 옵션 열림/닫힘 상태
@@ -21,6 +23,29 @@ export default function UtilButtonList() {
 
   // 모달 열기
   const openModal = useModalStore(state => state.openModal);
+
+  // Notion 발행 모달 열기
+  const openNotionModal = useCallback(async () => {
+    if (!postId) return;
+
+    let title = 'Untitled';
+
+    try {
+      const t = await getPostTopicById(postId);
+      if (t) title = t;
+    } catch (e) {
+      console.error('title fetch fail', e);
+    }
+
+    openModal({
+      title: 'Notion 발행',
+      message: '',
+      variant: 'custom',
+      cancelText: '닫기',
+      contentLabel: 'Notion 발행 모달',
+      children: <NotionPublishModal postId={postId} postTitle={title} markdown={markdownSource} autoPick />,
+    });
+  }, [openModal, markdownSource, postId]);
 
   // 수정완료
   const handleUpdate = async () => {
@@ -113,7 +138,8 @@ export default function UtilButtonList() {
   };
 
   return (
-    <div className="util-button-list flex items-center justify-center gap-4 border-t border-base-stroke px-4 py-5 pc:gap-7.5">
+    <div className="util-button-list flex flex-wrap items-center justify-center gap-4 border-t border-base-stroke px-4 py-4 pc:gap-x-5 pc:gap-y-2">
+      <NotionAutoResume onResume={() => openNotionModal()} />
       <UtilButton iconSrc="/assets/images/ico-save-black-2x.png" onClick={handleUpdate} disabled={!isChanged}>
         {isChanged ? '수정하기' : '수정완료'}
       </UtilButton>
@@ -147,18 +173,7 @@ export default function UtilButtonList() {
           </li>
         </ul>
       </div>
-      <UtilButton
-        iconSrc="/assets/images/ico-publish-black-2x.png"
-        onClick={() =>
-          openModal({
-            title: '발행 완료',
-            message: '발행이 완료되었습니다.',
-            variant: 'info',
-            cancelText: '확인',
-            contentLabel: '발행 완료 알림 모달',
-          })
-        }
-      >
+      <UtilButton iconSrc="/assets/images/ico-publish-black-2x.png" onClick={() => openNotionModal()}>
         발행하기
       </UtilButton>
       <UtilButton

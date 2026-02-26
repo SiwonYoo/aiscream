@@ -17,10 +17,10 @@ export default function Header() {
       </button>
 
       {/* 로고 */}
-      <h1 className="flex items-center gap-1.5 text-sm">
+      <Link href="/post" aria-label="AiScReam 홈으로 이동" className="flex items-center gap-1.5 text-sm">
         <Image src="/assets/images/logo.png" width={22} height={22} alt="" aria-hidden />
         <span className="itim">AiScReam</span>
-      </h1>
+      </Link>
 
       {/* 새 블로그 작성 버튼 */}
       <Link href="/post" aria-label="새 블로그 작성" className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-sm bg-black">
