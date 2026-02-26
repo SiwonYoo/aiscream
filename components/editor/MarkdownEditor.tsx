@@ -33,7 +33,7 @@ export default function MarkdownEditor() {
         {/* preview 모드 */}
         <div className={`relative min-h-0 flex-1 focus-within:ring-2 focus-within:ring-focus ${isMarkdownMode ? 'hidden' : ''}`}>
           <div className="absolute inset-0 overflow-y-auto">
-            <EditorContent editor={editor} />
+            <EditorContent editor={editor} className="h-full" />
           </div>
         </div>
 
