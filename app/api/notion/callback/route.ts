@@ -79,10 +79,10 @@ export async function GET(req: Request) {
    *
    */
   const { data: u, error: userError } = await supabase.auth.getUser();
-  if (userError) {
-    console.error('[Supabase getUser error]', userError);
-    // 세션 확인 실패하더라도 state 기반으로 계속 진행
-  } else if (u.user && u.user.id !== stateUserId) {
+  if (userError || !u.user) {
+    return NextResponse.redirect(new URL('/login?error=login_required', url.origin));
+  }
+  if (u.user.id !== stateUserId) {
     // 다른 유저 세션으로 callback을 맞았으면 차단
     return NextResponse.redirect(new URL('/post?notion=user_mismatch', url.origin));
   }
