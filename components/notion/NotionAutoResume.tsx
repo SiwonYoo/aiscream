@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useUIStore } from '@/stores/ui-store';
 
 type Props = {
   onResume: () => void;
@@ -12,6 +13,7 @@ export default function NotionAutoResume({ onResume }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const ran = useRef(false);
+  const setSidebarOpen = useUIStore(s => s.setSidebarOpen);
 
   useEffect(() => {
     if (ran.current) return;
@@ -22,6 +24,9 @@ export default function NotionAutoResume({ onResume }: Props) {
     if (notion !== 'connected' || resume !== 'notion_pick') return;
 
     ran.current = true;
+
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) setSidebarOpen(false);
 
     onResume();
 
