@@ -2,6 +2,27 @@ import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
 import { getMyPosts } from '@/data/functions/post';
 import { createClient } from '@/lib/supabaseServer';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: {
+    default: '새 블로그 작성',
+    template: '%s | AiScReam',
+  },
+  description: 'AiScReam으로 블로그 글을 작성해보세요!',
+  openGraph: {
+    title: '새 블로그 작성 | AiScReam',
+    description: 'AiScReam으로 블로그 글을 작성해보세요!',
+    url: 'https://aiscream.vercel.app/post',
+    siteName: 'AiScReam',
+    type: 'website',
+    images: [{ url: '/AiScReam-OG.jpg', width: 1200, height: 630, alt: 'AiScReam' }],
+  },
+
+  alternates: {
+    canonical: `/post`,
+  },
+};
 
 export default async function PostLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
