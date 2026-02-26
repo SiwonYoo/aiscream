@@ -17,7 +17,7 @@ export default function UtilButtonList() {
   const router = useRouter();
 
   // 에디터 관련
-  const { editor, markdownSource, isChanged, syncInitialContent } = useEditorContext();
+  const { topic, editor, markdownSource, isChanged, syncInitialContent, validate } = useEditorContext();
 
   // 모달 열기
   const openModal = useModalStore(state => state.openModal);
@@ -25,9 +25,11 @@ export default function UtilButtonList() {
   // 수정완료
   const handleUpdate = async () => {
     if (!postId) return;
+    if (!validate()) return;
 
     try {
       await updatePost(postId, {
+        topic,
         content: markdownSource,
       });
       syncInitialContent();

@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function PostPage() {
+  const [topic, setTopic] = useState('');
   const [result, setResult] = useState(''); // 보여질 내용
   const [loading, setLoading] = useState(false); // 로딩 상태
   const [hasError, setHasError] = useState(false); // 에러 상태
@@ -77,6 +78,8 @@ export default function PostPage() {
         type: params.blogType,
       });
 
+      setTopic(blogResult.topic);
+
       router.push(`/post/${res.post.id}`);
     } catch (err) {
       console.error('DB 저장 중 오류가 발생했습니다.', err);
@@ -88,7 +91,7 @@ export default function PostPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <Base result={result} loading={loading} />
+      <Base result={result} loading={loading} initialTopic={topic} />
       <UserPrompt handleCreateBlog={handleCreateBlog} loading={loading} />
     </div>
   );

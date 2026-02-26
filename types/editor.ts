@@ -11,6 +11,7 @@ export interface PostContent {
 
 export interface EditorContextProps {
   children: ReactNode;
+  initialTopic?: string;
   initialContent?: string;
   streamedMarkdown?: string;
   onContentChange?: (content: string) => void;
