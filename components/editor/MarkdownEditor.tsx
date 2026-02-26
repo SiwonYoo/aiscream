@@ -34,6 +34,8 @@ export default function MarkdownEditor() {
             setMarkdownSource(e.target.value);
           }}
           aria-label="마크다운 편집기"
+          aria-invalid={Boolean(errors.content)}
+          aria-describedby={errors.content ? 'editor-content-error' : undefined}
           className={`min-h-0 flex-1 overflow-y-auto p-2 ${!isMarkdownMode ? 'hidden' : ''}`}
         />
 
@@ -45,7 +47,11 @@ export default function MarkdownEditor() {
         </div>
 
         {/* 내용 미입력 에러 */}
-        {errors.content && <p className="px-2 text-sm text-red-500">{errors.content}</p>}
+        {errors.content && (
+          <p id="editor-content-error" role="alert" className="px-2 text-sm text-red-500">
+            {errors.content}
+          </p>
+        )}
       </div>
     </div>
   );
