@@ -15,10 +15,17 @@ export default function MarkdownEditor() {
       <EditorToolbar editor={editor} isMarkdownMode={isMarkdownMode} setIsMarkdownMode={setIsMarkdownMode} />
       <div className="mx-auto flex w-full flex-1 flex-col gap-2 pc:max-w-300">
         {/* 제목 입력 */}
-        <input type="text" value={topic} onChange={event => setTopic(event.target.value)} placeholder="제목을 입력하세요" className={`border-b border-input-stroke p-2 text-lg font-bold ${errors.topic ? 'border-red-500' : ''}`} />
+        <label htmlFor="editor-topic" className="sr-only">
+          제목
+        </label>
+        <input id="editor-topic" type="text" value={topic} onChange={event => setTopic(event.target.value)} placeholder="제목을 입력하세요" aria-invalid={Boolean(errors.topic)} aria-describedby={errors.topic ? 'editor-topic-error' : undefined} className={`border-b border-input-stroke p-2 text-lg font-bold ${errors.topic ? 'border-red-500' : ''}`} />
 
         {/* 제목 미입력 에러 */}
-        {errors.topic && <p className="px-2 text-sm text-red-500">{errors.topic}</p>}
+        {errors.topic && (
+          <p id="editor-topic-error" role="alert" className="px-2 text-sm text-red-500">
+            {errors.topic}
+          </p>
+        )}
 
         {/* markdown(edit) 모드 */}
         <textarea
