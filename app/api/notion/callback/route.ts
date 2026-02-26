@@ -89,10 +89,13 @@ export async function GET(req: Request) {
 
   // Notion token 교환
   const { clientId, clientSecret, redirectUri } = getNotionEnv();
+  if (!clientSecret) {
+    return NextResponse.redirect(new URL(`${returnTo}?notion=oauth_config_error`, url.origin));
+  }
 
   let tokenData;
   try {
-    tokenData = await exchangeCodeForToken(code, clientId, clientSecret!, redirectUri);
+    tokenData = await exchangeCodeForToken(code, clientId, clientSecret, redirectUri);
   } catch (error) {
     console.error('[Notion token exchange error]', error);
     return NextResponse.redirect(new URL(`${returnTo}?notion=oauth_failed`, url.origin));
