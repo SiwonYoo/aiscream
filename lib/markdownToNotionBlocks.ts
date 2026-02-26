@@ -33,6 +33,8 @@ export type NotionBlock =
   | { object: 'block'; type: 'bulleted_list_item'; bulleted_list_item: { rich_text: NotionRichText[]; children?: NotionBlock[] } }
   | { object: 'block'; type: 'numbered_list_item'; numbered_list_item: { rich_text: NotionRichText[]; children?: NotionBlock[] } };
 
+const NOTION_CODE_LANGUAGES = new Set(['plain text', 'javascript', 'typescript', 'bash', 'shell', 'yaml', 'python', 'java', 'go', 'rust', 'c']);
+
 function rtText(content: string, opts?: Partial<NotionRichText['annotations']>, linkUrl?: string): NotionRichText {
   return {
     type: 'text',
@@ -208,7 +210,7 @@ export function markdownToNotionBlocks(markdown: string): NotionBlock[] {
       endList();
       let lang = trimmed.slice(3).trim().toLowerCase();
       lang = LANG_ALIAS[lang] ?? lang;
-      if (!lang) lang = 'plain text';
+      if (!lang || !NOTION_CODE_LANGUAGES.has(lang)) lang = 'plain text';
       i += 1;
       const codeLines: string[] = [];
       while (i < lines.length && !lines[i].trim().startsWith('```')) {

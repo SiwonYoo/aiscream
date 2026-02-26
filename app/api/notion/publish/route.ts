@@ -48,15 +48,19 @@ export async function POST(req: Request) {
     if (demo) queryBuilder = queryBuilder.eq('demo_install_id', installId);
     else queryBuilder = queryBuilder.eq('demo_install_id', '');
 
-    const { data: conn } = await queryBuilder.maybeSingle();
-
+    const { data: conn, error: connErr } = await queryBuilder.maybeSingle();
+    if (connErr) {
+      return NextResponse.json({ ok: false, message: 'DB_ERROR' }, { status: 500 });
+    }
     if (!conn?.access_token) {
       return NextResponse.json({ ok: false, message: 'NOT_CONNECTED' }, { status: 404 });
     }
 
     const notion = new Client({ auth: conn.access_token });
     const children = markdownToNotionBlocks(markdown);
-
+    if (children.length > 100) {
+      return NextResponse.json({ ok: false, message: 'TOO_MANY_BLOCKS' }, { status: 400 });
+    }
     const page = await notion.pages.create({
       parent: { page_id: parent_page_id },
       properties: {
