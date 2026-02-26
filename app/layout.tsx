@@ -15,8 +15,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aiscream.vercel.app').replace(/\/$/, '');
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://aiscream.vercel.app'),
+  metadataBase: new URL(siteUrl),
 
   title: {
     default: 'AiScReam',
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AiScReam',
     description: '글이 시작되는 소리, AiScReam',
-    url: 'https://aiscream.vercel.app/',
+    url: siteUrl,
     siteName: 'AiScReam',
     type: 'website',
     images: [

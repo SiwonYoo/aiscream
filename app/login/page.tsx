@@ -6,6 +6,8 @@ import DemoModeNotice from '@/components/login/DemoModeNotice';
 import LoginForm from '@/components/login/LoginForm';
 import type { Metadata } from 'next';
 
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aiscream.vercel.app').replace(/\/$/, '');
+
 export const metadata: Metadata = {
   title: '로그인',
   description: '로그인을 통해 AiScReam으로 블로그를 작성해보세요!',
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '로그인 | AiScReam',
     description: '로그인을 통해 AiScReam으로 블로그를 작성해보세요!',
-    url: 'https://aiscream.vercel.app/login',
+    url: `${siteUrl}/login`,
     siteName: 'AiScReam',
     type: 'website',
     images: [

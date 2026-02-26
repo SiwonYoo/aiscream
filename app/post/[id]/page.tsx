@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { getPostById } from '@/data/functions/post';
 import PostDetailClient from './PostDetailClient';
 
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aiscream.vercel.app').replace(/\/$/, '');
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
@@ -25,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       openGraph: {
         title: `${topic} | AiScReam`,
         description: topic,
-        url: `https://aiscream.vercel.app/post/${id}`,
+        url: `${siteUrl}/post/${id}`,
         type: 'article',
         images: [{ url: '/AiScReam-OG.jpg', width: 1200, height: 630, alt: topic }],
       },
