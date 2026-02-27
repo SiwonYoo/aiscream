@@ -13,8 +13,8 @@ export default function Base({ initialTopic, result, loading = false, defaultPre
       {(result || loading) && (
         <EditorProvider streamedMarkdown={result} initialTopic={initialTopic} initialContent={result} initialMarkdownMode={!defaultPreview}>
           <div className="relative flex min-h-0 flex-1 flex-col">
-            {/* {loading && <Loading />} */}
-            <Loading />
+            {loading && <Loading />}
+
             <MarkdownEditor />
             <UtilButtonList />
           </div>
