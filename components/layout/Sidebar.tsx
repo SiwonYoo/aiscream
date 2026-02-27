@@ -9,16 +9,21 @@ import { usePostStore } from '@/stores/post-store';
 import PlusIcon from '../common/PlusIcon';
 import ThemeModeToggle from '../common/Toggle';
 import { useModalStore } from '@/stores/modal-store';
+import { useEffect } from 'react';
 
 export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Post[]; userEmail: string }) {
   const { logout } = useAuth();
-  const { toggleSidebar, isSidebarOpen } = useUIStore();
+  const { toggleSidebar, isSidebarOpen, setSidebarOpen } = useUIStore();
   const { selectPostId, isChanged } = usePostStore();
   const pathname = usePathname();
 
   const openModal = useModalStore(state => state.openModal);
 
-  const onClickLogout = () => {};
+  useEffect(() => {
+    if (window.innerWidth >= 768) {
+      setSidebarOpen(true);
+    }
+  }, []);
 
   return (
     <aside id="sidebar" className={`z-10 flex w-70 flex-col self-stretch border-r border-base-stroke bg-muted text-xs transition-all duration-200 max-pc:absolute max-pc:inset-0 pc:h-dvh pc:text-sm ${isSidebarOpen ? 'pc:w-75' : 'max-pc:w-0 pc:w-15.5'}`}>
