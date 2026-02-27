@@ -18,7 +18,7 @@ export default function MarkdownEditor() {
         <label htmlFor="editor-topic" className="sr-only">
           제목
         </label>
-        <input id="editor-topic" type="text" value={topic} onChange={event => setTopic(event.target.value)} placeholder="제목을 입력하세요" aria-invalid={Boolean(errors.topic)} aria-describedby={errors.topic ? 'editor-topic-error' : undefined} className={`border-b border-input-stroke p-2 text-lg font-bold ${errors.topic ? 'border-red-500' : ''}`} />
+        <input id="editor-topic" type="text" value={topic} onChange={event => setTopic(event.target.value)} placeholder="제목을 입력하세요" aria-invalid={Boolean(errors.topic)} aria-describedby={errors.topic ? 'editor-topic-error' : undefined} className={`rounded-sm border-b border-input-stroke p-2 text-lg font-bold ${errors.topic ? 'border-red-500' : ''}`} />
 
         {/* 제목 미입력 에러 */}
         {errors.topic && (
@@ -36,11 +36,11 @@ export default function MarkdownEditor() {
           aria-label="마크다운 편집기"
           aria-invalid={Boolean(errors.content)}
           aria-describedby={errors.content ? 'editor-content-error' : undefined}
-          className={`min-h-0 flex-1 overflow-y-auto p-2 ${!isMarkdownMode ? 'hidden' : ''}`}
+          className={`min-h-0 flex-1 overflow-y-auto rounded-sm p-2 ${!isMarkdownMode ? 'hidden' : ''}`}
         />
 
         {/* preview 모드 */}
-        <div className={`relative min-h-0 flex-1 focus-within:ring-2 focus-within:ring-focus ${isMarkdownMode ? 'hidden' : ''}`}>
+        <div className={`relative min-h-0 flex-1 rounded-sm focus-within:ring-2 focus-within:ring-focus ${isMarkdownMode ? 'hidden' : ''}`}>
           <EditorContent editor={editor} className="absolute inset-0 overflow-y-auto p-2" />
         </div>
 
