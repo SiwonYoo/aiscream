@@ -14,13 +14,14 @@ interface UserPromptProps {
   readOnly?: boolean;
   initialValue?: Partial<UserPromptType>;
   loading?: boolean;
+  defaultCollapsed?: boolean;
 }
-export default function UserPrompt({ handleCreateBlog, readOnly = false, initialValue, loading = false }: UserPromptProps) {
+export default function UserPrompt({ handleCreateBlog, readOnly = false, initialValue, loading = false, defaultCollapsed = false }: UserPromptProps) {
   const [blogContent, setBlogContent] = useState(initialValue?.blogTitle ?? '');
   const [keywords, setKeywords] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<BlogType | '타입선택'>('타입선택');
   const [selectedContent, setSelectedContent] = useState<BlogLength | '길이선택'>('길이선택');
-  const [isDrop, setIsDrop] = useState(true);
+  const [isDrop, setIsDrop] = useState(!defaultCollapsed);
   const isFormComplete = blogContent.trim() !== '' && keywords.length > 0 && selectedType !== '타입선택' && selectedContent !== '길이선택';
 
   useEffect(() => {
@@ -61,7 +62,7 @@ export function BlogPrompt({ value, setValue, disabled = false }: { value: strin
   return (
     <div className="w-full">
       <p className="mb-1.5 text-sm leading-3.5 font-semibold text-black pc:mb-3 pc:text-lg pc:leading-4.5">블로그 내용</p>
-      <textarea disabled={disabled} className="min-h-15 w-full resize-none rounded-sm border border-input-stroke bg-bg-base px-2.5 py-2.5 text-sm leading-3.5 font-normal text-primary focus:ring-0 focus:outline-none pc:min-h-20 pc:px-3.5 pc:py-3 pc:text-base pc:leading-4" placeholder={`어떤 내용의 블로그 글을 작성하고 싶으신가요?\n예: 초보자를 위한 Next.js 시작하기 가이드`} value={value} onChange={e => setValue(e.target.value)} />
+      <textarea disabled={disabled} className="min-h-15 w-full resize-none rounded-sm border border-input-stroke bg-bg-base px-2.5 py-2.5 text-sm leading-3.5 font-normal text-primary focus:ring-0 focus:outline-none disabled:cursor-not-allowed pc:min-h-20 pc:px-3.5 pc:py-3 pc:text-base pc:leading-4" placeholder={`어떤 내용의 블로그 글을 작성하고 싶으신가요?\n예: 초보자를 위한 Next.js 시작하기 가이드`} value={value} onChange={e => setValue(e.target.value)} />
     </div>
   );
 }
@@ -88,13 +89,24 @@ export function KeywordPrompt({ keywords, setKeywords, disabled = false }: { key
     }
 
     setKeywords(prev => [...prev, value]);
-    setInputValue('');
+
+    // mac 한글 입력 대응
+    setTimeout(() => {
+      setInputValue('');
+    }, 0);
   };
 
   // Enter 이벤트
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // 한글 조합 중이면 Enter 무시
+    if (e.nativeEvent.isComposing) return;
+
     if (e.key === 'Enter') {
       e.preventDefault();
+
+      const value = inputValue.trim();
+      if (!value) return;
+
       addKeyword();
     }
   };
@@ -118,7 +130,7 @@ export function KeywordPrompt({ keywords, setKeywords, disabled = false }: { key
       <p className="mb-1.5 text-sm leading-3.5 font-semibold text-black pc:mb-3 pc:text-lg">키워드</p>
       {/* 키워드 프롬포트 */}
       <div className="mb-1 flex items-center justify-between gap-3 pc:mb-3">
-        <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} disabled={disabled} className="h-8.5 flex-1 rounded-sm border border-input-stroke bg-bg-base px-2.5 py-2.5 text-sm text-primary focus:ring-0 focus:outline-none pc:h-9 pc:text-base" placeholder="키워드를 입력하고 Enter를 누르세요." />
+        <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} disabled={disabled} className="h-8.5 flex-1 rounded-sm border border-input-stroke bg-bg-base px-2.5 py-2.5 text-sm text-primary focus:ring-0 focus:outline-none disabled:cursor-not-allowed pc:h-9 pc:text-base" placeholder="키워드를 입력하고 Enter를 누르세요." />
         <button type="button" onClick={addKeyword} disabled={disabled} className="flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-sm border border-input-stroke pc:h-9 pc:w-9">
           <PlusIcon className="h-3 w-3 text-primary pc:h-3.5 pc:w-3.5" />
         </button>
