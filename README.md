@@ -3,8 +3,10 @@
 <a href="https://aiscream.vercel.app" target="_blank" title="AiScReam">
   <img src="./public/assets/images/AiScReam-OG.jpg" alt="프로젝트이미지" width=700/>
 </a>
-
 <br />
+<br />
+
+[Notion 바로가기](https://www.notion.so/Project-AiScReam-2fb5f1e925c38034be50eedf499e08bb?source=copy_link)
 
 ## 📃 프로젝트 서비스 소개
 
@@ -27,7 +29,7 @@
 
 ## 👥 팀원 소개
 
-|             <img src="public/assets/images/teamprofile/oneway.jpg" width="100" height="100" style="object-fit:cover;" />             |             <img src="public/assets/images/teamprofile/siwon.jpg" width="100" height="100" style="object-fit:cover;" />              |            <img src="public/assets/images/teamprofile/youvin.png" width="100" height="100" style="object-fit:cover;" />            |           <img src="public/assets/images/teamprofile/seohyun.jpg" width="100" height="100" style="object-fit:cover;" />           |
+|            <img src="public/assets/images/teamprofile/oneway.jpg"  width="100" height="100" style="object-fit:cover;" />             |             <img src="public/assets/images/teamprofile/siwon.jpg" width="100" height="100" style="object-fit:cover;" />              |            <img src="public/assets/images/teamprofile/youvin.png" width="100" height="100" style="object-fit:cover;" />            |           <img src="public/assets/images/teamprofile/seohyun.jpg" width="100" height="100" style="object-fit:cover;" />           |
 | :----------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: |
 |                                                              **임한길**                                                              |                                                              **유시원**                                                              |                                                             **황유빈**                                                             |                                                            **오서현**                                                             |
 |                                                                  PM                                                                  |                                                                  PL                                                                  |                                                            FE Developer                                                            |                                                           FE Developer                                                            |
