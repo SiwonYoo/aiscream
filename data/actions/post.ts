@@ -42,6 +42,7 @@ export async function updatePost(postId: string, post: UpdatePostData) {
 
   if (error) throw error;
 
+  revalidatePath('/post');
   return { success: true, post: data };
 }
 

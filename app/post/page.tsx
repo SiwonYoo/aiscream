@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function PostPage() {
+  const [topic, setTopic] = useState(''); // 제목
   const [result, setResult] = useState(''); // 보여질 내용
   const [loading, setLoading] = useState(false); // 로딩 상태
   const [hasError, setHasError] = useState(false); // 에러 상태
@@ -31,6 +32,7 @@ export default function PostPage() {
       let topic = ''; // DB로 보낼 topic 값
       const rawTopic = res.headers.get('X-Topic');
       if (rawTopic) topic = decodeURIComponent(rawTopic);
+      setTopic(topic);
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder('utf-8');
@@ -88,7 +90,7 @@ export default function PostPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <Base result={result} loading={loading} />
+      <Base result={result} loading={loading} initialTopic={topic} />
       <UserPrompt handleCreateBlog={handleCreateBlog} loading={loading} />
     </div>
   );

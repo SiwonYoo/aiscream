@@ -189,7 +189,7 @@ body {
 
 .prose :not(pre) > code {
   background-color: var(--color-keyword);
-  color: #f6b1c3;
+  color: #ff1e59;
   padding: 0.2em 0.4em;
   border-radius: 0.25rem;
   font-size: 0.875em;
