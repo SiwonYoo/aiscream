@@ -88,13 +88,24 @@ export function KeywordPrompt({ keywords, setKeywords, disabled = false }: { key
     }
 
     setKeywords(prev => [...prev, value]);
-    setInputValue('');
+
+    // mac 한글 입력 대응
+    setTimeout(() => {
+      setInputValue('');
+    }, 0);
   };
 
   // Enter 이벤트
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // 한글 조합 중이면 Enter 무시
+    if (e.nativeEvent.isComposing) return;
+
     if (e.key === 'Enter') {
       e.preventDefault();
+
+      const value = inputValue.trim();
+      if (!value) return;
+
       addKeyword();
     }
   };
