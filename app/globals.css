@@ -183,6 +183,11 @@ body {
   outline: none;
 }
 
+.ProseMirror:focus,
+.ProseMirror:focus-visible {
+  outline: none;
+}
+
 .itim {
   font-family: 'Itim';
 }
