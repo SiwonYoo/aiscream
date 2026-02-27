@@ -44,7 +44,7 @@ export default function CustomCodeBlock({ node, deleteNode, updateAttributes }: 
   };
 
   return (
-    <NodeViewWrapper className="code-block group relative">
+    <NodeViewWrapper className="code-block group relative mx-4">
       {/* 코드 블럭 좌측 삭제 버튼 (group-hover 시 확인 가능) */}
       <button type="button" onClick={deleteNode} contentEditable={false} title="삭제하기" aria-label="코드블럭 전체 삭제하기" className="absolute -left-5.5 cursor-pointer p-1 opacity-0 transition-opacity group-hover:opacity-100">
         <Image src="/assets/images/ico_cancel.svg" width={14} height={14} alt="" className="not-prose" />
