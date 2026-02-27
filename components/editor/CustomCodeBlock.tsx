@@ -28,18 +28,18 @@ export default function CustomCodeBlock({ node, deleteNode, updateAttributes }: 
   ];
 
   // 복사 기능
-  const handleCopy = () => {
+  const handleCopy = async () => {
     const code = node.textContent;
 
-    try{navigator.clipboard.writeText(code);
-    setIsCopied(true);
+    try {
+      await navigator.clipboard.writeText(code);
+      setIsCopied(true);
 
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2000);
-    }
-    catch {
-      console.error('복사 실패');
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000);
+    } catch (error) {
+      console.error('복사 실패', error);
     }
   };
 

@@ -31,6 +31,9 @@
   --color-disabled: #989898; /* Disabled 버튼 */
   --color-active: #000000; /* Active 버튼 */
   --color-hover: #222222; /* Active 버튼 Hover */
+
+  /* Focus */
+  --color-focus: #e6a1b3; /* focus 접근 outline 색상 */
 }
 
 /* 다크모드 */
@@ -57,6 +60,9 @@
   --color-disabled: #5f5f5f;
   --color-active: #ffffff;
   --color-hover: #e5e7eb;
+
+  /* Focus */
+  --color-focus: #e6a1b3;
 }
 
 /* font 설정 */
@@ -166,6 +172,15 @@ body {
   font-family: 'Pretendard', sans-serif;
   color: var(--color-primary);
   background-color: var(--color-bg-base);
+  word-break: keep-all;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
 }
 
 .itim {
@@ -174,7 +189,7 @@ body {
 
 .prose :not(pre) > code {
   background-color: var(--color-keyword);
-  color: #f6b1c3;
+  color: #ff1e59;
   padding: 0.2em 0.4em;
   border-radius: 0.25rem;
   font-size: 0.875em;
@@ -183,4 +198,13 @@ body {
 .prose code::before,
 .prose code::after {
   content: none;
+}
+
+/* 스크롤바 숨기기 (툴바에서 사용) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

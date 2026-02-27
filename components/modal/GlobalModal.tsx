@@ -26,8 +26,23 @@ export default function GlobalModal() {
       {!modal
         ? null
         : (() => {
-            const { title, message, variant, confirmText = '확인', cancelText = '확인', onConfirm } = modal;
+            const { title, message, variant, confirmText = '확인', cancelText = '확인', onConfirm, children } = modal;
+            if (variant === 'custom') {
+              return (
+                <>
+                  <div className="flex w-full flex-col gap-3">
+                    <h2 className="font-semibold text-primary pc:text-lg">{title}</h2>
+                    {children}
+                  </div>
 
+                  <div className="modal-btns flex justify-end gap-4">
+                    <button className="cursor-pointer rounded-sm bg-black px-4 py-1.5 text-sm text-white hover:bg-hover pc:text-base" onClick={closeModal}>
+                      {cancelText}
+                    </button>
+                  </div>
+                </>
+              );
+            }
             return (
               <>
                 <div className="flex flex-col items-center gap-5 pc:gap-6">
@@ -51,7 +66,7 @@ export default function GlobalModal() {
                   {/* 기능 넣을 버튼(삭제...등등) */}
                   {variant === 'confirm' && (
                     <button
-                      className="cursor-pointer rounded-sm bg-[#E6A1B3] px-4 py-1.5 text-sm text-white hover:bg-[#D9A0B5] pc:text-base"
+                      className="cursor-pointer rounded-sm bg-[#E6A1B3] px-4 py-1.5 text-sm text-white hover:bg-[#D9A0B5] pc:text-base dark:text-black"
                       onClick={() => {
                         onConfirm?.();
                         closeModal();

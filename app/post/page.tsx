@@ -4,12 +4,16 @@ import Base from '@/components/editor/Base';
 import UserPrompt from '@/components/userinput/UserPrompt';
 import { createPost } from '@/data/actions/post';
 import { UserPromptType } from '@/types/blog-type';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function PostPage() {
+  const [topic, setTopic] = useState(''); // 제목
   const [result, setResult] = useState(''); // 보여질 내용
   const [loading, setLoading] = useState(false); // 로딩 상태
   const [hasError, setHasError] = useState(false); // 에러 상태
+
+  const router = useRouter();
 
   const createBlog = async ({ blogTitle, blogKeyword, blogType, blogLength }: UserPromptType) => {
     try {
@@ -28,6 +32,7 @@ export default function PostPage() {
       let topic = ''; // DB로 보낼 topic 값
       const rawTopic = res.headers.get('X-Topic');
       if (rawTopic) topic = decodeURIComponent(rawTopic);
+      setTopic(topic);
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder('utf-8');
@@ -66,13 +71,15 @@ export default function PostPage() {
 
       if (!blogResult) return;
 
-      await createPost({
+      const res = await createPost({
         topic: blogResult.topic,
         title: params.blogTitle,
         keywords: params.blogKeyword,
         content: blogResult.fullContent,
         type: params.blogType,
       });
+
+      router.push(`/post/${res.post.id}`);
     } catch (err) {
       console.error('DB 저장 중 오류가 발생했습니다.', err);
       setHasError(true);
@@ -82,8 +89,8 @@ export default function PostPage() {
   };
 
   return (
-    <div className="flex h-[93vh] flex-col pc:h-screen">
-      <Base result={result} loading={loading} />
+    <div className="flex h-full flex-col">
+      <Base result={result} loading={loading} initialTopic={topic} />
       <UserPrompt handleCreateBlog={handleCreateBlog} loading={loading} />
     </div>
   );

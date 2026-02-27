@@ -1,0 +1,43 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useUIStore } from '@/stores/ui-store';
+
+type Props = {
+  onResume: () => void;
+};
+
+export default function NotionAutoResume({ onResume }: Props) {
+  const sp = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const ran = useRef(false);
+  const setSidebarOpen = useUIStore(s => s.setSidebarOpen);
+
+  useEffect(() => {
+    if (ran.current) return;
+
+    const notion = sp.get('notion');
+    const resume = sp.get('resume');
+
+    if (notion !== 'connected' || resume !== 'notion_pick') return;
+
+    ran.current = true;
+
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) setSidebarOpen(false);
+
+    onResume();
+
+    const next = new URLSearchParams(sp.toString());
+    next.delete('notion');
+    next.delete('resume');
+    next.delete('openNotion');
+
+    const qs = next.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [sp, pathname, router, onResume]);
+
+  return null;
+}

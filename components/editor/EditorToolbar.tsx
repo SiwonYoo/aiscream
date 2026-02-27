@@ -29,7 +29,7 @@ export default function EditorToolbar({ editor, isMarkdownMode, setIsMarkdownMod
   const activeStyle = 'bg-active text-white font-bold';
 
   return (
-    <div className="flex justify-between gap-4 border-b pb-2 text-sm">
+    <div className="mx-auto flex w-full justify-between gap-4 border-b pb-2 text-sm pc:max-w-300">
       <div className="flex">
         <button type="button" className={`cursor-pointer rounded-xs px-1.5 py-0.5 pc:px-2 pc:py-1 ${isMarkdownMode ? 'bg-white text-primary' : 'bg-black text-white'}`} onClick={() => setIsMarkdownMode(false)}>
           Preview
@@ -39,7 +39,7 @@ export default function EditorToolbar({ editor, isMarkdownMode, setIsMarkdownMod
         </button>
       </div>
 
-      <div className={`flex items-center gap-1 overflow-x-auto *:rounded *:px-3 *:py-1 *:text-nowrap *:hover:bg-base-stroke *:hover:text-black ${isMarkdownMode ? 'hidden' : ''}`}>
+      <div className={`no-scrollbar flex items-center gap-1 overflow-x-auto *:rounded *:px-3 *:py-1 *:text-nowrap *:hover:bg-base-stroke *:hover:text-black ${isMarkdownMode ? 'hidden' : ''}`}>
         <button type="button" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} aria-label="실행 취소" className={!editorState.canUndo ? 'cursor-not-allowed opacity-30' : ''}>
           <Image src="/assets/images/ico_undo.svg" width={14} height={14} alt="" className="min-w-4" />
         </button>
