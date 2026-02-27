@@ -5,12 +5,12 @@ import type { Post } from '@/types/post';
 export default function PostDetailClient({ post }: { post: Post }) {
   return (
     <div className="flex min-h-[93vh] flex-col pc:min-h-screen">
-      <Base initialTopic={post.topic} result={post.content ?? ''} defaultPreview />
+      <Base initialTopic={post.title} result={post.content ?? ''} defaultPreview />
 
       <UserPrompt
         readOnly
         initialValue={{
-          blogTitle: post.topic,
+          blogTitle: post.title,
           blogKeyword: post.keywords ?? [],
           blogType: post.type,
           blogLength: post.postLength ?? 'normal',
