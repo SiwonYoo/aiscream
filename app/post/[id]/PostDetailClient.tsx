@@ -9,6 +9,7 @@ export default function PostDetailClient({ post }: { post: Post }) {
 
       <UserPrompt
         readOnly
+        defaultCollapsed
         initialValue={{
           blogTitle: post.title,
           blogKeyword: post.keywords ?? [],
