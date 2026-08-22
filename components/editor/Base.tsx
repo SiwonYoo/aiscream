@@ -1,8 +1,12 @@
-import Loading from '@/components/common/Loading';
+'use client';
+
 import EditorPlaceholder from '@/components/editor/EditorPlaceholder';
 import MarkdownEditor from '@/components/editor/MarkdownEditor';
 import UtilButtonList from '@/components/editor/UtilButtonList';
 import { EditorProvider } from '@/contexts/EditorContext';
+import dynamic from 'next/dynamic';
+
+const Loading = dynamic(() => import('@/components/common/Loading'), { ssr: false });
 
 export default function Base({ initialTopic, result, loading = false, defaultPreview = false }: { initialTopic: string; result: string; loading?: boolean; defaultPreview?: boolean }) {
   return (
