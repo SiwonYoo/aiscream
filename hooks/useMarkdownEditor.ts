@@ -2,14 +2,37 @@ import CustomCodeBlock from '@/components/editor/CustomCodeBlock';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { ReactNodeViewRenderer, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { common, createLowlight } from 'lowlight';
 import Link from '@tiptap/extension-link';
 import { CodeBlockTabExtension } from '@/extensions/CodeBlockTab';
 
 import 'highlight.js/styles/github-dark.css';
 import { Markdown } from 'tiptap-markdown';
 
-const lowlight = createLowlight(common);
+import { createLowlight } from 'lowlight';
+import javascript from 'highlight.js/lib/languages/javascript';
+import typescript from 'highlight.js/lib/languages/typescript';
+import python from 'highlight.js/lib/languages/python';
+import java from 'highlight.js/lib/languages/java';
+import css from 'highlight.js/lib/languages/css';
+import cpp from 'highlight.js/lib/languages/cpp';
+import xml from 'highlight.js/lib/languages/xml';
+import bash from 'highlight.js/lib/languages/bash';
+import json from 'highlight.js/lib/languages/json';
+
+const lowlight = createLowlight();
+lowlight.register({
+  javascript,
+  typescript,
+  javascriptreact: javascript,
+  typescriptreact: typescript,
+  python,
+  java,
+  css,
+  cpp,
+  html: xml,
+  bash,
+  json,
+});
 
 export function useMarkdownEditor(initialContent: string) {
   // TipTap 에디터 인스턴스 생성
