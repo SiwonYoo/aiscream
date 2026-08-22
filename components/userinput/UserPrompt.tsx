@@ -44,8 +44,8 @@ export default function UserPrompt({ handleCreateBlog, readOnly = false, initial
     <div className="relative border-t border-base-stroke bg-muted">
       <div className="inner mx-auto pc:max-w-300">
         {/* 드롭다운 버튼 */}
-        <button type="button" onClick={() => setIsDrop(prev => !prev)} className={`absolute right-7 z-1 origin-top cursor-pointer transition-all duration-0 pc:right-6 ${isDrop ? 'top-0' : '-top-px rotate-180'}`}>
-          <DropIcon aria-label={isDrop ? '프롬프트 접기' : '프롬프트 펼치기'} className={`aspect-80/28 w-12 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] pc:w-20 dark:drop-shadow-[0_2px_6px_rgba(255,255,255,0.05)]`} />
+        <button type="button" onClick={() => setIsDrop(prev => !prev)} className={`absolute right-7 z-1 origin-top cursor-pointer transition-all duration-0 pc:right-6 ${isDrop ? 'top-0' : '-top-px rotate-180'}`} aria-label={isDrop ? '프롬프트 접기' : '프롬프트 펼치기'}>
+          <DropIcon className={`aspect-80/28 w-12 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] pc:w-20 dark:drop-shadow-[0_2px_6px_rgba(255,255,255,0.05)]`} />
         </button>
 
         <div className={`flex flex-col gap-5 px-4 py-7 transition-all duration-0 pc:py-8 ${isDrop ? 'opacity-100' : 'invisible h-10 overflow-hidden opacity-0'}`}>
@@ -131,7 +131,7 @@ export function KeywordPrompt({ keywords, setKeywords, disabled = false }: { key
       {/* 키워드 프롬포트 */}
       <div className="mb-1 flex items-center justify-between gap-3 pc:mb-3">
         <input type="text" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} maxLength={20} disabled={disabled} className="h-8.5 flex-1 rounded-sm border border-input-stroke bg-bg-base px-2.5 py-2.5 text-sm text-primary focus:ring-0 focus:outline-none disabled:cursor-not-allowed pc:h-9 pc:text-base" placeholder="키워드를 입력하고 Enter를 누르세요." />
-        <button type="button" onClick={addKeyword} disabled={disabled} className="flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-sm border border-input-stroke pc:h-9 pc:w-9">
+        <button type="button" aria-label="키워드 추가" onClick={addKeyword} disabled={disabled} className="flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-sm border border-input-stroke pc:h-9 pc:w-9">
           <PlusIcon className="h-3 w-3 text-primary pc:h-3.5 pc:w-3.5" />
         </button>
       </div>
