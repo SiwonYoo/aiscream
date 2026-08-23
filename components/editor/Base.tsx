@@ -1,29 +1,18 @@
 'use client';
 
 import EditorPlaceholder from '@/components/editor/EditorPlaceholder';
-import MarkdownEditor from '@/components/editor/MarkdownEditor';
-import UtilButtonList from '@/components/editor/UtilButtonList';
-import { EditorProvider } from '@/contexts/EditorContext';
 import dynamic from 'next/dynamic';
 
-const Loading = dynamic(() => import('@/components/common/Loading'), { ssr: false });
+const EditorWorkspace = dynamic(() => import('@/components/editor/EditorWorkspace'), {
+  ssr: false,
+  loading: () => <div className="flex flex-1 items-center justify-center">불러오는 중...</div>,
+});
 
 export default function Base({ initialTopic, result, loading = false, defaultPreview = false }: { initialTopic: string; result: string; loading?: boolean; defaultPreview?: boolean }) {
   return (
     <>
-      {/* 글 생성되기 전 상태 */}
       {!result && !loading && <EditorPlaceholder />}
-      {/* 글 생성 후 상태 */}
-      {(result || loading) && (
-        <EditorProvider streamedMarkdown={result} initialTopic={initialTopic} initialContent={result} initialMarkdownMode={!defaultPreview}>
-          <div className="relative flex min-h-0 flex-1 flex-col">
-            {loading && <Loading />}
-
-            <MarkdownEditor />
-            <UtilButtonList />
-          </div>
-        </EditorProvider>
-      )}
+      {(result || loading) && <EditorWorkspace initialTopic={initialTopic} result={result} loading={loading} defaultPreview={defaultPreview} />}
     </>
   );
 }
