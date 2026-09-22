@@ -9,8 +9,10 @@ import { usePostStore } from '@/stores/post-store';
 import PlusIcon from '../common/PlusIcon';
 import ThemeModeToggle from '../common/Toggle';
 import { useModalStore } from '@/stores/modal-store';
+import { Suspense } from 'react';
+import PostListSkeleton from '@/components/layout/PostListSkeleton';
 
-export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Post[]; userEmail: string }) {
+export default function Sidebar({ postList, userEmail }: { postList: React.ReactNode; userEmail: string }) {
   const { logout } = useAuth();
   const { isSidebarOpen, isCollapsed, toggleCollapsed } = useUIStore();
   const { selectPostId, isChanged } = usePostStore();
@@ -42,27 +44,7 @@ export default function Sidebar({ initialPosts, userEmail }: { initialPosts: Pos
 
       {/* 블로그 목록 — 모바일/데스크탑 둘 다에서 보이므로 두 상태 모두 반영 */}
       <nav aria-label="블로그 목록" className={`flex-1 space-y-1 overflow-auto px-2.5 pt-5 pc:mx-3 pc:mt-8 pc:px-0 pc:pt-0 ${isCollapsed ? 'pc:hidden' : ''} ${isSidebarOpen ? '' : 'max-pc:hidden'}`}>
-        {initialPosts.length === 0 ? (
-          <div className="flex h-full justify-center text-primary">아직 작성한 블로그가 없습니다.</div>
-        ) : (
-          <ul>
-            {initialPosts.map(post => {
-              const isActive = pathname === `/post/${post.id}`;
-              return (
-                <li key={post.id}>
-                  <Link href={`/post/${post.id}`} onClick={() => selectPostId(post.id)} className={`flex w-full cursor-pointer items-center gap-1.5 rounded-lg px-1.5 py-2 hover:bg-base-stroke pc:p-2 ${isActive ? 'bg-base-stroke' : ''}`} aria-current={isActive ? 'page' : undefined}>
-                    {isActive && isChanged && (
-                      <div className="h-1 w-1 shrink-0 rounded-full bg-red-500">
-                        <span className="sr-only">수정 중</span>
-                      </div>
-                    )}
-                    <p className="truncate">{post.topic}</p>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+        <Suspense fallback={<PostListSkeleton />}>{postList}</Suspense>
       </nav>
 
       {/* 사이드바 푸터 — 마찬가지로 두 상태 모두 반영 */}

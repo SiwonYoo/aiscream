@@ -1,5 +1,7 @@
 import Header from '@/components/layout/Header';
+import PostListView from '@/components/layout/PostListView';
 import Sidebar from '@/components/layout/Sidebar';
+import SidebarSkeleton from '@/components/layout/PostListSkeleton';
 import { getMyPosts } from '@/data/functions/post';
 import { createClient } from '@/lib/supabaseServer';
 import type { Metadata } from 'next';
@@ -32,29 +34,23 @@ export default function PostLayout({ children }: { children: React.ReactNode }) 
     <>
       <Header />
       <div className="relative flex flex-1 overflow-hidden">
-        <Suspense fallback={<SidebarSkeleton />}>
-          <SidebarWithData />
-        </Suspense>
+        <SidebarWithAuth />
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </>
   );
 }
 
-async function SidebarWithData() {
+async function SidebarWithAuth() {
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  // 인증 체크와 글 목록 조회를 병렬로
-  const [
-    {
-      data: { user },
-    },
-    posts,
-  ] = await Promise.all([supabase.auth.getUser(), getMyPosts().catch(() => [])]);
-
-  return <Sidebar initialPosts={posts} userEmail={user?.email ?? ''} />;
+  return <Sidebar userEmail={user?.email ?? ''} postList={<PostList />} />;
 }
 
-function SidebarSkeleton() {
-  return <aside className="z-10 flex w-70 shrink-0 flex-col self-stretch border-r border-base-stroke bg-muted max-pc:absolute max-pc:inset-0 max-pc:w-0 pc:h-dvh pc:w-75" />;
+async function PostList() {
+  const posts = await getMyPosts().catch(() => []);
+  return <PostListView posts={posts} />;
 }
